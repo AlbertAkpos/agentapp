@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="colorPrimary">#46B2C8</color>
+    <color name="colorPrimaryDark">#115766</color>
+    <color name="colorAccent">#46B2C8</color>
+
+    <color name="colorTextPrimary">#6E7E82</color>
+    <color name="colorTextSecondary">#115766</color>
+    <color name="colorBackground">#FFFFFFFF</color>
+
+    <color name="colorOnBoardingIndicatorActive1">#EC7A07</color>
+    <color name="colorOnBoardingIndicatorActive2">#21BFAF</color>
+    <color name="colorOnBoardingIndicatorActive3">#FF5454</color>
+    <color name="colorOnBoardingIndicatorActive4">#46B2C8</color>
+
+
+<!--    unused colors-->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
