@@ -13,7 +13,7 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        startActivity(Intent(this, StarterActivity::class.java))
+        startActivity(Intent(this, OnBoardingActivity::class.java))
         finish()
     }
 }

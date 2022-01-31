@@ -21,7 +21,7 @@
         </activity>
 
         <activity
-            android:name=".view.activity.StarterActivity"
+            android:name=".view.activity.OnBoardingActivity"
             android:exported="true"/>
         <activity
             android:name=".view.activity.MainActivity"

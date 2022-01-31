@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.youverify.agent_app_android.R
 
-class StarterActivity : AppCompatActivity() {
+class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_starter)
+        setContentView(R.layout.activity_onboarding)
     }
 }
