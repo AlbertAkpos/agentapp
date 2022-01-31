@@ -10,15 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Agent_app_android">
         <activity
-            android:name="com.youverify.agent_app_android.view.activity.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".view.activity.StarterActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"/>
     </application>
 
 </manifest>
