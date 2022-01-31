@@ -4,4 +4,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="next">Next</string>
+    <string name="task_desc">Slide right to accept a task or slide left to decline</string>
+    <string name="task_title">Easily manage Tasks</string>
 </resources>
