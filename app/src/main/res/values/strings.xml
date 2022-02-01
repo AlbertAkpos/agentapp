@@ -6,4 +6,5 @@
     <string name="next">Next</string>
     <string name="task_desc">Slide right to accept a task or slide left to decline</string>
     <string name="task_title">Easily manage Tasks</string>
+    <string name="skip">Skip</string>
 </resources>
