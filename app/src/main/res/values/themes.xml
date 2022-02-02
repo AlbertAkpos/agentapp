@@ -28,10 +28,4 @@
         <item name="colorOnPrimary">@color/colorAccent</item>
 
     </style>
-
-<!--    Theme for onBoarding button-->
-    <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
 </resources>
