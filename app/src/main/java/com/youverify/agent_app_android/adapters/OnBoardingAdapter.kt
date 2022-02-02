@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.databinding.OnboardingItemsBinding
 import com.youverify.agent_app_android.model.OnBoardingItems
@@ -30,6 +31,8 @@ class OnBoardingAdapter(private val onboardingItems : ArrayList<OnBoardingItems>
           binding.textTitle.text = item.title
           binding.textDesc.text = item.description
           binding.imageOnBoarding.setImageResource(item.image)
-        }
+          //we want to remove the back button when the first onboarding item shows up in the viewpager.
+         binding.onBoardBackButton.isVisible = item != onboardingItems[0]
+       }
     }
 }
