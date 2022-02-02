@@ -130,16 +130,4 @@
         app:layout_constraintStart_toStartOf="@+id/onBoardProgressBar"
         app:layout_constraintTop_toTopOf="@+id/onBoardProgressBar" />
 
-    <!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/next"-->
-<!--        android:textColor="@color/colorTextPrimary"-->
-<!--        android:fontFamily="@font/br_sonoma_regular"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/progressBar2"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/progressBar2"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/progressBar2"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/progressBar2" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
