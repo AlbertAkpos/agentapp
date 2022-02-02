@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.databinding.OnboardingItemsBinding
 import com.youverify.agent_app_android.model.OnBoardingItems
 
-class OnBoardingAdapter(private val onboardingItems : ArrayList<OnBoardingItems>): RecyclerView.Adapter<OnBoardingAdapter.OnBoardingViewHolder>(){
+class OnBoardingAdapter(private val onboardingItems: ArrayList<OnBoardingItems>) :
+    RecyclerView.Adapter<OnBoardingAdapter.OnBoardingViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnBoardingViewHolder {
-        return OnBoardingViewHolder(OnboardingItemsBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false))
+        return OnBoardingViewHolder(
+            OnboardingItemsBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: OnBoardingViewHolder, position: Int) {
@@ -24,15 +27,16 @@ class OnBoardingAdapter(private val onboardingItems : ArrayList<OnBoardingItems>
         return onboardingItems.size
     }
 
-    inner class OnBoardingViewHolder(private val binding: OnboardingItemsBinding):
-        RecyclerView.ViewHolder(binding.root){
+    inner class OnBoardingViewHolder(private val binding: OnboardingItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: OnBoardingItems){
-          binding.textTitle.text = item.title
-          binding.textDesc.text = item.description
-          binding.imageOnBoarding.setImageResource(item.image)
-          //we want to remove the back button when the first onboarding item shows up in the viewpager.
-         binding.onBoardBackButton.isVisible = item != onboardingItems[0]
-       }
+        fun bind(item: OnBoardingItems) {
+            binding.textTitle.text = item.title
+            binding.textDesc.text = item.description
+            binding.imageOnBoarding.setImageResource(item.image)
+            //we want to remove the back button when the first onboarding item shows up in the viewpager.
+            binding.onBoardBackButton.isVisible = item != onboardingItems[0]
+
+        }
     }
 }
