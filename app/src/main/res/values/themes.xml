@@ -26,6 +26,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/colorAccent</item>
+    </style>
 
+<!--    Theme for onboarding progressbar-->
+    <style name="CircularDeterminateProgressBar" >
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/button_onboarding_indicator</item>
     </style>
 </resources>
