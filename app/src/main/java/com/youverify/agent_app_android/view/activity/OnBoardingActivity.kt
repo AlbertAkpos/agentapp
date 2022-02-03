@@ -55,6 +55,6 @@ class OnBoardingActivity : AppCompatActivity() {
         onboardingItems.add(items3)
         onboardingItems.add(items4)
 
-        return OnBoardingAdapter(onboardingItems)
+        return OnBoardingAdapter(onboardingItems, applicationContext)
     }
 }

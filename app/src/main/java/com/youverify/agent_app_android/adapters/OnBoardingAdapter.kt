@@ -1,11 +1,12 @@
 package com.youverify.agent_app_android.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.OnboardingItemsBinding
 import com.youverify.agent_app_android.model.OnBoardingItems
 
@@ -32,30 +33,37 @@ class OnBoardingAdapter(private val onboardingItems: ArrayList<OnBoardingItems>)
     inner class OnBoardingViewHolder(private val binding: OnboardingItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: OnBoardingItems) {
+        fun bind(_item: OnBoardingItems) {
+            var item = _item
             binding.textTitle.text = item.title
             binding.textDesc.text = item.description
             binding.imageOnBoarding.setImageResource(item.image)
-            //we want to remove the back button when the first onboarding item shows up in the viewpager.
+
+            //remove the back button when the first onboarding item shows up in the viewpager.
             binding.onBoardBackButton.isVisible = item != onboardingItems[0]
-            //we want to change the various leves for the progressbar on different items
+
+            //change the various levels for the progressbar on different items
             when(item){
-                onboardingItems[0] ->
-                    binding.onBoardProgressBar.progress = 25
-                    //add coresponding color
-                onboardingItems[1] ->
-                    binding.onBoardProgressBar.progress = 50
-                    //add coresponding color
-                onboardingItems[2] ->
-                    binding.onBoardProgressBar.progress = 75
-                   //add coresponding color
-                onboardingItems[3] ->
-                    binding.onBoardProgressBar.progress = 100
-                   //add coresponding color
+                onboardingItems[0] -> binding.onBoardProgressBar.progress = 25
+                onboardingItems[1] -> binding.onBoardProgressBar.progress = 50
+                onboardingItems[2] -> binding.onBoardProgressBar.progress = 75
+                onboardingItems[3] -> binding.onBoardProgressBar.progress = 100
                 else -> binding.onBoardProgressBar.progress = 0
             }
 
+            // we want to go back to the previous item on the list if we hit the back button
+            binding.onBoardBackButton.setOnClickListener{
+                for(listItem in onboardingItems.indices){
+                    if(onboardingItems[listItem] == item){
+                        item = onboardingItems[listItem - 1]
+                    }
+                }
+            }
 
+            // we want to go to the main activity if we hit the skip text
+            binding.textSkip.setOnClickListener{
+
+            }
         }
     }
 }
