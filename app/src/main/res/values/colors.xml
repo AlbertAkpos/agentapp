@@ -14,6 +14,13 @@
     <color name="colorOnBoardingIndicatorActive3">#FF5454</color>
     <color name="colorOnBoardingIndicatorActive4">#46B2C8</color>
 
+    //colors for sign up and login page
+    //login page colors
+    <color name="accountLoginText">#FF993B</color>
+<!--    the login button color is the same as color primary-->
+<!--    taskbar color is the same as colorPrimaryDark-->
+<!--    signuptextColor is same as colorTextSecondary-->
+<!--    want to be an agent? color is same as colorTextPrimary-->
 
 <!--    unused colors-->
     <color name="purple_200">#FFBB86FC</color>
