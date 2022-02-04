@@ -40,36 +40,36 @@ class SignUpFragment : Fragment() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        val usernameEditText = binding.username
-        val passwordEditText = binding.password
-        val loginButton = binding.login
-        val loadingProgressBar = binding.loading
+//        val usernameEditText = binding.username
+//        val passwordEditText = binding.password
+//        val loginButton = binding.login
+//        val loadingProgressBar = binding.loading
+//
+//        loginViewModel.loginFormState.observe(viewLifecycleOwner,
+//            Observer { loginFormState ->
+//                if (loginFormState == null) {
+//                    return@Observer
+//                }
+//                loginButton.isEnabled = loginFormState.isDataValid
+//                loginFormState.usernameError?.let {
+//                    usernameEditText.error = getString(it)
+//                }
+//                loginFormState.passwordError?.let {
+//                    passwordEditText.error = getString(it)
+//                }
+//            })
 
-        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-            Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
-                }
-            })
-
-        loginViewModel.loginResult.observe(viewLifecycleOwner,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
-            })
+//        loginViewModel.loginResult.observe(viewLifecycleOwner,
+//            Observer { loginResult ->
+//                loginResult ?: return@Observer
+//                loadingProgressBar.visibility = View.GONE
+//                loginResult.error?.let {
+//                    showLoginFailed(it)
+//                }
+//                loginResult.success?.let {
+//                    updateUiWithUser(it)
+//                }
+//            })
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -81,31 +81,31 @@ class SignUpFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
+//                loginViewModel.loginDataChanged(
+//                    usernameEditText.text.toString(),
+//                    passwordEditText.text.toString()
+//                )
             }
         }
-        usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-            false
-        }
+//        usernameEditText.addTextChangedListener(afterTextChangedListener)
+//        passwordEditText.addTextChangedListener(afterTextChangedListener)
+//        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                loginViewModel.login(
+//                    usernameEditText.text.toString(),
+//                    passwordEditText.text.toString()
+//                )
+//            }
+//            false
+//        }
 
-        loginButton.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
-        }
+//        loginButton.setOnClickListener {
+//            loadingProgressBar.visibility = View.VISIBLE
+//            loginViewModel.login(
+//                usernameEditText.text.toString(),
+//                passwordEditText.text.toString()
+//            )
+//        }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
