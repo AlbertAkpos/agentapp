@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_user_email"
+                android:id="@+id/first_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -52,7 +52,7 @@
                 app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
+                    android:id="@+id/fName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
@@ -71,8 +71,8 @@
                 android:hint="@string/password"
                 app:boxStrokeColor="@color/colorTextPrimary"
                 app:hintTextColor="@color/colorTextPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/layout_user_email"
-                app:layout_constraintStart_toStartOf="@+id/layout_user_email"
+                app:layout_constraintEnd_toEndOf="@+id/first_name"
+                app:layout_constraintStart_toStartOf="@+id/first_name"
                 app:layout_constraintTop_toBottomOf="@+id/label_email"
                 app:passwordToggleEnabled="true"
                 app:endIconDrawable="@drawable/ic_eye">
@@ -121,8 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
-                android:text="@string/email_addrress"
-                android:textColor="@color/colorTextPrimary"
+                android:text="@string/email_address"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_sign_in_1" />
@@ -133,27 +133,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="95dp"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/password"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_name" />
 
-            <androidx.appcompat.widget.Toolbar
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="234dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
                 android:background="@drawable/curved_toolbar"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
-
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginStart="0dp" />
+                app:layout_goneMarginStart="0dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_login_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.99" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/forgot_password"
@@ -162,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="80dp"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/colorPrimaryDark"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/forgot_password"
                 app:layout_constraintStart_toStartOf="parent"
