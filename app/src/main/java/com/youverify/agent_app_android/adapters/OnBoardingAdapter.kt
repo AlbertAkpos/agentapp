@@ -44,41 +44,41 @@ class OnBoardingAdapter(private val onboardingItems: ArrayList<OnBoardingItems>,
             binding.imageOnBoarding.setImageResource(item.image)
 
             //remove the back button when the first onboarding item shows up in the viewpager.
-            binding.onBoardBackButton.isVisible = item != onboardingItems[0]
+//            binding.onBoardBackButton.isVisible = item != onboardingItems[0]
 
             //change the various levels for the progressbar on different items
-            when(item){
-                onboardingItems[0] -> binding.onBoardProgressBar.progress = 25
-                onboardingItems[1] -> binding.onBoardProgressBar.progress = 50
-                onboardingItems[2] -> binding.onBoardProgressBar.progress = 75
-                onboardingItems[3] -> binding.onBoardProgressBar.progress = 100
-                else -> binding.onBoardProgressBar.progress = 0
-            }
-
-            binding.textSkip.setOnClickListener {
-                context.startActivity(Intent(context, MainActivity::class.java))
-            }
-            binding.onBoardBackButton.setOnClickListener {
-                bind(item = onboardingItems[onboardingItems.indexOf(item) - 1])
-            }
+//            when(item){
+//                onboardingItems[0] -> binding.onBoardProgressBar.progress = 25
+//                onboardingItems[1] -> binding.onBoardProgressBar.progress = 50
+//                onboardingItems[2] -> binding.onBoardProgressBar.progress = 75
+//                onboardingItems[3] -> binding.onBoardProgressBar.progress = 100
+//                else -> binding.onBoardProgressBar.progress = 0
+//            }
+//
+//            binding.textSkip.setOnClickListener {
+//                context.startActivity(Intent(context, MainActivity::class.java))
+//            }
+//            binding.onBoardBackButton.setOnClickListener {
+//                bind(item = onboardingItems[onboardingItems.indexOf(item) - 1])
+//            }
 
             //make sure you make moving to the next screen work, and also the fixing od the onboarding items on the screen.
             //look at click listener for skip, next and back buttons.
-            binding.onBoardNextButton.setOnClickListener{
-                setNextItem(onboardingItems.indexOf(item) + 1)
-                if(onboardingItems.indexOf(item) + 1 <= itemCount - 1){
-                    bind(item = onboardingItems[onboardingItems.indexOf(item) + 1])
-                    onBindViewHolder(this, onboardingItems.indexOf(item) + 1)
-                }else {
-                    //move to next screen
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                }
-            }
+//            binding.onBoardNextButton.setOnClickListener{
+//                setNextItem(onboardingItems.indexOf(item) + 1)
+//                if(onboardingItems.indexOf(item) + 1 <= itemCount - 1){
+//                    bind(item = onboardingItems[onboardingItems.indexOf(item) + 1])
+//                    onBindViewHolder(this, onboardingItems.indexOf(item) + 1)
+//                }else {
+//                    //move to next screen
+//                    context.startActivity(Intent(context, MainActivity::class.java))
+//                }
+//            }
         }
 
         //method to handle next button for onboarding
-        private fun setNextItem(count: Int){
-
-        }
+//        private fun setNextItem(count: Int){
+//
+//        }
     }
 }

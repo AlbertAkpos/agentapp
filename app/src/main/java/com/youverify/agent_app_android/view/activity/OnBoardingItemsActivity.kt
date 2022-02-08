@@ -12,15 +12,15 @@ open class OnBoardingItemsActivity : AppCompatActivity() {
         binding = OnboardingItemsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textSkip.setOnClickListener {
-            startActivity(Intent(applicationContext, MainActivity::class.java))
-            finish()
-        }
+//        binding.textSkip.setOnClickListener {
+//            startActivity(Intent(applicationContext, MainActivity::class.java))
+//            finish()
+//        }
 
-        binding.onBoardNextButton.setOnClickListener {
-            startActivity(Intent(applicationContext, MainActivity::class.java))
-            finish()
-        }
+//        binding.onBoardNextButton.setOnClickListener {
+//            startActivity(Intent(applicationContext, MainActivity::class.java))
+//            finish()
+//        }
     }
 
     // we want to go to the main activity if we hit the skip text
