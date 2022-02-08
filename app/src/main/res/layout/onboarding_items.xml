@@ -21,7 +21,7 @@
     <ImageView
         android:id="@+id/imageOnBoarding"
         android:layout_width="wrap_content"
-        android:layout_height="260dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
@@ -54,7 +54,7 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="@string/task_title"
         android:textColor="@color/colorTextSecondary"
@@ -66,66 +66,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textSkip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="30dp"
-        android:text="@string/skip"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/colorTextPrimary"
-        android:fontFamily="@font/br_sonoma_regular"
-        app:layout_constraintBottom_toTopOf="@+id/textTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.993"
-        app:layout_constraintStart_toEndOf="@+id/onBoardBackButton"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textSkip"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:text="@string/skip"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/colorTextPrimary"-->
+<!--        android:fontFamily="@font/br_sonoma_regular"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textTitle"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.993"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/onBoardBackButton"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ImageButton
-        android:id="@+id/onBoardBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/custom_img_btn"
-        android:backgroundTint="#FFFFFF"
-        android:contentDescription="@string/previous"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_next_button"
-        tools:ignore="TouchTargetSizeCheck" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/onBoardBackButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:background="@drawable/custom_img_btn"-->
+<!--        android:backgroundTint="#FFFFFF"-->
+<!--        android:contentDescription="@string/previous"-->
+<!--        android:minHeight="48dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textTitle"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/ic_next_button"-->
+<!--        tools:ignore="TouchTargetSizeCheck" />-->
 
-    <ProgressBar
-        android:id="@+id/onBoardProgressBar"
-        style="@style/CircularDeterminateProgressBar"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
-        android:progress="25"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textDesc"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="@+id/textDesc"
-        app:layout_constraintTop_toBottomOf="@+id/textDesc" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/onBoardProgressBar"-->
+<!--        style="@style/CircularDeterminateProgressBar"-->
+<!--        android:layout_width="130dp"-->
+<!--        android:layout_height="130dp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:progress="25"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/textDesc"-->
+<!--        app:layout_constraintHorizontal_bias="0.509"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textDesc"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textDesc" />-->
 
-    <Button
-        android:id="@+id/onBoardNextButton"
-        android:layout_width="94dp"
-        android:layout_height="88dp"
-        android:height="80dp"
-        android:background="@drawable/circle"
-        android:fontFamily="@font/br_sonoma_regular"
-        android:text="@string/next"
-        android:textAllCaps="false"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/onBoardProgressBar"
-        app:layout_constraintEnd_toEndOf="@+id/onBoardProgressBar"
-        app:layout_constraintStart_toStartOf="@+id/onBoardProgressBar"
-        app:layout_constraintTop_toTopOf="@+id/onBoardProgressBar" />
+<!--    <Button-->
+<!--        android:id="@+id/onBoardNextButton"-->
+<!--        android:layout_width="94dp"-->
+<!--        android:layout_height="88dp"-->
+<!--        android:height="80dp"-->
+<!--        android:background="@drawable/circle"-->
+<!--        android:fontFamily="@font/br_sonoma_regular"-->
+<!--        android:text="@string/next"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/colorTextPrimary"-->
+<!--        android:textSize="13sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/onBoardProgressBar"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/onBoardProgressBar"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/onBoardProgressBar"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/onBoardProgressBar" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

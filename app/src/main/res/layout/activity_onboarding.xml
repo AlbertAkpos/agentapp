@@ -1,17 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     tools:context="com.youverify.agent_app_android.view.activity.OnBoardingActivity">
 
+    <ImageButton
+        android:id="@+id/onBoardBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_img_btn"
+        android:backgroundTint="#FFFFFF"
 
+        android:contentDescription="@string/previous"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_next_button"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/textSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:text="@string/skip"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/onBoardingViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/onBoardProgressBar"
+        style="@style/CircularDeterminateProgressBar"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:progress="25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/onBoardingViewPager" />
+
+    <Button
+        android:id="@+id/onBoardNextButton"
+        android:layout_width="94dp"
+        android:layout_height="88dp"
+        android:height="80dp"
+        android:background="@drawable/circle"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/onBoardProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/onBoardProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/onBoardProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/onBoardProgressBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
