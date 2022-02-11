@@ -11,10 +11,6 @@
         android:theme="@style/Theme.Agent_app_android">
 
         <activity
-            android:name=".view.activity.OnBoardingItemsActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".view.activity.OnBoardingActivity"
             android:exported="true">
             <intent-filter>
