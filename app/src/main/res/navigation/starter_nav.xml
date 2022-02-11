@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/starter_nav"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_LoginScreen"
+            app:destination="@id/LoginScreen"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_TCScreen"
+            app:destination="@id/TCScreen"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/TCScreen"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.screens.TCScreen"
+        android:label="fragment_t_c_screen"
+        tools:layout="@layout/fragment_t_c_screen" >
+        <action
+            android:id="@+id/action_TCScreen_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
+        <action
+            android:id="@+id/action_TCScreen_to_SignUpScreen"
+            app:destination="@id/SignUpScreen" />
+        <action
+            android:id="@+id/action_TCScreen_to_LoginScreen"
+            app:destination="@id/LoginScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/LoginScreen"
+        android:name="com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_LoginScreen_to_SignUpScreen"
+            app:destination="@id/SignUpScreen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SignUpScreen"
+        android:name="com.youverify.agent_app_android.view.fragment.sign_in_up.ui.sign_up.SignUpFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_SignUpScreen_to_LoginScreen"
+            app:destination="@id/LoginScreen" />
+    </fragment>
+</navigation>
