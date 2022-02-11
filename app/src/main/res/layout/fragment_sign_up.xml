@@ -32,7 +32,8 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                tools:ignore="TextContrastCheck" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/first_name"
@@ -58,7 +59,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="@color/signUpBorderColor"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +105,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="#757575"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,7 +151,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="#757575"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,7 +194,10 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:minHeight="48dp"
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="@color/signUpBorderColor"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -228,7 +238,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="@color/signUpBorderColor"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -255,7 +267,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textPassword"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="@color/signUpBorderColor"
+                    tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -271,7 +285,8 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/layout_confirm_pass"
                 app:layout_constraintStart_toStartOf="@+id/layout_confirm_pass"
-                app:layout_constraintTop_toBottomOf="@+id/layout_confirm_pass" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_confirm_pass"
+                tools:ignore="TextContrastCheck" />
 
             <LinearLayout
                 android:id="@+id/layout_sign_in"
@@ -334,7 +349,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.99" />
+                    app:layout_constraintVertical_bias="0.99"
+                    tools:ignore="ImageContrastCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -371,7 +387,9 @@
                     android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textPassword"
-                    android:selectAllOnFocus="true" />
+                    android:selectAllOnFocus="true"
+                    android:textColorHint="@color/signUpBorderColor"
+                    tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
