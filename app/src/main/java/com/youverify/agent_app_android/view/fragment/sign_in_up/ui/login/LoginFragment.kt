@@ -43,6 +43,7 @@ class LoginFragment : Fragment() {
 
         binding.buttonSignIn.setOnClickListener{
             startActivity(Intent(requireContext(), MainActivity::class.java))
+            activity?.finish()
         }
 
         return binding.root
