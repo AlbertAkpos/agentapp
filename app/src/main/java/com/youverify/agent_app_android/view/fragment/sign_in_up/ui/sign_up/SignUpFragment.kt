@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login
+package com.youverify.agent_app_android.view.fragment.sign_in_up.ui.sign_up
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,14 +6,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSignUpBinding
+import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoggedInUserView
+import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModel
+import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModelFactory
 
 class SignUpFragment : Fragment() {
 
@@ -28,17 +30,21 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View{
 
-        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        _binding = FragmentSignUpBinding.inflate(layoutInflater)
+
+        binding.textViewSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
+        }
+
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
 //        val usernameEditText = binding.username
 //        val passwordEditText = binding.password
@@ -71,22 +77,22 @@ class SignUpFragment : Fragment() {
 //                }
 //            })
 
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
-
-            override fun afterTextChanged(s: Editable) {
-//                loginViewModel.loginDataChanged(
-//                    usernameEditText.text.toString(),
-//                    passwordEditText.text.toString()
-//                )
-            }
-        }
+//        val afterTextChangedListener = object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//                // ignore
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//                // ignore
+//            }
+//
+//            override fun afterTextChanged(s: Editable) {
+////                loginViewModel.loginDataChanged(
+////                    usernameEditText.text.toString(),
+////                    passwordEditText.text.toString()
+////                )
+//            }
+//        }
 //        usernameEditText.addTextChangedListener(afterTextChangedListener)
 //        passwordEditText.addTextChangedListener(afterTextChangedListener)
 //        passwordEditText.setOnEditorActionListener { _, actionId, _ ->

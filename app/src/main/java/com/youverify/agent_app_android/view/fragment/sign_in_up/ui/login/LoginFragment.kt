@@ -1,5 +1,7 @@
 package com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
@@ -12,7 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
+import com.youverify.agent_app_android.view.activity.MainActivity
 
 
 class LoginFragment : Fragment() {
@@ -28,17 +33,32 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(layoutInflater)
+
+        binding.textViewSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_LoginScreen_to_SignUpScreen)
+        }
+
+        binding.buttonSignIn.setOnClickListener{
+            startActivity(Intent(requireContext(), MainActivity::class.java))
+        }
+
         return binding.root
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity?.finish()
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
 //        val usernameEditText = binding.username
 //        val passwordEditText = binding.password
