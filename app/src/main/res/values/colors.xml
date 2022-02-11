@@ -14,6 +14,8 @@
     <color name="colorOnBoardingIndicatorActive3">#FF5454</color>
     <color name="colorOnBoardingIndicatorActive4">#46B2C8</color>
 
+    <color name="signUpBorderColor">#6E7E82</color>
+
     //colors for sign up and login page
     //login page colors
     <color name="accountLoginText">#FF993B</color>
