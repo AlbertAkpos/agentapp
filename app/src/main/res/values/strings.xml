@@ -187,4 +187,13 @@
     <string name="task">Task</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="accept">Accept</string>
+    <string name="on_duty">On duty</string>
+    
+    <string-array name="states">
+        <item>Anambra</item>
+        <item>Abia</item>
+        <item>Ogun</item>
+        <item>Lagos</item>
+        <item>Osun</item>
+    </string-array>
 </resources>

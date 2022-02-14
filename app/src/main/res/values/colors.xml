@@ -16,6 +16,11 @@
 
     <color name="signUpBorderColor">#6E7E82</color>
 
+<!--    homepage colors-->
+    <color name="switchColorChecked">#46B2C8</color>
+    <color name="switchColorUnchecked">#6E7E82</color>
+    <color name="thumb_unchecked">#DDE2E5</color>
+
     //colors for sign up and login page
     //login page colors
     <color name="accountLoginText">#FF993B</color>
