@@ -33,4 +33,13 @@
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/button_onboarding_indicator</item>
     </style>
+
+
+<!--Theme for buttom navigation view text-->
+    <style name="CustomText">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/br_sonoma_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>
