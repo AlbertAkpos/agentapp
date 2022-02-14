@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -34,17 +35,27 @@ class SignUpFragment : Fragment() {
 
         _binding = FragmentSignUpBinding.inflate(layoutInflater)
 
+
+
+
         binding.textViewSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
         }
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
+
+        //passing the array adapter for states in the autocomplete textview
+        val states = resources.getStringArray(R.array.states)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_item, states)
+        binding.lStateOfResidence.setAdapter(arrayAdapter)
+        binding.lStateOfResidence.setOnClickListener {
+            binding.lStateOfResidence.showDropDown()
+        }
 
 //        val usernameEditText = binding.username
 //        val passwordEditText = binding.password

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSplashBinding
@@ -29,7 +30,7 @@ class SplashFragment : Fragment() {
             }else{
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
-        }, 2000)
+        }, 1000)
 
         // Inflate the layout for this fragment
         return binding.root
