@@ -19,7 +19,7 @@
         android:contentDescription="@string/previous"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_next_button"
+        app:srcCompat="@drawable/ic_prev_button"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
