@@ -23,15 +23,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        actionBar?.hide()
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.taskFragment, R.id.profileFragment, R.id.dashboardFragment, R.xml.root_settings))
+//        val appBarConfiguration = AppBarConfiguration(setOf(
+//                R.id.taskFragment, R.id.profileFragment, R.id.dashboardFragment, R.xml.root_settings))
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED        //set the bottom navigation to always be labelled
