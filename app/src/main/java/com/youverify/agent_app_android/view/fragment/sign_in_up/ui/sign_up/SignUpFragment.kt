@@ -35,10 +35,11 @@ class SignUpFragment : Fragment() {
 
         _binding = FragmentSignUpBinding.inflate(layoutInflater)
 
-
-
-
         binding.textViewSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
         }
 
