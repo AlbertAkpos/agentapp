@@ -1,35 +1,79 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+<!--    <PreferenceCategory app:title="@string/messages_header">-->
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+<!--        <EditTextPreference-->
+<!--            app:key="signature"-->
+<!--            app:title="@string/signature_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            app:defaultValue="reply"-->
+<!--            app:entries="@array/reply_entries"-->
+<!--            app:entryValues="@array/reply_values"-->
+<!--            app:key="reply"-->
+<!--            app:title="@string/reply_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
-    </PreferenceCategory>
+    <!--        <SwitchPreferenceCompat-->
+    <!--            app:dependency="sync"-->
+    <!--            app:key="attachment"-->
+    <!--            app:summaryOff="@string/attachment_summary_off"-->
+    <!--            app:summaryOn="@string/attachment_summary_on"-->
+    <!--            app:title="@string/attachment_title" />-->
 
-    <PreferenceCategory app:title="@string/sync_header">
+<!--    </PreferenceCategory>-->
+
+
+    <PreferenceCategory app:title="">
+        <Preference app:title="Basic"
+                    app:persistent="true"
+                    app:allowDividerAbove="false"
+                    app:allowDividerBelow="true"/>
 
         <SwitchPreferenceCompat
             app:key="sync"
-            app:title="@string/sync_title" />
+            app:title="Vibration"
+            app:allowDividerBelow="false"
+            app:allowDividerAbove="true"/>
+    </PreferenceCategory>
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+
+
+
+
+    <PreferenceCategory app:title=""
+        app:key="advanced_category">
+        <Preference app:title="Advanced"/>
+        <Preference app:title="Navigation"
+                    app:allowDividerAbove="true" />
+        <SwitchPreferenceCompat app:title="Show traffic"
+                                app:allowDividerAbove="true"/>
+
+        <Preference app:title="Training"
+            app:allowDividerAbove="true" />
 
     </PreferenceCategory>
+
+
+    <PreferenceCategory app:title=""
+        app:key="about_category">
+        <Preference app:title="About"
+            app:allowDividerBelow="true"/>
+
+        <Preference app:title="Terms of use"
+            app:allowDividerAbove="true" />
+
+        <Preference app:title="Privacy statement"
+            app:allowDividerAbove="true" />
+
+        <Preference app:title="" />
+
+        <Preference app:title="Sign out"
+            app:allowDividerAbove="false"
+            app:icon="@drawable/ic_sign_out_icon"/>
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>
