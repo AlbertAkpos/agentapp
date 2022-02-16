@@ -25,6 +25,10 @@ class TCScreen : Fragment() {
           onBoardingFinished()
         }
 
+        binding.toolbar.setNavigationOnClickListener {
+           activity?.onBackPressed()
+        }
+
         // Inflate the layout for this fragment
         return binding.root
     }

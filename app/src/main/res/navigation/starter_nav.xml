@@ -30,7 +30,7 @@
             android:id="@+id/action_viewPagerFragment_to_TCScreen"
             app:destination="@id/TCScreen"
             app:popUpTo="@id/viewPagerFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/TCScreen"
