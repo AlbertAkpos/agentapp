@@ -67,8 +67,6 @@
         <Preference app:title="Privacy statement"
             app:allowDividerAbove="true" />
 
-        <Preference app:title="" />
-
         <Preference app:title="Sign out"
             app:allowDividerAbove="false"
             app:icon="@drawable/ic_sign_out_icon"/>
