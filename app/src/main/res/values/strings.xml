@@ -188,7 +188,19 @@
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="accept">Accept</string>
     <string name="on_duty">On duty</string>
-    
+    <string name="basic">Basic</string>
+    <string name="vibration">Vibration</string>
+    <string name="google_map">Google map</string>
+    <string name="navigation">Navigation</string>
+    <string name="advanced">Advanced</string>
+    <string name="show_traffic">Show Traffic</string>
+    <string name="training">Training</string>
+    <string name="proceed_to_training">proceed_to_training</string>
+    <string name="about">About</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="privacy_statement">Privacy Statement</string>
+    <string name="sign_out">Sign out</string>
+
     <string-array name="states">
         <item>Anambra</item>
         <item>Abia</item>

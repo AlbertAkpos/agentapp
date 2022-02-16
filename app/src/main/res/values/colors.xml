@@ -29,6 +29,11 @@
 <!--    signuptextColor is same as colorTextSecondary-->
 <!--    want to be an agent? color is same as colorTextPrimary-->
 
+<!--    settings fragment colors-->
+    <color name="setTextColor">#434343</color>
+    <color name="switchcolor">#4C963F</color>
+    <color name="signOutColor">#FF0000</color>
+
 <!--    unused colors-->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -37,4 +42,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
 </resources>

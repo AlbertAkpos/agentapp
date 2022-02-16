@@ -11,17 +11,21 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Using the preference screen style in the app -->
         <item name="preferenceTheme">@style/PrefsTheme</item>
     </style>
 
 
 
+<!--    Settings screen style-->
     <style name="PrefsTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="titleMargin">0dp</item>
+        <item name="font">@font/br_sonoma_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:layout">@layout/fragment_settings</item>
 
-        <item name="android:dividerHeight">0dp</item>
     </style>
-
 
 <!--    Theme for SplashScreen-->
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -43,15 +47,14 @@
     </style>
 
 
-<!--Theme for buttom navigation view text-->
-
-    <style name="MyBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemTextAppearanceActive">@style/MyBottomNavigationView.TextAppearance</item>
-        <item name="itemTextAppearanceInactive">@style/MyBottomNavigationView.TextAppearance</item>
+<!--Theme for bottom navigation view text-->
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/BottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationView.TextAppearance</item>
     </style>
 
 
-    <style name="MyBottomNavigationView.TextAppearance"  parent="Widget.MaterialComponents.BottomNavigationView">
+    <style name="BottomNavigationView.TextAppearance"  parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/br_sonoma_regular</item>
         <item name="android:textSize">10sp</item>
