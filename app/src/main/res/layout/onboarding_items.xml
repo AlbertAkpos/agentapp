@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
     android:gravity="center"
     android:padding="20dp">
 
@@ -22,15 +23,13 @@
         android:id="@+id/imageOnBoarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginTop="72dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.17"
         app:srcCompat="@drawable/ic_vp_image_one"
         tools:ignore="ImageContrastCheck" />
 
@@ -38,7 +37,8 @@
         android:id="@+id/textDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
+        android:maxWidth="250dp"
         android:fontFamily="@font/br_sonoma_regular"
         android:gravity="center"
         android:text="@string/task_desc"
@@ -46,7 +46,6 @@
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageOnBoarding" />
 
@@ -54,7 +53,6 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="@string/task_title"
         android:textColor="@color/colorTextSecondary"
