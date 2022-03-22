@@ -5,8 +5,6 @@
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
     <string name="next">Next</string>
-    <string name="task_desc">Slide right to accept a task or slide left to decline</string>
-    <string name="task_title">Easily manage Tasks</string>
     <string name="skip">Skip</string>
     <string name="previous">previous</string>
     <!-- Strings related to login -->
@@ -40,6 +38,8 @@
     <string name="enter_phone_number">Enter phone number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task_desc">Slide right to accept a task or slide left to decline</string>
+    <string name="task_title">Easily manage Tasks</string>
     <string name="task_desc_two">The app identifies your location with the Geo-tag feature while on duty.</string>
     <string name="task_title_two">Real-time tracking</string>
     <string name="task_desc_three">Smile to the bank when you work as our agent.</string>
@@ -63,7 +63,7 @@
     <string name="large_text">
         <font color="#115766">"Introduction\n\n"</font>
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion.
         "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
         "technologically advanced and open to imagination and magic.\n"
         "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
@@ -113,8 +113,8 @@
 
         <font color="#115766">"Resting elevation.\n\n"</font>
 
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
+        "All material objects, regardless of size, have a resting elevation, or default elevation
+        that does not change. If an object changes elevation, it should return to its resting "
         "elevation as soon as possible.\n\n"
 
         <font color="#115766">"Component elevations.\n\n"</font>
@@ -200,6 +200,9 @@
     <string name="terms_of_use">Terms of use</string>
     <string name="privacy_statement">Privacy Statement</string>
     <string name="sign_out">Sign out</string>
+    <string name="today">Today</string>
+    <string name="enjoy_the_break">Enjoy the break John!</string>
+    <string name="no_task">Looks like there is no task for you now</string>
 
     <string-array name="states">
         <item>Anambra</item>

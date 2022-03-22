@@ -18,7 +18,7 @@ import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoggedI
 import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModel
 import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModelFactory
 
-class SignUpFragment : Fragment() {
+class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentSignUpBinding? = null

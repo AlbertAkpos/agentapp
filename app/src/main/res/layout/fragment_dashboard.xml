@@ -52,28 +52,55 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="24dp" />
+                android:layout_marginEnd="24dp"
+                android:contentDescription="@string/app_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar_dropped"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/curved_toolbar"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar_dropped"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@drawable/curved_appbar"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/day_selector"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"
+            app:endIconDrawable="@drawable/ic_drop_down"
+            app:endIconMode="custom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/lStateOfResidence"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:fontFamily="@font/br_sonoma_regular"
+                android:background="@drawable/curved_button"
+                android:text="@string/today"
+                android:inputType="none"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                tools:ignore="LabelFor,TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

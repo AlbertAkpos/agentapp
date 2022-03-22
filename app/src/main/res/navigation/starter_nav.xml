@@ -23,9 +23,9 @@
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.onboarding.ViewPagerFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.OnBoardingFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager" >
+        tools:layout="@layout/fragment_onboarding" >
         <action
             android:id="@+id/action_viewPagerFragment_to_TCScreen"
             app:destination="@id/TCScreen"

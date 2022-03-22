@@ -20,7 +20,7 @@ import com.youverify.agent_app_android.databinding.FragmentLoginBinding
 import com.youverify.agent_app_android.view.activity.MainActivity
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
