@@ -219,6 +219,7 @@
     <string name="both_passwords_must_match">Both passwords must match</string>
     <string name="save_changes">Save changes</string>
     <string name="enter_new_password_again">Enter new password again</string>
+    <string name="filter">Filter</string>
 
     <string-array name="states">
         <item>Anambra</item>
