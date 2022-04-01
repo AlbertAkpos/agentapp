@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,26 +34,26 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="@font/br_sonoma_regular"
                     android:text="@string/on_duty"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:switchPadding="8dp"
-                    android:checked="true"
                     android:thumb="@drawable/thumb1"
-                    app:track="@drawable/track1"
-                    android:fontFamily="@font/br_sonoma_regular" />
+                    app:switchPadding="8dp"
+                    app:track="@drawable/track1" />
 
             </Toolbar>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_bell_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="24dp"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_bell_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -82,21 +81,22 @@
             android:layout_marginBottom="24dp"
             app:endIconDrawable="@drawable/ic_drop_down"
             app:endIconMode="custom"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
                 android:id="@+id/day_btn"
                 android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:fontFamily="@font/br_sonoma_regular"
+                android:layout_height="wrap_content"
                 android:background="@drawable/curved_button"
-                android:text="@string/today"
+                android:fontFamily="@font/br_sonoma_regular"
                 android:inputType="none"
-                android:textSize="16sp"
-                android:textColor="@color/white"
+                android:padding="8dp"
+                android:text="@string/today"
                 android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 tools:ignore="LabelFor,TextContrastCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,14 +105,14 @@
             android:id="@+id/compass"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/ic_compass_icon"
             android:backgroundTint="@color/colorTextPrimary"
             android:contentDescription="@string/previous"
-            app:layout_constraintStart_toEndOf="@id/day_selector"
             app:layout_constraintEnd_toStartOf="@id/filter"
+            app:layout_constraintStart_toEndOf="@id/day_selector"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_compass_icon"
             tools:ignore="TouchTargetSizeCheck" />
@@ -128,21 +128,22 @@
             android:layout_marginBottom="24dp"
             app:endIconDrawable="@drawable/ic_drop_down"
             app:endIconMode="custom"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
                 android:id="@+id/filter_btn"
                 android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:fontFamily="@font/br_sonoma_regular"
+                android:layout_height="wrap_content"
                 android:background="@drawable/curved_button_outlined"
-                android:text="@string/today"
+                android:fontFamily="@font/br_sonoma_regular"
                 android:inputType="none"
-                android:textSize="16sp"
-                android:textColor="@color/white"
+                android:padding="8dp"
+                android:text="Filter"
                 android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 tools:ignore="LabelFor,TextContrastCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,23 +153,23 @@
         android:id="@+id/gifImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_task_gif"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginStart="80dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_no_task"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_dropped"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_dropped" />
 
 
     <TextView
         android:id="@+id/label_no_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/br_sonoma_regular"
         android:text="@string/no_task"
         android:textAlignment="center"
         android:textColor="@color/signUpBorderColor"
-        android:fontFamily="@font/br_sonoma_regular"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/gifImageView"
