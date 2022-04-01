@@ -15,6 +15,7 @@
     <color name="colorOnBoardingIndicatorActive4">#46B2C8</color>
 
     <color name="signUpBorderColor">#6E7E82</color>
+    <color name="createNewPassTextColor">#637381</color>
 
 <!--    homepage colors-->
     <color name="switchColorChecked">#46B2C8</color>

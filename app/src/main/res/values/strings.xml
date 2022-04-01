@@ -38,7 +38,7 @@
     <string name="enter_phone_number">Enter phone number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="task_desc">Slide right to accept a task or slide left to decline</string>
+    <string name="task_desc">Slide right to accept a \ntask or slide left to decline</string>
     <string name="task_title">Easily manage Tasks</string>
     <string name="task_desc_two">The app identifies your location with the Geo-tag feature while on duty.</string>
     <string name="task_title_two">Real-time tracking</string>
@@ -203,6 +203,22 @@
     <string name="today">Today</string>
     <string name="enjoy_the_break">Enjoy the break John!</string>
     <string name="no_task">Looks like there is no task for you now</string>
+    <string name="title_forgot_password">Forgot Password</string>
+    <string name="text_reset_pass">Enter the email address associated with your account, and we\'ll send an email with instructions to reset your password</string>
+    <string name="send_instructions">Send Instructions</string>
+    <string name="open_email_app">Open email app</string>
+    <string name="reset_pass_instruction">We have sent a password recovery \ninstruction to your email addresss</string>
+    <string name="check_your_email">Check your email</string>
+    <string name="alt_text">If you don\'t find the email in your inbox \nplease, check your spam folder \nor</string>
+    <string name="try_another_email_address"><u>Try another email address</u></string>
+    <string name="create_new_password">Create New Password</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="must_be_8_chars_long">Must be at least 8 characters long</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="both_passwords_must_match">Both passwords must match</string>
+    <string name="save_changes">Save changes</string>
+    <string name="enter_new_password_again">Enter new password again</string>
 
     <string-array name="states">
         <item>Anambra</item>
