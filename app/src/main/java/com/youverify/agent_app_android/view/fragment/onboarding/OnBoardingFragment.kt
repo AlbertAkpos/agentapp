@@ -40,28 +40,28 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     }
 
     //this function sets the items of the viewPager
-    private fun setOnBoardingItems(){
+    private fun setOnBoardingItems() {
         onboardingItemsAdapter = OnBoardingItemsAdapter(
             listOf(
                 OnBoardingItem(
-                 image = R.drawable.ic_vp_image_one,
-                 title = "Easily manage Tasks",
-                 description = "Slide right to accept a task or slide left to decline"
+                    image = R.drawable.ic_vp_image_one,
+                    title = "Easily manage Tasks",
+                    description = "Slide right to accept a \ntask or slide left to decline"
                 ),
                 OnBoardingItem(
                     image = R.drawable.ic_vp_image_two,
                     title = "Real-time tracking",
-                    description = "The app identifies your location with the Geo-tag feature while on duty."
+                    description = "The app identifies your location with the \nGeo-tag feature while on duty."
                 ),
                 OnBoardingItem(
                     image = R.drawable.ic_vp_image_three,
                     title = "Earn money",
-                    description = "Smile to the bank when you work as our agent."
+                    description = "Smile to the bank when you \nwork as our agent."
                 ),
                 OnBoardingItem(
                     image = R.drawable.ic_vp_image_four,
                     title = "Get started",
-                    description = "To get your first task, choose your location to request for task around you."
+                    description = "To get your first task, choose your location \nto request for task around you."
                 )
             )
         )
@@ -71,8 +71,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     //this function listens to next button
     private fun configureNextButton() {
-        binding.onBoardNextButton.setOnClickListener{
-            when(binding.viewPager.currentItem){
+        binding.onBoardNextButton.setOnClickListener {
+            when (binding.viewPager.currentItem) {
                 0 -> {
                     binding.viewPager.currentItem = 1
                     binding.onBoardProgressBar.progress = 50
@@ -95,8 +95,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     //this function listens to back button
     private fun configureBackButton() {
-        binding.onBoardBackButton.setOnClickListener{
-            when(binding.viewPager.currentItem){
+        binding.onBoardBackButton.setOnClickListener {
+            when (binding.viewPager.currentItem) {
                 1 -> {
                     binding.onBoardBackButton.isVisible = false
                     binding.viewPager.currentItem = 0
@@ -115,8 +115,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     }
 
 
-    private fun configureSkipText(){
-        binding.textSkip.setOnClickListener{
+    private fun configureSkipText() {
+        binding.textSkip.setOnClickListener {
             findNavController().navigate(R.id.action_viewPagerFragment_to_TCScreen)
         }
     }

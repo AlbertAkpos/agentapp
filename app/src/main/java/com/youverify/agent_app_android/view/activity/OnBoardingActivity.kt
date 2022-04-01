@@ -1,7 +1,9 @@
 package com.youverify.agent_app_android.view.activity
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.youverify.agent_app_android.databinding.ActivityOnboardingBinding
 
 class OnBoardingActivity : AppCompatActivity() {
