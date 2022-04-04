@@ -222,6 +222,34 @@
     <string name="filter">Filter</string>
     <string name="password_changed">Password Changed</string>
     <string name="ok"><u>OK</u></string>
+    <string name="verification_link_has_been_sent">Verification link has\n been sent</string>
+    <string name="completeprocess">We\'ve sent an email to verify your details.\n Please click the link in your email to complete the\n sign-up process</string>
+    <string name="complete_onboarding_process">Complete Onboarding Process</string>
+    <string name="perform_address_verifications">For your account to be activated so you can start \nearning money perform Address Verifications,</string>
+    <string name="perform_address_verification">For your account to be activated so you can start earning\nmoney perform Address Verifications,</string>
+    <string name="complete_training">Complete Training</string>
+    <string name="select_preffered_areas">Select Preffered Areas</string>
+    <string name="verify_identity">Verify Identity</string>
+    <string name="select_identity_type">Select Identity Type</string>
+    <string name="select">Select</string>
+    <string name="enter_date_of_birth">Enter date of birth</string>
+    <string name="enter_bvn">Enter BVN</string>
+    <string name="continue_text">Continue</string>
+    <string name="upload_passport_photo">Upload Passport Photo</string>
+    <string name="upload_passport_photograph_in_jpg_png_format">Upload passport photograph in jpg, png format</string>
+    <string name="upload">Upload</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="image_must_be_either_jpg_or_png_and_not_more_than_8mb">Image must be either .jpg or .png and not more than 8MB</string>
+    <string name="verify">Verify</string>
+    <string name="congratulations_your_identity_verification_was_successful">Congratulations, your identity verification was\n successful</string>
+    <string name="identity_verification_successful">Identity Verification Successful</string>
+    <string name="identity_verification_failed">Identity Verification Failed</string>
+    <string name="ok_btn">Ok</string>
+    <string name="failed_text">Sorry, your identity verification failed. You\n have <b>2 </b>more chances</string>
+    <string name="try_again">Try Again</string>
+    <string name="select_preferred_areas">Select Preferred Areas</string>
+    <string name="preferred_areas_saved">Preferred Areas Saved</string>
+    <string name="your_referred_areas_have_been_saves_n_successfully">Your referred areas have been saves\n successfully</string>
 
     <string-array name="states">
         <item>Anambra</item>

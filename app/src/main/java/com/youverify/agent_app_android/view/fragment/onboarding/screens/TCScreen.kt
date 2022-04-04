@@ -20,7 +20,7 @@ class TCScreen : Fragment() {
     ): View {
         binding = FragmentTCScreenBinding.inflate(layoutInflater)
 
-        binding.buttonSignIn.setOnClickListener {
+        binding.buttonAccept.setOnClickListener {
           findNavController().navigate(R.id.action_TCScreen_to_LoginScreen)
           onBoardingFinished()
         }
