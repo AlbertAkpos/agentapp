@@ -32,7 +32,7 @@ class CreateNewPasswordFragment : Fragment(R.layout.fragment_create_new_password
             }
             dialogBuilder.setCancelable(false)
             dialogBuilder.show()
-            dialogBuilder.window?.setLayout(900, 950)
+//            dialogBuilder.window?.setLayout(900, 950)
         }
         return binding.root
     }
