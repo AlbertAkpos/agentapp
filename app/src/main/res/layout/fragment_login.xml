@@ -154,10 +154,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/label_email" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_signIn"
+                android:id="@+id/button_sign_in"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/login"
@@ -165,6 +165,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/layout_user_pass"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/layout_user_pass"
                 app:layout_constraintTop_toBottomOf="@+id/forgot_password" />
 
@@ -174,9 +175,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/button_signIn"
-                app:layout_constraintStart_toStartOf="@+id/button_signIn"
-                app:layout_constraintTop_toBottomOf="@+id/button_signIn">
+                app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+                app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in">
 
             </LinearLayout>
 
@@ -190,8 +191,8 @@
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/button_signIn"
-                app:layout_constraintTop_toBottomOf="@+id/button_signIn" />
+                app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
 
             <TextView
                 android:id="@+id/textView_sign_in"
@@ -204,8 +205,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/button_signIn"
-                app:layout_constraintTop_toBottomOf="@+id/button_signIn" />
+                app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

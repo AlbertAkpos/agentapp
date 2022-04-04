@@ -35,14 +35,18 @@
     <color name="switchcolor">#4C963F</color>
     <color name="signOutColor">#FF0000</color>
 
-<!--    unused colors-->
+<!--    misc colors-->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#200E32</color>
+    <color name="black_varient">#1A051D</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="inner_border">#F1F4FE</color>
+    <color name="inner_border_text">#666666</color>
+    <color name="warning_color">#979797</color>
 
 
 </resources>
