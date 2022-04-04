@@ -220,6 +220,8 @@
     <string name="save_changes">Save changes</string>
     <string name="enter_new_password_again">Enter new password again</string>
     <string name="filter">Filter</string>
+    <string name="password_changed">Password Changed</string>
+    <string name="ok"><u>OK</u></string>
 
     <string-array name="states">
         <item>Anambra</item>
