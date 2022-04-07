@@ -9,10 +9,8 @@
     tools:context=".view.fragment.home.identity_verification.SelectAreasFragment">
 
 
-
-
     <ImageButton
-        android:id="@+id/verify_back_btn"
+        android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -30,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="65dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verify_back_btn"
+        app:layout_constraintTop_toBottomOf="@id/back_btn"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
@@ -82,7 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_verify_email">
 
                 <AutoCompleteTextView
-                    android:id="@+id/label_select_id"
+                    android:id="@+id/select_areas_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
@@ -90,21 +88,29 @@
                     android:text="@string/select"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
-                    tools:ignore="LabelFor" />
+                    android:dropDownWidth="135dp"
+                    android:dropDownHeight="280dp"
+                    tools:ignore="LabelFor"/>
+
+
+<!--                <com.google.android.material.chip.ChipGroup-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
+
+
+<!--                </com.google.android.material.chip.ChipGroup>-->
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/continue_button"
+                android:id="@+id/done_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/continue_text"
+                android:text="@string/done"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
