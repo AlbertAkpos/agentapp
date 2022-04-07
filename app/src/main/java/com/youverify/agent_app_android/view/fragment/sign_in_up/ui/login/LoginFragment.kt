@@ -43,10 +43,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

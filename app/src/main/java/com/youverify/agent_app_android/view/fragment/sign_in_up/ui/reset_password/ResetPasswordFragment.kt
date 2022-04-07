@@ -18,8 +18,12 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
     ): View{
         binding = FragmentResetPasswordBinding.inflate(layoutInflater)
 
-        binding.btnSendInstructions.setOnClickListener {
+        binding.sendInstructionBtn.setOnClickListener {
             findNavController().navigate(R.id.action_resetPasswordFragment_to_checkEmailFragment)
+        }
+
+        binding.toolBar.setNavigationOnClickListener {
+            activity?.onBackPressed()
         }
 
         return binding.root

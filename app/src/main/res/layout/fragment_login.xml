@@ -21,11 +21,10 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/toolbar"
+                android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="234dp"
                 android:background="@drawable/curved_toolbar"
-
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +55,7 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+                app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
             <TextView
                 android:id="@+id/label_first_name"
@@ -89,7 +88,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/label_first_name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/signUpBorderColor"
@@ -130,7 +128,6 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/signUpBorderColor"
@@ -169,18 +166,6 @@
                 app:layout_constraintStart_toStartOf="@+id/layout_user_pass"
                 app:layout_constraintTop_toBottomOf="@+id/forgot_password" />
 
-            <LinearLayout
-                android:id="@+id/layout_sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
-                app:layout_constraintStart_toStartOf="@+id/button_sign_in"
-                app:layout_constraintTop_toBottomOf="@+id/button_sign_in">
-
-            </LinearLayout>
-
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,7 +180,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
 
             <TextView
-                android:id="@+id/textView_sign_in"
+                android:id="@+id/text_view_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"

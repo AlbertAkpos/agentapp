@@ -23,6 +23,14 @@ class CheckEmailFragment : Fragment(R.layout.fragment_check_email) {
             findNavController().navigate(R.id.action_checkEmailFragment_to_createNewPasswordFragment)
         }
 
+        binding.toolBar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+
+        binding.altEmailText.setOnClickListener {
+            findNavController().navigate(R.id.action_checkEmailFragment_to_resetPasswordFragment)
+        }
+
         return binding.root
     }
 }

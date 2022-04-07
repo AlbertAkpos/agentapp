@@ -1,6 +1,8 @@
 package com.youverify.agent_app_android.view.fragment.sign_in_up.ui.reset_password
 
 import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +23,7 @@ class CreateNewPasswordFragment : Fragment(R.layout.fragment_create_new_password
     ): View{
         binding = FragmentCreateNewPasswordBinding.inflate(layoutInflater)
 
-        binding.buttonSaveChanges.setOnClickListener {
+        binding.saveChangesBtn.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
             val view = layoutInflater.inflate(R.layout.reset_password_dialog, null)
             val okButton = view.findViewById<TextView>(R.id.text_ok)
@@ -32,8 +34,13 @@ class CreateNewPasswordFragment : Fragment(R.layout.fragment_create_new_password
             }
             dialogBuilder.setCancelable(false)
             dialogBuilder.show()
-//            dialogBuilder.window?.setLayout(900, 950)
+            dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
+
+        binding.toolBar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+
         return binding.root
     }
 }
