@@ -10,7 +10,7 @@
 
 
     <ImageButton
-        android:id="@+id/verify_back_btn"
+        android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verify_back_btn">
+        app:layout_constraintTop_toBottomOf="@id/back_btn">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,7 +102,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/upload_image" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -138,7 +139,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/continue_button"
+                android:id="@+id/verify_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="88dp"

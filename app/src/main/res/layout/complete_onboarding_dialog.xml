@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
@@ -9,127 +8,137 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:elevation="20dp">
+            android:paddingTop="16dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp">
 
-            <ImageView
-                android:id="@+id/email_img"
-                android:layout_width="wrap_content"
+
+                <ImageView
+                    android:id="@+id/email_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    app:flow_horizontalAlign="center"
+                    app:flow_verticalAlign="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_shield_done"
+                    android:contentDescription="@string/complete_process" />
+
+                <TextView
+                    android:id="@+id/text_link_sent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:text="@string/complete_onboarding_process"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorOnBoardingIndicatorActive1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/email_img"
+                    app:layout_constraintStart_toStartOf="@id/email_img"
+                    app:layout_constraintTop_toBottomOf="@id/email_img" />
+
+                <TextView
+                    android:id="@+id/text_verify_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@string/perform_address_verifications"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="13sp"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="@id/text_link_sent"
+                    app:layout_constraintStart_toStartOf="@id/text_link_sent"
+                    app:layout_constraintTop_toBottomOf="@id/text_link_sent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:flow_verticalAlign="center"
-                app:flow_horizontalAlign="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_shield_done" />
-
-            <TextView
-                android:id="@+id/text_link_sent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/complete_onboarding_process"
-                android:textColor="@color/colorOnBoardingIndicatorActive1"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@id/email_img"
-                app:layout_constraintStart_toStartOf="@id/email_img"
-                app:layout_constraintTop_toBottomOf="@id/email_img" />
-
-            <TextView
-                android:id="@+id/text_verify_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/perform_address_verifications"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="13sp"
-                android:textStyle="normal"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@id/text_link_sent"
-                app:layout_constraintStart_toStartOf="@id/text_link_sent"
-                app:layout_constraintTop_toBottomOf="@id/text_link_sent" />
-
-
-            <CheckBox
-                android:id="@+id/check_complete_training"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:paddingHorizontal="20dp"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/complete_training"
-                android:textStyle="normal"
-                android:elevation="5dp"
-                android:button="@drawable/check_selector_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleX="0.9"
-                android:scaleY="0.9"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/text_verify_email"
-                app:layout_constraintStart_toStartOf="@+id/text_verify_email"
-                app:layout_constraintTop_toBottomOf="@+id/text_verify_email" />
-
-
-            <CheckBox
-                android:id="@+id/check_verify_identity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/text_verify_email"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="16dp"
-                android:paddingHorizontal="20dp"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/verify_identity"
-                android:textStyle="normal"
-                android:elevation="5dp"
-                android:button="@drawable/check_selector_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleX="0.9"
-                android:scaleY="0.9"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/check_complete_training"
-                app:layout_constraintStart_toStartOf="@+id/check_complete_training"
-                app:layout_constraintTop_toBottomOf="@+id/check_complete_training" />
+                android:layout_marginBottom="24dp">
 
 
-            <CheckBox
-                android:id="@+id/check_select_areas"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="32dp"
-                android:paddingHorizontal="20dp"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/select_preffered_areas"
-                android:textStyle="normal"
-                android:elevation="5dp"
-                android:textColor="@color/signUpBorderColor"
-                android:button="@drawable/check_selector_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleX="0.9"
-                android:scaleY="0.9"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/check_verify_identity"
-                app:layout_constraintStart_toStartOf="@+id/check_verify_identity"
-                app:layout_constraintTop_toBottomOf="@+id/check_verify_identity"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                <CheckBox
+                    android:id="@+id/check_complete_training"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:button="@drawable/check_selector_bg"
+                    android:checked="true"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:paddingHorizontal="20dp"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:text="@string/complete_training"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
+                <CheckBox
+                    android:id="@+id/check_verify_identity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:button="@drawable/check_selector_bg"
+                    android:checked="true"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:paddingHorizontal="20dp"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:text="@string/verify_identity"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="@+id/check_complete_training"
+                    app:layout_constraintStart_toStartOf="@+id/check_complete_training"
+                    app:layout_constraintTop_toBottomOf="@+id/check_complete_training" />
+
+
+                <CheckBox
+                    android:id="@+id/check_select_areas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:button="@drawable/check_selector_bg"
+                    android:clickable="true"
+                    android:elevation="5dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:paddingHorizontal="20dp"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:text="@string/select_preffered_areas"
+                    android:textColor="@color/signUpBorderColor"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/check_verify_identity"
+                    app:layout_constraintStart_toStartOf="@+id/check_verify_identity"
+                    app:layout_constraintTop_toBottomOf="@+id/check_verify_identity" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

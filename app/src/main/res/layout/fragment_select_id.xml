@@ -10,7 +10,7 @@
 
 
     <ImageButton
-        android:id="@+id/verify_back_btn"
+        android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="65dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verify_back_btn"
+        app:layout_constraintTop_toBottomOf="@id/back_btn"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_verify_email">
 
                 <AutoCompleteTextView
-                    android:id="@+id/label_select_id"
+                    android:id="@+id/select_id_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
@@ -108,12 +108,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_select_id">
 
                 <AutoCompleteTextView
-                    android:id="@+id/text_dateOfBirth"
+                    android:id="@+id/select_dob_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="date"
-                    android:text="@string/enter_date_of_birth"
+                    android:hint="@string/enter_date_of_birth"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
                     tools:ignore="LabelFor" />
@@ -134,12 +134,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_date_of_birth">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_enter_bvn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:inputType="textEmailAddress"
-                    android:text="@string/enter_bvn"
+                    android:inputType="number"
+                    android:hint="@string/enter_bvn"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
                     tools:ignore="LabelFor" />
