@@ -1,22 +1,31 @@
 package com.youverify.agent_app_android.view.fragment.sign_in_up.ui.sign_up
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Handler
+import android.os.Looper
+import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSignUpBinding
+import com.youverify.agent_app_android.view.activity.MainActivity
 import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoggedInUserView
 import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModel
 import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModelFactory
+
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
@@ -27,6 +36,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,12 +45,18 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         _binding = FragmentSignUpBinding.inflate(layoutInflater)
 
-        binding.textViewSignIn.setOnClickListener {
+        binding.textviewSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
         }
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
+        }
+
+        binding.buttonSignUp.setOnClickListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                showEmailVerificationDialog()
+            }, 500)
         }
 
         return binding.root
@@ -52,78 +68,29 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         //passing the array adapter for states in the autocomplete textview
         val states = resources.getStringArray(R.array.states)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_item, states)
-        binding.lStateOfResidence.setAdapter(arrayAdapter)
-        binding.lStateOfResidence.setOnClickListener {
-            binding.lStateOfResidence.showDropDown()
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.states_drop_down_item, states)
+        binding.stateOfResidence.setAdapter(arrayAdapter)
+        binding.stateOfResidence.setOnClickListener {
+            binding.stateOfResidence.showDropDown()
         }
+    }
 
-//        val usernameEditText = binding.username
-//        val passwordEditText = binding.password
-//        val loginButton = binding.login
-//        val loadingProgressBar = binding.loading
-//
-//        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-//            Observer { loginFormState ->
-//                if (loginFormState == null) {
-//                    return@Observer
-//                }
-//                loginButton.isEnabled = loginFormState.isDataValid
-//                loginFormState.usernameError?.let {
-//                    usernameEditText.error = getString(it)
-//                }
-//                loginFormState.passwordError?.let {
-//                    passwordEditText.error = getString(it)
-//                }
-//            })
+    //method to display dialog to user showing to check verify email
+    private fun showEmailVerificationDialog(){
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+        val view = layoutInflater.inflate(R.layout.details_verification_dialog, null)
+        val okButton = view.findViewById<TextView>(R.id.text_ok)
+        dialogBuilder.setView(view)
 
-//        loginViewModel.loginResult.observe(viewLifecycleOwner,
-//            Observer { loginResult ->
-//                loginResult ?: return@Observer
-//                loadingProgressBar.visibility = View.GONE
-//                loginResult.error?.let {
-//                    showLoginFailed(it)
-//                }
-//                loginResult.success?.let {
-//                    updateUiWithUser(it)
-//                }
-//            })
-
-//        val afterTextChangedListener = object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-//                // ignore
-//            }
-//
-//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//                // ignore
-//            }
-//
-//            override fun afterTextChanged(s: Editable) {
-////                loginViewModel.loginDataChanged(
-////                    usernameEditText.text.toString(),
-////                    passwordEditText.text.toString()
-////                )
-//            }
-//        }
-//        usernameEditText.addTextChangedListener(afterTextChangedListener)
-//        passwordEditText.addTextChangedListener(afterTextChangedListener)
-//        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                loginViewModel.login(
-//                    usernameEditText.text.toString(),
-//                    passwordEditText.text.toString()
-//                )
-//            }
-//            false
-//        }
-
-//        loginButton.setOnClickListener {
-//            loadingProgressBar.visibility = View.VISIBLE
-//            loginViewModel.login(
-//                usernameEditText.text.toString(),
-//                passwordEditText.text.toString()
-//            )
-//        }
+        okButton.setOnClickListener {
+            dialogBuilder.dismiss()
+            startActivity(Intent(requireContext(), MainActivity::class.java))
+            activity?.finish()
+        }
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.show()
+        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
