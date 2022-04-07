@@ -11,7 +11,6 @@
 
     <color name="colorOnBoardingIndicatorActive1">#EC7A07</color>
     <color name="colorOnBoardingIndicatorActive2">#21BFAF</color>
-    <color name="colorOnBoardingIndicatorActive3">#FF5454</color>
     <color name="colorOnBoardingIndicatorActive4">#46B2C8</color>
 
     <color name="signUpBorderColor">#6E7E82</color>
@@ -19,7 +18,6 @@
 
 <!--    homepage colors-->
     <color name="switchColorChecked">#46B2C8</color>
-    <color name="switchColorUnchecked">#6E7E82</color>
     <color name="thumb_unchecked">#DDE2E5</color>
 
     //colors for sign up and login page
@@ -36,11 +34,6 @@
     <color name="signOutColor">#FF0000</color>
 
 <!--    misc colors-->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#200E32</color>
     <color name="black_varient">#1A051D</color>
     <color name="white">#FFFFFFFF</color>
