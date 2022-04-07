@@ -1,17 +1,11 @@
 <resources>
     <string name="app_name">agent_app_android</string>
-    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
-    <string name="title_notifications">Notifications</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="previous">previous</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
@@ -37,118 +31,13 @@
     <string name="select_state_of_residence">Select state of residence</string>
     <string name="enter_phone_number">Enter phone number</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task_desc">Slide right to accept a \ntask or slide left to decline</string>
     <string name="task_title">Easily manage Tasks</string>
-    <string name="task_desc_two">The app identifies your location with the Geo-tag feature while on duty.</string>
-    <string name="task_title_two">Real-time tracking</string>
-    <string name="task_desc_three">Smile to the bank when you work as our agent.</string>
-    <string name="task_title_three">Earn money</string>
-    <string name="task_title_four">Get started</string>
-    <string name="task_desc_four">To get your first task, choose your location to request for task around you.</string>
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="large_text">
-        <font color="#115766">"Introduction\n\n"</font>
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion.
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        <font color="#115766">"Intellectual Property Rights\n\n"</font>
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        <font color="#115766">"Restrictions\n\n"</font>
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        <font color="#115766">"3D world.\n\n"</font>
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        <font color="#115766">"Light and shadow.\n\n"</font>
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        <font color="#115766">"Resting elevation.\n\n"</font>
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation
-        that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        <font color="#115766">"Component elevations.\n\n"</font>
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        <font color="#115766">"Responsive elevation and dynamic elevation offsets.\n\n"</font>
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        <font color="#115766">"Avoiding elevation interference.\n\n"</font>
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
 
     <string name="t_c_text">
         <font color="#115766"><b>"Introduction\n\n"</b></font>
@@ -223,13 +112,13 @@
     <string name="password_changed">Password Changed</string>
     <string name="ok"><u>OK</u></string>
     <string name="verification_link_has_been_sent">Verification link has\n been sent</string>
-    <string name="completeprocess">We\'ve sent an email to verify your details.\n Please click the link in your email to complete the\n sign-up process</string>
+    <string name="completeprocess">We\'ve sent an email to verify your details. Please\nclick the link in your email to complete the\n sign-up process</string>
     <string name="complete_onboarding_process">Complete Onboarding Process</string>
-    <string name="perform_address_verifications">For your account to be activated so you can start \nearning money perform Address Verifications,</string>
+    <string name="perform_address_verifications">For your account to be activated so you can start\nearning money perform Address Verifications,</string>
     <string name="perform_address_verification">For your account to be activated so you can start earning\nmoney perform Address Verifications,</string>
     <string name="complete_training">Complete Training</string>
     <string name="select_preffered_areas">Select Preffered Areas</string>
-    <string name="verify_identity">Verify Identity</string>
+    <string name="verify_identity">Verify My Identity</string>
     <string name="select_identity_type">Select Identity Type</string>
     <string name="select">Select</string>
     <string name="enter_date_of_birth">Enter date of birth</string>
@@ -244,18 +133,49 @@
     <string name="congratulations_your_identity_verification_was_successful">Congratulations, your identity verification was\n successful</string>
     <string name="identity_verification_successful">Identity Verification Successful</string>
     <string name="identity_verification_failed">Identity Verification Failed</string>
-    <string name="ok_btn">Ok</string>
+    <string name="ok_btn">OK</string>
     <string name="failed_text">Sorry, your identity verification failed. You\n have <b>2 </b>more chances</string>
     <string name="try_again">Try Again</string>
     <string name="select_preferred_areas">Select Preferred Areas</string>
     <string name="preferred_areas_saved">Preferred Areas Saved</string>
     <string name="your_referred_areas_have_been_saves_n_successfully">Your referred areas have been saves\n successfully</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="please_give_access_to_the_following_features">Please give access to the following features:</string>
+    <string name="location_access">Location access</string>
+    <string name="photos_gallery">Photos / Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="done">Done</string>
+    <string name="complete_process">Complete process</string>
+    <string name="success">success</string>
+    <string name="failed">Failed</string>
+    <string name="off_duty">Off duty</string>
 
+    //sign-up dropdown strings
     <string-array name="states">
         <item>Anambra</item>
         <item>Abia</item>
         <item>Ogun</item>
         <item>Lagos</item>
         <item>Osun</item>
+    </string-array>
+
+
+    //select areas dropdown strings
+    <string-array name="areas">
+        <item>Ojota</item>
+        <item>Surulere</item>
+        <item>Yaba</item>
+        <item>Ikorodu</item>
+        <item>Stadium</item>
+        <item>Ketu</item>
+        <item>Ikeja</item>
+        <item>Anthony</item>
+    </string-array>
+
+    //select id type dropdown strings
+    <string-array name="idType">
+        <item>BVN</item>
+        <item>NIN</item>
     </string-array>
 </resources>
