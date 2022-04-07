@@ -88,7 +88,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
-                android:id="@+id/day_btn"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/curved_button"
@@ -104,7 +103,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
-            android:id="@+id/compass"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
@@ -137,7 +135,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <AutoCompleteTextView
-                android:id="@+id/filter_btn"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/curved_button_outlined"
@@ -181,7 +178,6 @@
         app:layout_constraintTop_toBottomOf="@+id/gifImageView" />
 
     <TextView
-        android:id="@+id/label_enjoy"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -6,17 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceFragmentCompat
-import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment(){
-
-//    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-////        activity?.setContentView(R.layout.fragment_settings)
-//        setPreferencesFromResource(R.layout.fragment_settings, rootKey)
-//    }
 
     private lateinit var binding: FragmentSettingsBinding
 

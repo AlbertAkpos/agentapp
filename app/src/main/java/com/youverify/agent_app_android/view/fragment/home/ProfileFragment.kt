@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.databinding.FragmentProfileBinding
 import com.youverify.agent_app_android.viewmodel.DashboardViewModel
 
