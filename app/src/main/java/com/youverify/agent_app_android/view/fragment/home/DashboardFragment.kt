@@ -25,9 +25,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     ): View {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            showCompleteOnboardingDialog()
-        }, 500)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            showCompleteOnboardingDialog()
+//        }, 500)
 
         return binding.root
     }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.youverify.agent_app_android">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.youverify.agent_app_android"
+    tools:ignore="LockedOrientationActivity">
 
     <application
         android:allowBackup="true"
@@ -13,6 +15,7 @@
         <activity
             android:name=".view.activity.OnBoardingActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

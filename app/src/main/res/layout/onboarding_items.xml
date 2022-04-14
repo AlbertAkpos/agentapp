@@ -54,11 +54,10 @@
         android:gravity="center"
         android:text="@string/task_title"
         android:textColor="@color/colorTextSecondary"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/br_sonoma_black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
