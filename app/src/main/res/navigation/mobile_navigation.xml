@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.DashboardFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -20,24 +20,32 @@
 
     <fragment
         android:id="@+id/taskFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.TaskFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.TaskFragment"
         android:label="@string/task"
-        tools:layout="@layout/fragment_task"/>
+        tools:layout="@layout/fragment_task">
+        <action
+            android:id="@+id/action_taskFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.SettingsFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings"/>
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.ProfileFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/selectIDFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.SelectIDFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.SelectIDFragment"
         android:label="fragment_select_id"
         tools:layout="@layout/fragment_select_id" >
         <action
@@ -46,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadPassportFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.UploadPassportFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.UploadPassportFragment"
         android:label="fragment_upload_passport"
         tools:layout="@layout/fragment_upload_passport" >
         <action
@@ -58,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/verificationResponseFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.VerificationResponseFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.VerificationResponseFragment"
         android:label="fragment_verification_success"
         tools:layout="@layout/fragment_verification_success" >
         <action
@@ -67,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/verificationFailedFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.VerificationFailedFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.VerificationFailedFragment"
         android:label="fragment_verification_failed"
         tools:layout="@layout/fragment_verification_failed" >
         <action
@@ -76,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectAreasFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.SelectAreasFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.SelectAreasFragment"
         android:label="fragment_select_areas"
         tools:layout="@layout/fragment_select_areas" >
         <action
@@ -85,13 +93,29 @@
     </fragment>
     <fragment
         android:id="@+id/saveAreasFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.identity_verification.SaveAreasFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.verification.SaveAreasFragment"
         android:label="fragment_save_areas"
         tools:layout="@layout/fragment_save_areas" >
         <action
             android:id="@+id/action_saveAreasFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.profile.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.notifications.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
 
 
 </navigation>

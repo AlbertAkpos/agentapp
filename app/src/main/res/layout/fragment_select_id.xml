@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="24dp"
     android:paddingEnd="24dp"
-    tools:context=".view.fragment.home.identity_verification.SelectIDFragment">
+    tools:context=".view.fragment.home.verification.SelectIDFragment">
 
 
     <ImageButton

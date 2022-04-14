@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.home
+package com.youverify.agent_app_android.view.fragment.home.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

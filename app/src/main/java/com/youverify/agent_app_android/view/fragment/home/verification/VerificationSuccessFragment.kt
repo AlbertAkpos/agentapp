@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.home.identity_verification
+package com.youverify.agent_app_android.view.fragment.home.verification
 
 import android.os.Bundle
 import android.view.LayoutInflater

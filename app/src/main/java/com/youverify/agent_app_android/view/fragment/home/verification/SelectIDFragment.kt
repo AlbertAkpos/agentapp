@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.home.identity_verification
+package com.youverify.agent_app_android.view.fragment.home.verification
 
 import android.os.Bundle
 import android.text.Editable
@@ -43,10 +43,8 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
                 binding.layoutDateOfBirth.visibility = View.VISIBLE
                 binding.layoutEnterBvn.visibility = View.VISIBLE
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         binding.continueButton.setOnClickListener {

@@ -34,6 +34,12 @@
         <item name="android:progressDrawable">@drawable/button_onboarding_indicator</item>
     </style>
 
+    <!--    Theme for onboarding progressbar-->
+    <style name="ProfileProgressBar" >
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/profile_image_bg</item>
+    </style>
+
 
 <!--Theme for bottom navigation view text-->
     <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">

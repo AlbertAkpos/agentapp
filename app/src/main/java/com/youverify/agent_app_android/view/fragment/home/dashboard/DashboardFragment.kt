@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.home
+package com.youverify.agent_app_android.view.fragment.home.dashboard
 
 import android.app.AlertDialog
 import android.graphics.Color
