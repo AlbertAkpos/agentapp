@@ -191,4 +191,14 @@
     <string name="change_password">Change password</string>
     <string name="old_password">Old password</string>
     <string name="enter_old_password">Enter old password</string>
+    <string name="notifications">Notifications</string>
+    <string name="task_uploaded">Task uploaded successfully</string>
+    <string name="address_access_granted">Address access granted</string>
+    <string name="task_details">Task details</string>
+    <string name="type_of_verification">Type of verification:</string>
+    <string name="candidate_information">Candidate Information:</string>
+    <string name="can_you_access_the_building">Can you access the building?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="description">Description:</string>
 </resources>

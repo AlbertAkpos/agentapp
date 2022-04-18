@@ -32,8 +32,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         binding.buttonSignIn.setOnClickListener {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            activity?.finish()
+            try {
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                activity?.finish()
+            }catch (e : Exception){
+                e.stackTrace
+            }
+
         }
 
         binding.forgotPassword.setOnClickListener {

@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +50,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
-//        dialogBuilder.window?.setLayout(1100, 1600)
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }

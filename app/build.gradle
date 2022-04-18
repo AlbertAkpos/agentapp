@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -61,4 +64,17 @@ dependencies {
 
     //dependecy for gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+
+    // Kotlin components
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.0"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt'
+
+    //recyclerview swipe background decorator
+    implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.4'
 }
