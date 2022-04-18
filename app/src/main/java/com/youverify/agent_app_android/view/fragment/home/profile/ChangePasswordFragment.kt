@@ -4,15 +4,15 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentChangePasswordBinding
-import com.youverify.agent_app_android.databinding.FragmentProfileBinding
 
 
 class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
@@ -45,4 +45,9 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+        navBar?.visibility = View.VISIBLE
+    }
 }
