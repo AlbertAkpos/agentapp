@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -86,9 +88,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                 when(direction){
                     ItemTouchHelper.LEFT -> {
                         notificationItemsAdapter.uploadItem(viewHolder.absoluteAdapterPosition)
-//                        showuploadSuccessDialog()
-                        val toast = Toast(context)
-                        showToast(toast)
+                        showuploadSuccessDialog()
                     }
                     ItemTouchHelper.RIGHT -> {
                         notificationItemsAdapter.uploadItem(viewHolder.absoluteAdapterPosition)
@@ -118,16 +118,25 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     }
 
     private fun showuploadSuccessDialog(){
-        val dialogBuilder =
-            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
-        val view = layoutInflater.inflate(R.layout.upload_success_dialog, null)
-        dialogBuilder.setView(view)
-        dialogBuilder.setCancelable(true)
-        dialogBuilder.show()
-        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        val dialogBuilder =
+//            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+//        val view = layoutInflater.inflate(R.layout.upload_success_dialog, null)
+//        dialogBuilder.setView(view)
+//        dialogBuilder.setCancelable(true)
+//        dialogBuilder.show()
+//        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            dialogBuilder.hide()
+//        }, 3000)
+
+        val toast = Toast(context)
+        Handler(Looper.getMainLooper()).postDelayed({
+            showToast(toast)
+        }, 2000)
     }
 
-    fun showToast(toast: Toast) {
+    private fun showToast(toast: Toast) {
 
         val customView: View = LayoutInflater.from(requireContext())
             .inflate(R.layout.custom_toast, view?.findViewById<ConstraintLayout>(R.id.toast_wrapper))

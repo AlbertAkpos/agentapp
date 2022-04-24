@@ -40,6 +40,12 @@
         <item name="android:progressDrawable">@drawable/profile_image_bg</item>
     </style>
 
+<!--    Theme for dashboard progressbar-->
+    <style name="DashBoardProgressBar" >
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/profile_image_bg</item>
+    </style>
+
 
 <!--Theme for bottom navigation view text-->
     <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
@@ -63,4 +69,9 @@
         <item name="windowMinWidthMinor">0dp</item>
     </style>
 
+
+    <style name="BottomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
 </resources>

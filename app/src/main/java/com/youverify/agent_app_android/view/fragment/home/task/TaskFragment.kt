@@ -11,7 +11,7 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.viewmodel.HomeViewModel
 
-class TaskFragment : Fragment() {
+class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private var _binding: FragmentTaskBinding? = null
 

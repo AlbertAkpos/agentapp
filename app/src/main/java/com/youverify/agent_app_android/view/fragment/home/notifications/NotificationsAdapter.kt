@@ -38,10 +38,10 @@ class NotificationsAdapter (private var notificationItems : ArrayList<Notificati
         //setting onclickListener for each item in recyclerview and pass in the currentItem clicked on
 //        val currentItem = notificationItems[position]
 
-        holder.binding.cardView.setOnClickListener{
-          val action = NotificationsFragmentDirections.actionNotificationsFragmentToTaskDetailsFragment()
-          holder.itemView.findNavController().navigate(action)
-        }
+//        holder.binding.cardView.setOnClickListener{
+//          val action = NotificationsFragmentDirections.actionNotificationsFragmentToTaskDetailsFragment()
+//          holder.itemView.findNavController().navigate(action)
+//        }
     }
 
     override fun getItemCount() = notificationItems.size
