@@ -4,11 +4,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.databinding.NotificationItemsBinding
-import com.youverify.agent_app_android.model.NotificationsItem
+import com.youverify.agent_app_android.databinding.NotificationItemBinding
+import com.youverify.agent_app_android.model.NotificationItem
 
 
 private const val ACCESS_GRANTED = "Address access granted"
@@ -16,7 +15,8 @@ private const val TASK_REJECTED = "Task rejected"
 private const val OFFLINE_TASK = "Offline task"
 private const val ACCESS_EXPIRED = "Access time expired"
 
-class NotificationsAdapter (private var notificationItems : ArrayList<NotificationsItem>) : RecyclerView.Adapter<NotificationsAdapter.NotificationsItemViewHolder>(){
+class NotificationsAdapter (private var notificationItems : ArrayList<NotificationItem>)
+    : RecyclerView.Adapter<NotificationsAdapter.NotificationsItemViewHolder>(){
 
 
     //method to upload an item to the server when the recyclerview item is swiped
@@ -26,7 +26,7 @@ class NotificationsAdapter (private var notificationItems : ArrayList<Notificati
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationsItemViewHolder {
-        return NotificationsItemViewHolder(NotificationItemsBinding
+        return NotificationsItemViewHolder(NotificationItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
@@ -52,7 +52,7 @@ class NotificationsAdapter (private var notificationItems : ArrayList<Notificati
 //        notifyDataSetChanged()
 //    }
 
-    inner class NotificationsItemViewHolder(val binding: NotificationItemsBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class NotificationsItemViewHolder(val binding: NotificationItemBinding) : RecyclerView.ViewHolder(binding.root){
         private val image = binding.imageView
         private val accessText = binding.accessText
         private val nameText = binding.nameText
@@ -60,7 +60,7 @@ class NotificationsAdapter (private var notificationItems : ArrayList<Notificati
         private val timeText = binding.timeText
         private val offlineView = binding.offlineView
 
-        fun bind(notificationItem: NotificationsItem){
+        fun bind(notificationItem: NotificationItem){
 
             when(notificationItem.accessText){
                 ACCESS_GRANTED -> {

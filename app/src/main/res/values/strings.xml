@@ -214,4 +214,18 @@
     <string name="completed_tasks">Completed tasks</string>
     <string name="month">Month</string>
     <string name="apply">Apply</string>
+    <string name="queried_tasks">Queried tasks</string>
+    <string name="live_photo_adrress_verification">Live Photo Adrress Verification</string>
+    <string name="slide_right_to_start_task">Slide right to start task</string>
+    <string name="slide_left_to_start_task">Slide left to hide task</string>
+    <string name="filter_by_priority">FILTER BY PRIORITY</string>
+    <string name="_select_">--Select--</string>
+    <string name="filter_by_location">FILTER BY LOCATION</string>
+    <string name="select_landmark">--Select landmark--</string>
+    <string name="select_state">--Select state--</string>
+    <string name="select_city">--Select city--</string>
+    <string name="filter_by_status">FILTER BY STATUS</string>
+    <string name="select_status">--Select status--</string>
+    <string name="select_verification_type">--Select verification type--</string>
+    <string name="filter_by_type_of_verification">FILTER BY TYPE OF VERIFICATION</string>
 </resources>

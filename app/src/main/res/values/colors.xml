@@ -55,5 +55,6 @@
     <color name="transparent">#E6F7FF</color>
     <color name="cardGreenColor">#2EB255</color>
     <color name="bottomHandleBg">#DADBDC</color>
+    <color name="handleColor">#DADBDC</color>
 
 </resources>

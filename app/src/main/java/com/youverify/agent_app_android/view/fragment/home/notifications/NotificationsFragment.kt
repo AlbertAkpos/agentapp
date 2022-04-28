@@ -1,8 +1,5 @@
 package com.youverify.agent_app_android.view.fragment.home.notifications
 
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,7 +7,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -20,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
-import com.youverify.agent_app_android.model.NotificationsItem
+import com.youverify.agent_app_android.model.NotificationItem
 
 
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
@@ -47,28 +43,28 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private fun setNotificationItems() {
         //dummy data
         val notificationItems = arrayListOf(
-                NotificationsItem(
+                NotificationItem(
                     image = R.drawable.ic_access_granted,
                     accessText = "Address access granted",
                     nameText = "Janet Foly",
                     addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
                     timeText = "10 min. ago"
                 ),
-                NotificationsItem(
+                NotificationItem(
                     image = R.drawable.ic_offline_task,
                     accessText = "Offline task",
                     nameText = "Janet Foly",
                     addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
                     timeText = "1 hr. ago"
                 ),
-                NotificationsItem(
+                NotificationItem(
                     image = R.drawable.ic_access_granted,
                     accessText = "Access time expired",
                     nameText = "Thomas Peters",
                     addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
                     timeText = "1 hr. ago"
                 ),
-                NotificationsItem(
+                NotificationItem(
                     image = R.drawable.ic_access_granted,
                     accessText = "Task rejected",
                     nameText = "Ada Nnenna",
@@ -128,7 +124,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 //
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            dialogBuilder.hide()
-//        }, 3000)
+//        }, 3000)mo
 
         val toast = Toast(context)
         Handler(Looper.getMainLooper()).postDelayed({

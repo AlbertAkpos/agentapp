@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_period_bg"
+    android:padding="24dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drawer_handle"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/handleColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/text_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textColor="@color/colorOnBoardingIndicatorActive1"
+        android:text="@string/filter"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawer_handle" />
+
+    <TextView
+        android:id="@+id/_filter_priority_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/filter_by_priority"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_filter" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/priority_filter_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/_filter_priority_text"
+        app:layout_constraintStart_toStartOf="@+id/_filter_priority_text"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/priority_filter_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/_select_"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/_filter_location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/filter_by_location"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priority_filter_layout" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/select_landmark_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/_filter_location_text"
+        app:layout_constraintStart_toStartOf="@+id/priority_filter_layout"
+        app:layout_constraintEnd_toEndOf="@+id/priority_filter_layout">
+
+        <AutoCompleteTextView
+            android:id="@+id/select_landmark_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/select_landmark"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/select_city_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/select_landmark_layout"
+        app:layout_constraintStart_toStartOf="@+id/select_landmark_layout"
+        app:layout_constraintEnd_toEndOf="@+id/select_landmark_layout">
+
+        <AutoCompleteTextView
+            android:id="@+id/select_city_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/select_city"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/select_state_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/select_city_layout"
+        app:layout_constraintStart_toStartOf="@+id/select_city_layout"
+        app:layout_constraintEnd_toEndOf="@+id/select_city_layout">
+
+        <AutoCompleteTextView
+            android:id="@+id/select_state_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/select_state"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/_filter_status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/filter_by_status"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_state_layout" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/select_status_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/_filter_status_text"
+        app:layout_constraintStart_toStartOf="@+id/select_state_layout"
+        app:layout_constraintEnd_toEndOf="@+id/select_state_layout">
+
+        <AutoCompleteTextView
+            android:id="@+id/select_status_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/select_status"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/_filter_type_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/filter_by_type_of_verification"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_status_layout" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/select_type_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/colorTextPrimary"
+        app:endIconDrawable="@drawable/ic_arrow_right"
+        app:hintEnabled="false"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@+id/_filter_type_text"
+        app:layout_constraintStart_toStartOf="@+id/select_status_layout"
+        app:layout_constraintEnd_toEndOf="@+id/select_status_layout">
+
+        <AutoCompleteTextView
+            android:id="@+id/select_type_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:inputType="none"
+            android:hint="@string/select_verification_type"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp"
+            tools:ignore="LabelFor"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_apply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:text="@string/apply"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/select_type_layout"
+        app:layout_constraintStart_toStartOf="@+id/select_type_layout"
+        app:layout_constraintTop_toBottomOf="@+id/select_type_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="TextContrastCheck"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

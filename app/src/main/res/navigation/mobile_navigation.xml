@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_taskFragment_to_notificationsFragment"
             app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
     </fragment>
 
     <fragment

@@ -1,6 +1,6 @@
 package com.youverify.agent_app_android.model
 
-data class NotificationsItem (
+data class NotificationItem (
     val image: Int,
     val accessText: String,
     val nameText: String,
