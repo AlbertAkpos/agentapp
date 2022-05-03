@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_period_bg"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="150dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drawer_handle"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/handleColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/incident_type_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textColor="@color/colorOnBoardingIndicatorActive1"
+        android:text="@string/type_of_incident"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawer_handle" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/arrest_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/incident_type_text"
+        android:padding="16dp"
+        android:layout_marginTop="48dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/arrest_detention"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/mis_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrest_btn"
+        android:text="@string/mis_understanding_with_customer"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/accident_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mis_btn"
+        android:text="@string/accident"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/others_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accident_btn"
+        android:text="@string/others"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

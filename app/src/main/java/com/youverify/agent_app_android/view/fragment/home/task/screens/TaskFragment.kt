@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.home.task
+package com.youverify.agent_app_android.view.fragment.home.task.screens
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.model.TaskItem
+import com.youverify.agent_app_android.view.fragment.home.task.TaskItemAdapter
 import com.youverify.agent_app_android.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
@@ -112,8 +113,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.task_assigned_dialog, null)
         view.findViewById<TextView>(R.id.address_text).text = taskItem.address
+
         val slideRightButton = view.findViewById<AutoCompleteTextView>(R.id.slide_right_btn)
         val slideLeftButton = view.findViewById<AutoCompleteTextView>(R.id.slide_left_btn)
+//        val closeButton = dialogBuilder.findViewById<ImageView>(R.id.close_btn)
 
         dialogBuilder.setView(view)
 
@@ -125,6 +128,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         slideLeftButton.setOnClickListener {
             dialogBuilder.dismiss()
         }
+
+//        closeButton.setOnClickListener {
+//            dialogBuilder.dismiss()
+//        }
 
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()

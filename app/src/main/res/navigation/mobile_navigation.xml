@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/taskFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.task.TaskFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.screens.TaskFragment"
         android:label="@string/task"
         tools:layout="@layout/fragment_task">
         <action
@@ -121,20 +121,41 @@
         android:id="@+id/notificationsFragment"
         android:name="com.youverify.agent_app_android.view.fragment.home.notifications.NotificationsFragment"
         android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" >
-        <action
-            android:id="@+id/action_notificationsFragment_to_taskDetailsFragment"
-            app:destination="@id/taskDetailsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/taskDetailsFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.home.notifications.TaskDetailsFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.screens.TaskDetailsFragment"
         android:label="fragment_task_details"
         tools:layout="@layout/fragment_task_details" >
 <!--        <argument-->
 <!--            android:name="currentItem"-->
 <!--            app:argType="com.youverify.agent_app_android.model.NotificationsItem" />-->
+        <action
+            android:id="@+id/action_taskDetailsFragment_to_accessBuildingFragment"
+            app:destination="@id/accessBuildingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/accessBuildingFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.screens.AccessBuildingFragment"
+        android:label="fragment_access_building"
+        tools:layout="@layout/fragment_access_building" >
+        <action
+            android:id="@+id/action_accessBuildingFragment_to_accessDeniedFragment"
+            app:destination="@id/accessDeniedFragment" />
+        <action
+            android:id="@+id/action_accessBuildingFragment_to_reportIncidentFragment"
+            app:destination="@id/reportIncidentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accessDeniedFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.screens.AccessDeniedFragment"
+        android:label="fragment_access_denied"
+        tools:layout="@layout/fragment_access_denied" />
+    <fragment
+        android:id="@+id/reportIncidentFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.home.task.screens.ReportIncidentFragment"
+        android:label="fragment_report_incident"
+        tools:layout="@layout/fragment_report_incident" />
 
 
 </navigation>

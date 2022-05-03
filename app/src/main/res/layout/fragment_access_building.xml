@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.home.task.screens.TaskDetailsFragment">
+    tools:context=".view.fragment.home.task.screens.AccessBuildingFragment">
 
     <Toolbar
         android:id="@+id/toolbar"
@@ -171,9 +171,7 @@
                 android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
                 android:background="?android:attr/listDivider"
                 android:backgroundTint="@color/colorTextPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -251,7 +249,7 @@
                     android:fontFamily="@font/br_sonoma_regular"
                     android:padding="16dp"
                     android:inputType="none"
-                    android:text="@string/can_you_locate_the_address"
+                    android:text="@string/can_you_access_the_building"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -259,33 +257,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/proceed_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/proceed"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_access_loc"
-                tools:ignore="TextContrastCheck" />
-
-
-<!-- This is what makes the difference bertween the yes and no button-->
+            <!-- This is what makes the difference bertween the yes and no button-->
             <TextView
-                android:id="@+id/select_reason_text"
+                android:id="@+id/building_type_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
-                android:text="@string/select_a_reason_why_you_can_t_locate_the_address"
+                android:text="@string/type_of_building"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_access_loc" />
 
@@ -300,8 +281,8 @@
                 app:endIconDrawable="@drawable/ic_arrow_right2"
                 app:hintEnabled="false"
                 app:endIconMode="custom"
-                app:layout_constraintTop_toBottomOf="@+id/select_reason_text"
-                app:layout_constraintStart_toStartOf="@+id/select_reason_text"
+                app:layout_constraintTop_toBottomOf="@+id/building_type_text"
+                app:layout_constraintStart_toStartOf="@+id/building_type_text"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <AutoCompleteTextView
@@ -321,6 +302,236 @@
 
 
             <TextView
+                android:id="@+id/building_color_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/building_color"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reason_layout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/building_color_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:boxStrokeColor="@color/colorTextPrimary"
+                app:endIconDrawable="@drawable/ic_arrow_right2"
+                app:hintEnabled="false"
+                app:endIconMode="custom"
+                app:layout_constraintTop_toBottomOf="@+id/building_color_text"
+                app:layout_constraintStart_toStartOf="@+id/building_color_text"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/building_color_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:inputType="none"
+                    android:hint="@string/_select_"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/gate_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="32dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@drawable/curved_corners_bg"
+                app:endIconDrawable="@drawable/ic_arrow_down2"
+                app:endIconMode="custom"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/building_color_layout">
+
+                <AutoCompleteTextView
+                    android:id="@+id/gate_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:padding="16dp"
+                    android:inputType="none"
+                    android:text="@string/does_this_building_have_a_gate"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:ignore="LabelFor"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/select_gate_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="@string/gate_color"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gate_layout" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/gate_color_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:boxStrokeColor="@color/colorTextPrimary"
+                app:endIconDrawable="@drawable/ic_arrow_right2"
+                app:hintEnabled="false"
+                app:endIconMode="custom"
+                app:endIconTint="@null"
+                app:layout_constraintTop_toBottomOf="@+id/select_gate_color"
+                app:layout_constraintStart_toStartOf="@+id/select_gate_color"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/gate_color_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:inputType="none"
+                    android:hint="@string/select_gate_colour"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/candidate_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@drawable/curved_corners_bg"
+                app:endIconDrawable="@drawable/ic_arrow_down2"
+                app:endIconMode="custom"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gate_color_layout">
+
+                <AutoCompleteTextView
+                    android:id="@+id/candidate_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:padding="16dp"
+                    android:inputType="none"
+                    android:text="@string/does_the_candidate_live_there"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:ignore="LabelFor"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/select_who_confirmed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="@string/select_who_confirmed_that_the_candidate_lives_there"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/candidate_layout" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/who_confirmed_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:boxStrokeColor="@color/colorTextPrimary"
+                app:endIconDrawable="@drawable/ic_arrow_right2"
+                app:hintEnabled="false"
+                app:endIconMode="custom"
+                app:endIconTint="@null"
+                app:layout_constraintTop_toBottomOf="@+id/select_who_confirmed"
+                app:layout_constraintStart_toStartOf="@+id/select_who_confirmed"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/who_confirmed_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:inputType="none"
+                    android:hint="@string/_select_"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/sign_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/signature"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/who_confirmed_layout" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sign_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/upload_img_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_text">
+
+                <ImageView
+                    android:id="@+id/sign_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/ic_signature"
+                    android:contentDescription="@string/upload_image" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
                 android:id="@+id/images_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -328,13 +539,13 @@
                 android:text="@string/images"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/reason_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/sign_layout" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/upload_view"
+                android:id="@+id/upload_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -343,6 +554,7 @@
                 app:layout_constraintTop_toBottomOf="@id/images_text">
 
                 <ImageView
+                    android:id="@+id/upload_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="48dp"
@@ -358,7 +570,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             <TextView
                 android:id="@+id/get_tag_text"
                 android:layout_width="wrap_content"
@@ -367,9 +578,9 @@
                 android:text="@string/geo_tag_me"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upload_view" />
+                app:layout_constraintTop_toBottomOf="@+id/upload_layout" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -412,7 +623,7 @@
                 android:text="@string/closest_landmark"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/geo_tag_layout" />
 
@@ -455,7 +666,7 @@
                 android:text="@string/additional_information"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/landmark_layout" />
 
@@ -489,6 +700,30 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/report_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="48dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                app:icon="@drawable/ic_warning"
+                app:iconTint="@color/colorTextPrimary"
+                android:backgroundTint="@color/viewBackgroundColor"
+                android:fontFamily="@font/br_sonoma_regular"
+                android:text="@string/report_an_incident"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info_layout"/>
+
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submit_button"
                 android:layout_width="0dp"
@@ -503,7 +738,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/info_layout"
+                app:layout_constraintTop_toBottomOf="@id/report_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="TextContrastCheck" />
 

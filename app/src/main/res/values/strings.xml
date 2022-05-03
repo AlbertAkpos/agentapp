@@ -5,6 +5,8 @@
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="previous">previous</string>
+
+
     <!-- Strings related to login -->
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -228,4 +230,61 @@
     <string name="select_status">--Select status--</string>
     <string name="select_verification_type">--Select verification type--</string>
     <string name="filter_by_type_of_verification">FILTER BY TYPE OF VERIFICATION</string>
+    <string name="can_you_locate_the_address">Can you locate the address?</string>
+    <string name="proceed">Proceed</string>
+    <string name="select_a_reason_why_you_can_t_locate_the_address">Select a reason why you can\'t locate the address</string>
+    <string name="images">Images</string>
+    <string name="my_location">My location</string>
+    <string name="geo_tag_me">Geo-tag me</string>
+    <string name="closest_landmark">Closest landmark</string>
+    <string name="enter_landmark">Enter landmark</string>
+    <string name="additional_information">Additional information</string>
+    <string name="select_reason">Select reason</string>
+    <string name="address_does_not_exist">Address does not exist</string>
+    <string name="incorrect_address">Incorrect address</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="type_of_building">Type of building</string>
+    <string name="building_color">Building color</string>
+    <string name="submit">Submit</string>
+    <string name="does_this_building_have_a_gate">Does this building have a gate?</string>
+    <string name="does_the_candidate_live_there">Does the candidate live there?</string>
+    <string name="the_business_has_been_notified">The business has been notified. You can proceed with\nother tasks while you wait for an update on this task</string>
+    <string name="notify_business">Notify business</string>
+    <string name="town_house">Town house</string>
+    <string name="terraced_house">Terraced house</string>
+    <string name="semi_detatched_house">Semi-detached house</string>
+    <string name="detatched_house">Detached house</string>
+    <string name="bungalow">Bungalow</string>
+    <string name="duplex">Duplex</string>
+    <string name="mansion">Mansion</string>
+    <string name="penthouse">Penthouse</string>
+    <string name="container_house">Container house</string>
+    <string name="one_room_face_me_i_face_you">One-room (face-me-I-face-you)</string>
+    <string name="select_color">Select Colour</string>
+    <string name="none">none</string>
+    <string name="select_who_confirmed_that_the_candidate_lives_there">Who confirmed that the candidate lives there?</string>
+    <string name="gate_color">Gate color</string>
+    <string name="select_gate_colour">--Select gate colour--</string>
+    <string name="signature">Signature</string>
+    <string name="report_an_incident">Report an incident</string>
+    <string name="gatekeeper">Gatekeeper</string>
+    <string name="nearby_retailer">Near-by retailer</string>
+    <string name="landlord_landlady">Landlord/Landlady</string>
+    <string name="confirmed_by_who">Confirmed by who?</string>
+    <string name="family_members">Family members</string>
+    <string name="neighbour">Neighbour</string>
+    <string name="passers_by">Passers-by</string>
+    <string name="security_personnel">Security personnel</string>
+    <string name="maid">Maid</string>
+    <string name="self">Self</string>
+    <string name="type_of_incident">Type of incident</string>
+    <string name="select_incident_type">--Select incident type--</string>
+    <string name="arrest_detention">Arrest / detention</string>
+    <string name="mis_understanding_with_customer">Mis-understanding with customer</string>
+    <string name="accident">Accident</string>
+    <string name="others">Others</string>
+    <string name="submit_report">Submit report</string>
+    <string name="for_better_and_quick_geo_tagging">For better and quick Geo-tagging,\nplease use this feature while outdoor.</string>
 </resources>

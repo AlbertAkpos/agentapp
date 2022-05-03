@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_period_bg"
+    android:padding="24dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drawer_handle"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/handleColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/select_reason_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/confirmed_by_who"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawer_handle" />
+
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/family_member_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_reason_text"
+        android:padding="16dp"
+        android:layout_marginTop="48dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/family_members"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/gate_keeper_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/family_member_button"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/gatekeeper"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/neighbour_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gate_keeper_button"
+        android:text="@string/neighbour"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/passers_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/neighbour_button"
+        android:text="@string/passers_by"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/retailer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        android:button="@drawable/radio_btn_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passers_button"
+        android:text="@string/nearby_retailer"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/land_lord_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/retailer_button"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/landlord_landlady"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/security_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/land_lord_button"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/security_personnel"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/maid_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/security_button"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/maid"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/self_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maid_button"
+        android:padding="16dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/radio_btn_selector"
+        android:text="@string/self"
+        android:checked="false"
+        android:textSize="14sp"
+        android:textColor="@color/black_varient"
+        android:fontFamily="@font/br_sonoma_regular"
+        android:textStyle="bold"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
