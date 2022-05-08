@@ -2,13 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="#EBEBEC99"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="32dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/yes_btn"
         android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_height="70dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/round_button"
         android:backgroundTint="@color/white"
@@ -25,8 +27,6 @@
         android:id="@+id/no_btn"
         android:layout_width="wrap_content"
         android:layout_height="75dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="40dp"
         android:background="@drawable/round_button"
         android:backgroundTint="@color/white"
@@ -41,6 +41,3 @@
         app:layout_constraintStart_toEndOf="@+id/yes_btn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--app:layout_constraintStart_toEndOf="@+id/yes_btn"-->
-<!--android:layout_marginStart="80dp"-->

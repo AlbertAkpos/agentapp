@@ -188,6 +188,11 @@
         <item>NIN</item>
     </string-array>
 
+    //choice (yes/no) drop down
+    <string-array name="choice">
+        <item>Yes</item>
+    </string-array>
+
 
     <string name="change_password">Change password</string>
     <string name="old_password">Old password</string>
@@ -287,4 +292,7 @@
     <string name="others">Others</string>
     <string name="submit_report">Submit report</string>
     <string name="for_better_and_quick_geo_tagging">For better and quick Geo-tagging,\nplease use this feature while outdoor.</string>
+    <string name="start_drawing">Start drawing to add signature</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
 </resources>

@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.model.TaskItem
@@ -116,12 +117,13 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
         val slideRightButton = view.findViewById<AutoCompleteTextView>(R.id.slide_right_btn)
         val slideLeftButton = view.findViewById<AutoCompleteTextView>(R.id.slide_left_btn)
-//        val closeButton = dialogBuilder.findViewById<ImageView>(R.id.close_btn)
+        val closeButton = view.findViewById<ImageView>(R.id.close_btn)
 
         dialogBuilder.setView(view)
 
         slideRightButton.setOnClickListener {
             dialogBuilder.dismiss()
+            removeNavBar()
             findNavController().navigate(R.id.action_taskFragment_to_taskDetailsFragment)
         }
 
@@ -129,9 +131,9 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             dialogBuilder.dismiss()
         }
 
-//        closeButton.setOnClickListener {
-//            dialogBuilder.dismiss()
-//        }
+        closeButton.setOnClickListener {
+            dialogBuilder.dismiss()
+        }
 
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
@@ -158,6 +160,11 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
+    }
+
+    private fun removeNavBar() {
+        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+        navBar?.visibility = View.GONE
     }
 
 }

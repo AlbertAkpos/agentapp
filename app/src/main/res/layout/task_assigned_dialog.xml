@@ -118,7 +118,9 @@
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            tools:ignore="LabelFor,TextContrastCheck" />
+                            android:focusable="false"
+                            android:clickable="true"
+                            tools:ignore="KeyboardInaccessibleWidget,LabelFor,TextContrastCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -154,7 +156,9 @@
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            tools:ignore="LabelFor,TextContrastCheck" />
+                            android:focusable="false"
+                            android:clickable="true"
+                            tools:ignore="KeyboardInaccessibleWidget,LabelFor,TextContrastCheck" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

@@ -263,6 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:gravity="center"
+                android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/the_business_has_been_notified"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="13sp"

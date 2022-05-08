@@ -255,21 +255,70 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor"/>
+                    android:focusable="false"
+                    android:clickable="true"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/choice_layout"
+                android:background="@color/choice_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/layout_access_loc"
+                app:layout_constraintStart_toStartOf="@+id/layout_access_loc"
+                app:layout_constraintEnd_toEndOf="@+id/layout_access_loc">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/yes_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/round_button"
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:text="@string/yes"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textStyle="normal"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/no_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/no_btn"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/no_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="75dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/round_button"
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:text="@string/no"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/yes_btn"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/proceed_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="180dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/proceed"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_access_loc"
@@ -281,11 +330,12 @@
                 android:id="@+id/select_reason_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="150dp"
                 android:text="@string/select_a_reason_why_you_can_t_locate_the_address"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_access_loc" />
 
@@ -300,6 +350,7 @@
                 app:endIconDrawable="@drawable/ic_arrow_right2"
                 app:hintEnabled="false"
                 app:endIconMode="custom"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/select_reason_text"
                 app:layout_constraintStart_toStartOf="@+id/select_reason_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -315,7 +366,9 @@
                     android:hint="@string/_select_"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp"
-                    tools:ignore="LabelFor" />
+                    android:focusable="false"
+                    android:clickable="true"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -329,6 +382,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reason_layout" />
 
@@ -338,6 +392,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:background="@drawable/upload_img_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/images_text">
@@ -368,6 +423,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upload_view" />
 
@@ -383,6 +439,7 @@
                 app:hintEnabled="false"
                 app:endIconMode="custom"
                 app:endIconTint="@null"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/get_tag_text"
                 app:layout_constraintStart_toStartOf="@+id/get_tag_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -413,6 +470,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/geo_tag_layout" />
 
@@ -427,11 +485,12 @@
                 app:endIconDrawable="@null"
                 app:endIconMode="custom"
                 app:hintEnabled="false"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/landmark_text"
                 app:layout_constraintStart_toStartOf="@+id/landmark_text"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/landmark_input"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -456,6 +515,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13sp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/landmark_layout" />
 
@@ -470,11 +530,12 @@
                 app:endIconDrawable="@null"
                 app:endIconMode="custom"
                 app:hintEnabled="false"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/info_text"
                 app:layout_constraintStart_toStartOf="@+id/info_text"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/info_input"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -501,6 +562,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/info_layout"

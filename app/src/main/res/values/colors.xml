@@ -71,14 +71,18 @@
     <color name="red">#FF0000</color>
     <color name="faded_red">#FF7F7F</color>
     <color name="dark_purple">#421C52</color>
-    <color name="light_purple">#421C52</color>
+    <color name="light_purple">#22C0F1</color>
     <color name="purple">#800080</color>
     <color name="faded_purple">#CBA2C8</color>
     <color name="orange">#FF8C00</color>
     <color name="brown">#654321</color>
     <color name="peach">#FFE5B4</color>
-    <color name="off_white">#FFFDD0</color>
-    <color name="same_dark_purple">#421C52</color>
+    <color name="off_white">#B79257</color>
+    <color name="same_dark_purple">#0072BB</color>
+
+    <color name="grey">#EFF8F9</color>
+    <color name="choice_bg">#EBEBEC</color>
+    <color name="red_btn">#E02020</color>
 
 
 

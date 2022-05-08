@@ -76,6 +76,7 @@
         <entry key="app/src/main/res/drawable/profile_image_bg.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/radio_btn_selector.xml" value="0.2895" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.183" />
+        <entry key="app/src/main/res/drawable/round_button_dark.xml" value="0.2345" />
         <entry key="app/src/main/res/drawable/rounded_corner.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/select_period_bg.xml" value="0.2895" />
         <entry key="app/src/main/res/drawable/settings_switch_thumb.xml" value="0.2215" />
@@ -93,12 +94,14 @@
         <entry key="app/src/main/res/layout/appbar_drop_item.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/areas_drop_down_item.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/bottom_candidate_confirm.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/layout/bottom_candidate_not_confirmed.xml" value="0.23596014492753623" />
         <entry key="app/src/main/res/layout/bottom_filter_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/bottom_incident_type.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/bottom_select_building.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_select_color.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_select_period_layout.xml" value="0.25956315852767986" />
         <entry key="app/src/main/res/layout/bottom_select_reason.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/choice_drop_down.xml" value="0.23541666666666666" />
         <entry key="app/src/main/res/layout/complete_onboarding_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/custom_toast.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/dashboard_today_card.xml" value="0.26485036214192714" />
@@ -148,6 +151,7 @@
         <entry key="app/src/main/res/layout/performance_filter_dialog.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/reset_password_dialog.xml" value="0.2983734130859375" />
         <entry key="app/src/main/res/layout/root_settings.xml" value="0.2658514492753623" />
+        <entry key="app/src/main/res/layout/signature_dialog.xml" value="0.28882537841796874" />
         <entry key="app/src/main/res/layout/single_input_chip.xml" value="0.335" />
         <entry key="app/src/main/res/layout/states_drop_down_item.xml" value="0.28020833333333334" />
         <entry key="app/src/main/res/layout/task_accepted_item.xml" value="0.25" />
