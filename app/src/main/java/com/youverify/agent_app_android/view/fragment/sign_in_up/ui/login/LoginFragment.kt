@@ -15,7 +15,6 @@ import com.youverify.agent_app_android.view.activity.HomeActivity
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-//    private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -32,13 +31,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         binding.buttonSignIn.setOnClickListener {
-            try {
-                startActivity(Intent(requireContext(), HomeActivity::class.java))
-                activity?.finish()
-            }catch (e : Exception){
-                e.stackTrace
-            }
-
+            startActivity(Intent(requireContext(), HomeActivity::class.java))
+            activity?.finish()
         }
 
         binding.forgotPassword.setOnClickListener {
@@ -48,10 +42,4 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         return binding.root
     }
 
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        loginViewModel =
-//            ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
-//    }
 }
