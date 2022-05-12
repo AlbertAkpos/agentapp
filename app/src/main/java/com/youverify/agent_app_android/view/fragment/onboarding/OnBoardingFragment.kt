@@ -11,13 +11,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentOnboardingBinding
 import com.youverify.agent_app_android.model.OnBoardingItem
-import com.youverify.agent_app_android.view.fragment.onboarding.OnBoardingItemsAdapter
 import kotlin.math.abs
 
 
+private const val IS_DONE_VIEWING = "Is viewing"
+
 class OnBoardingFragment : Fragment(R.layout.fragment_onboarding), ViewPager2.PageTransformer {
 
-    private val IS_DONE_VIEWING = "Is viewing"
     private var isFromTCScreen: Boolean = false
     private lateinit var binding: FragmentOnboardingBinding
     private lateinit var onboardingItemsAdapter: OnBoardingItemsAdapter
