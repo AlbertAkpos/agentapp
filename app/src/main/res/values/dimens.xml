@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="text_margin">16dp</dimen>
+
+<!--    onboarding dimensions-->
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="margin_72">72dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="text_24">24sp</dimen>
 </resources>

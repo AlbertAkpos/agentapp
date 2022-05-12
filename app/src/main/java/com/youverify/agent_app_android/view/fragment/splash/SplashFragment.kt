@@ -35,6 +35,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         return binding.root
     }
 
+    //write to sharedPref if onboarding has finished.
     private fun onBoardingFinished(): Boolean{
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         return sharedPref.getBoolean("Finished", false)

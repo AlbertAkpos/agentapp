@@ -17,14 +17,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentAccessBuildingBinding
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 class AccessBuildingFragment : Fragment() {
 
     private lateinit var binding: FragmentAccessBuildingBinding
     private lateinit var scrollView : NestedScrollView
+    private lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +38,8 @@ class AccessBuildingFragment : Fragment() {
 //            showNavBar()
             activity?.onBackPressed()
         }
+
+        homeActivity = requireActivity() as HomeActivity
 
         configureUI()
 
@@ -97,6 +100,7 @@ class AccessBuildingFragment : Fragment() {
                 )
             } else {
                 findNavController().navigate(R.id.action_accessBuildingFragment_to_taskFragment)
+                homeActivity.showNavBar()
             }
         }
 
@@ -419,15 +423,10 @@ class AccessBuildingFragment : Fragment() {
         okButton.setOnClickListener{
             dialogBuilder.dismiss()
             findNavController().navigate(R.id.action_accessBuildingFragment_to_taskFragment)
-            showNavBar()
+            homeActivity.showNavBar()
         }
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    private fun showNavBar() {
-        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-        navBar?.visibility = View.VISIBLE
     }
 }

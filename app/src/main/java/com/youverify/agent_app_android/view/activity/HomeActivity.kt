@@ -8,8 +8,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
+import com.youverify.agent_app_android.util.showNavBar
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -26,5 +27,10 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED        //set the bottom navigation to always be labelled
+    }
+
+    fun showNavBar(){
+        val bottomNav = binding.navView
+        bottomNav.showNavBar()
     }
 }

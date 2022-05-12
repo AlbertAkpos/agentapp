@@ -20,15 +20,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSignUpBinding
-import com.youverify.agent_app_android.view.activity.MainActivity
-import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoggedInUserView
-import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModel
-import com.youverify.agent_app_android.view.fragment.sign_in_up.ui.login.LoginViewModelFactory
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
-    private lateinit var loginViewModel: LoginViewModel
+//    private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentSignUpBinding? = null
 
     // This property is only valid between onCreateView and
@@ -63,7 +60,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
+//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
         //passing the array adapter for states in the autocomplete textview
         val states = resources.getStringArray(R.array.states)
@@ -84,7 +81,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         okButton.setOnClickListener {
             dialogBuilder.dismiss()
-            startActivity(Intent(requireContext(), MainActivity::class.java))
+            startActivity(Intent(requireContext(), HomeActivity::class.java))
             activity?.finish()
         }
         dialogBuilder.setCancelable(false)
@@ -92,17 +89,17 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-    }
+//    private fun updateUiWithUser(model: LoggedInUserView) {
+//        val welcome = getString(R.string.welcome) + model.displayName
+//        // TODO : initiate successful logged in experience
+//        val appContext = context?.applicationContext ?: return
+//        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+//    }
+//
+//    private fun showLoginFailed(@StringRes errorString: Int) {
+//        val appContext = context?.applicationContext ?: return
+//        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

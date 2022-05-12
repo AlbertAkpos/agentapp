@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreen : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 

@@ -17,6 +17,8 @@ import kotlin.math.abs
 
 class OnBoardingFragment : Fragment(R.layout.fragment_onboarding), ViewPager2.PageTransformer {
 
+    private val IS_DONE_VIEWING = "Is viewing"
+    private var isFromTCScreen: Boolean = false
     private lateinit var binding: FragmentOnboardingBinding
     private lateinit var onboardingItemsAdapter: OnBoardingItemsAdapter
 
@@ -25,49 +27,54 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding), ViewPager2.Pa
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOnboardingBinding.inflate(layoutInflater)
+        if (savedInstanceState != null) {
+            isFromTCScreen = savedInstanceState.getBoolean(IS_DONE_VIEWING, false)
+        }
 
-        binding.onboardBackBtn.isVisible = false
+        binding.onboardBackBtn.isVisible = isFromTCScreen
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.setPageTransformer(this)
+
         setOnBoardingItems()
         configureNextButton()
         configureBackButton()
         configureSkipText()
+
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        binding.onboardBackBtn.isVisible = true
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(IS_DONE_VIEWING, isFromTCScreen)
     }
 
     //this function sets the items of the viewPager
     private fun setOnBoardingItems() {
-        onboardingItemsAdapter = OnBoardingItemsAdapter(
-            listOf(
-                OnBoardingItem(
-                    image = R.drawable.ic_vp_image_one,
-                    title = "Easily manage Tasks",
-                    description = "Slide right to accept a \ntask or slide left to decline"
-                ),
-                OnBoardingItem(
-                    image = R.drawable.ic_vp_image_two,
-                    title = "Real-time tracking",
-                    description = "The app identifies your location with the \nGeo-tag feature while on duty."
-                ),
-                OnBoardingItem(
-                    image = R.drawable.ic_vp_image_three,
-                    title = "Earn money",
-                    description = "Smile to the bank when you \nwork as our agent."
-                ),
-                OnBoardingItem(
-                    image = R.drawable.ic_vp_image_four,
-                    title = "Get started",
-                    description = "To get your first task, choose your location \nto request for task around you."
-                )
+        val onboardingItems = listOf(
+            OnBoardingItem(
+                image = R.drawable.ic_vp_image_one,
+                title = "Easily manage Tasks",
+                description = "Slide right to accept a \ntask or slide left to decline"
+            ),
+            OnBoardingItem(
+                image = R.drawable.ic_vp_image_two,
+                title = "Real-time tracking",
+                description = "The app identifies your location with the \nGeo-tag feature while on duty."
+            ),
+            OnBoardingItem(
+                image = R.drawable.ic_vp_image_three,
+                title = "Earn money",
+                description = "Smile to the bank when you \nwork as our agent."
+            ),
+            OnBoardingItem(
+                image = R.drawable.ic_vp_image_four,
+                title = "Get started",
+                description = "To get your first task, choose your location \nto request for task around you."
             )
         )
 
+        onboardingItemsAdapter = OnBoardingItemsAdapter()
+        onboardingItemsAdapter.setList(onboardingItems)
         binding.viewPager.adapter = onboardingItemsAdapter
     }
 
@@ -90,6 +97,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding), ViewPager2.Pa
                 }
                 else -> {
                     findNavController().navigate(R.id.action_viewPagerFragment_to_TCScreen)
+                    isFromTCScreen = true
                 }
             }
         }

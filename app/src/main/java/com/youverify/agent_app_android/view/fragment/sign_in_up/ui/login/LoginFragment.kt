@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
-import com.youverify.agent_app_android.view.activity.MainActivity
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var loginViewModel: LoginViewModel
+//    private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -33,7 +33,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.buttonSignIn.setOnClickListener {
             try {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
                 activity?.finish()
             }catch (e : Exception){
                 e.stackTrace
@@ -49,9 +49,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        loginViewModel =
-            ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        loginViewModel =
+//            ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
+//    }
 }
