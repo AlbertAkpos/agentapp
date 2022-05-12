@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.onboarding.screens.OnBoardingFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.OnBoardingFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_onboarding" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/TCScreen"
-        android:name="com.youverify.agent_app_android.view.fragment.onboarding.screens.TCScreen"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.TCScreen"
         android:label="fragment_t_c_screen"
         tools:layout="@layout/fragment_t_c_screen" >
         <action
@@ -105,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/enableLocationFragment"
-        android:name="com.youverify.agent_app_android.view.fragment.onboarding.screens.EnableLocationFragment"
+        android:name="com.youverify.agent_app_android.view.fragment.onboarding.EnableLocationFragment"
         android:label="fragment_enable_location"
         tools:layout="@layout/fragment_enable_location" >
         <action

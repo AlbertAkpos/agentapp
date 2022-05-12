@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.onboarding.screens
+package com.youverify.agent_app_android.view.fragment.onboarding
 
 import android.content.Context
 import android.os.Bundle

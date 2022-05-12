@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.view.fragment.onboarding.screens
+package com.youverify.agent_app_android.view.fragment.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater
