@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
+    android:paddingStart="@dimen/padding_24"
+    android:paddingEnd="@dimen/padding_24"
     tools:context=".view.fragment.home.verification.SelectAreasFragment">
 
 
@@ -13,9 +13,9 @@
         android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/margin_32"
         android:background="@drawable/custom_img_btn"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/white"
         android:contentDescription="@string/previous"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,9 +24,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="65dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_btn"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -40,10 +40,9 @@
                 android:id="@+id/text_select_identity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="@string/select_preferred_areas"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_18"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,16 +51,15 @@
                 android:id="@+id/text_verify_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/perform_address_verification"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@id/text_select_identity" />
 
 
@@ -70,7 +68,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/margin_32"
                 app:boxStrokeColor="@color/colorTextPrimary"
                 app:endIconDrawable="@drawable/ic_drop_down"
                 app:endIconMode="custom"
@@ -87,7 +85,7 @@
                     android:inputType="none"
                     android:text="@string/select"
                     android:textColor="@color/colorTextPrimary"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_14"
                     android:dropDownWidth="135dp"
                     android:dropDownHeight="280dp"
                     tools:ignore="LabelFor"/>
@@ -102,12 +100,11 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/done_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="@dimen/margin_48"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:text="@string/done"

@@ -30,6 +30,11 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureUI()
+    }
+
+
+    private fun configureUI(){
         //passing the array adapter for states in the autocomplete textview
         val idType = resources.getStringArray(R.array.idType)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.id_type_drop_down_item, idType)

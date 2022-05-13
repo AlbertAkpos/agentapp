@@ -43,9 +43,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 //            setupRangePickerDialog()
         }
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            showCompleteOnboardingDialog()
-//        }, 500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            showCompleteOnboardingDialog()
+        }, 500)
 
         return binding.root
     }

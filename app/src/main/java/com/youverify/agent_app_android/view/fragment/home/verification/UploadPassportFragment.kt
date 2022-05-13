@@ -20,6 +20,12 @@ class UploadPassportFragment : Fragment(R.layout.fragment_upload_passport) {
     ): View{
         binding = FragmentUploadPassportBinding.inflate(layoutInflater)
 
+        configureUI()
+
+        return binding.root
+    }
+
+    private fun configureUI(){
         binding.verifyBtn.setOnClickListener {
             findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationResponseFragment)
         }
@@ -27,7 +33,5 @@ class UploadPassportFragment : Fragment(R.layout.fragment_upload_passport) {
         binding.backBtn.setOnClickListener {
             activity?.onBackPressed()
         }
-
-        return binding.root
     }
 }

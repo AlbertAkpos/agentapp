@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSelectAreasBinding
 
-class SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
+class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
 
     private lateinit var binding: FragmentSelectAreasBinding
 
@@ -27,6 +27,10 @@ class SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureUI()
+    }
+
+    private fun configureUI(){
         //passing the array adapter for states in the autocomplete textview
         val areas = resources.getStringArray(R.array.areas)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.areas_drop_down_item, areas)
