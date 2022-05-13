@@ -18,6 +18,10 @@ fun BottomNavigationView.showNavBar() {
     this.visibility = View.VISIBLE
  }
 
+fun BottomNavigationView.removeNavBar() {
+    this.visibility = View.GONE
+}
+
 fun Activity.createDialog(okButton: Button, navController: NavController, layout: Int, style: Int,
                           successText: TextView, message: String, navView: BottomNavigationView){
     val dialogBuilder = AlertDialog.Builder(this, style).create()

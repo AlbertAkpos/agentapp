@@ -17,12 +17,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
 import com.youverify.agent_app_android.model.NotificationItem
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private lateinit var binding: FragmentNotificationsBinding
     private lateinit var notificationItemsAdapter: NotificationsAdapter
+    private val homeActivity = HomeActivity()
 
 
     override fun onCreateView(
@@ -76,7 +78,8 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         //create the adapter and the swipeGesture
         // we want to use the swipeGesture abstract class we created to
         // determine what will happen when we swipe left or right.
-        notificationItemsAdapter = NotificationsAdapter(notificationItems)
+        notificationItemsAdapter = NotificationsAdapter()
+        notificationItemsAdapter.setData(notificationItems)
 
         val swipeGesture = object : SwipeGesture(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -98,19 +101,12 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         touchHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.adapter = notificationItemsAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        removeNavBar()
-    }
-
-
-    private fun removeNavBar() {
-        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-        navBar?.visibility = View.GONE
+        homeActivity.removeNavBar()
     }
 
     override fun onStop() {
         super.onStop()
-        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-        navBar?.visibility = View.VISIBLE
+        homeActivity.showNavBar()
     }
 
     private fun showuploadSuccessDialog(){
@@ -124,7 +120,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 //
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            dialogBuilder.hide()
-//        }, 3000)mo
+//        }, 3000)
 
         val toast = Toast(context)
         Handler(Looper.getMainLooper()).postDelayed({
@@ -133,7 +129,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     }
 
     private fun showToast(toast: Toast) {
-
         val customView: View = LayoutInflater.from(requireContext())
             .inflate(R.layout.custom_toast, view?.findViewById<ConstraintLayout>(R.id.toast_wrapper))
 

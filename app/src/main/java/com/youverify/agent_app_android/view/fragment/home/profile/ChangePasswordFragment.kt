@@ -13,10 +13,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentChangePasswordBinding
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 
 class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     private lateinit var binding: FragmentChangePasswordBinding
+    private val homeActivity =  HomeActivity()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +27,16 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
         binding = FragmentChangePasswordBinding.inflate(layoutInflater)
 
+        configureUI()
+        return binding.root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        homeActivity.showNavBar()
+    }
+
+    private fun configureUI(){
         binding.saveChangesBtn.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
             val view = layoutInflater.inflate(R.layout.reset_password_dialog, null)
@@ -42,12 +54,5 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         binding.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-        return binding.root
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-        navBar?.visibility = View.VISIBLE
     }
 }

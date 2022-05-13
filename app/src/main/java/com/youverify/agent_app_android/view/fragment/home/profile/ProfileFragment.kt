@@ -9,10 +9,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentProfileBinding
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
+    private val homeActivity =  HomeActivity()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -28,13 +30,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.changePassBtn.setOnClickListener {
-            removeNavBar()
+            homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_profileFragment_to_changePasswordFragment)
         }
-    }
-
-    private fun removeNavBar() {
-        val navBar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-        navBar?.visibility = View.GONE
     }
 }

@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
+import com.youverify.agent_app_android.util.removeNavBar
 import com.youverify.agent_app_android.util.showNavBar
 
 class HomeActivity : AppCompatActivity() {
@@ -32,5 +33,10 @@ class HomeActivity : AppCompatActivity() {
     fun showNavBar(){
         val bottomNav = binding.navView
         bottomNav.showNavBar()
+    }
+
+    fun removeNavBar(){
+        val bottomNav = binding.navView
+        bottomNav.removeNavBar()
     }
 }

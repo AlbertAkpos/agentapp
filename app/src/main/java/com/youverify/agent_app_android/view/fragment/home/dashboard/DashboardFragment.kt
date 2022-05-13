@@ -2,7 +2,6 @@ package com.youverify.agent_app_android.view.fragment.home.dashboard
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,13 +10,13 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
+import com.youverify.agent_app_android.view.activity.HomeActivity
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
@@ -38,14 +37,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
 
         //if select period button is clicked, slide the bottom bar from beneath
-        binding.selectPeriodBtn.setOnClickListener{
+        binding.selectPeriodBtn.setOnClickListener {
             showBottomBar()
 //            setupRangePickerDialog()
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            showCompleteOnboardingDialog()
-        }, 500)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            showCompleteOnboardingDialog()
+//        }, 500)
 
         return binding.root
     }
@@ -54,17 +53,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun setupRangePickerDialog() {
         val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.dateRangePicker()
         val constraintsBuilder = CalendarConstraints.Builder()
-        try {
-            builder.setCalendarConstraints(constraintsBuilder.build())
-            val picker: MaterialDatePicker<*> = builder.build()
-            getDateRange(picker)
-            picker.show(parentFragmentManager, picker.toString())
-        } catch (e:IllegalArgumentException){
-        }
+        builder.setCalendarConstraints(constraintsBuilder.build())
+        val picker: MaterialDatePicker<*> = builder.build()
+        getDateRange(picker)
+        picker.show(parentFragmentManager, picker.toString())
     }
 
 
-    private fun getDateRange(materialCalendarPicker:MaterialDatePicker<out Any>) {
+    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
             Log.e("DateRangeText", materialCalendarPicker.headerText)
         }
@@ -87,14 +83,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
     }
 
     private fun showFilterDialog() {
-        var selectedOption : String
+        var selectedOption: String
         val dialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.performance_card_dialog, null)
@@ -130,7 +129,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
 
-    private fun showCompleteOnboardingDialog(){
+    private fun showCompleteOnboardingDialog() {
         val dialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.complete_onboarding_dialog, null)
@@ -147,6 +146,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             dialogBuilder.dismiss()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectAreasFragment)
         }
+
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

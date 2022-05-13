@@ -3,12 +3,14 @@
     <dimen name="text_margin">16dp</dimen>
 
 <!-- dimensions-->
+    <dimen name="height_2">2dp</dimen>
     <dimen name="height_100">100dp</dimen>
     <dimen name="height_80">80dp</dimen>
     <dimen name="height_234">234dp</dimen>
     <dimen name="width_110">110dp</dimen>
     <dimen name="width_80">80dp</dimen>
 
+    <dimen name="padding_12">12dp</dimen>
     <dimen name="padding_20">20dp</dimen>
     <dimen name="padding_24">24dp</dimen>
 
@@ -33,4 +35,6 @@
     <dimen name="text_18">18sp</dimen>
     <dimen name="text_22">22sp</dimen>
     <dimen name="text_24">24sp</dimen>
+
+    <dimen name="corners_15">15dp</dimen>
 </resources>
