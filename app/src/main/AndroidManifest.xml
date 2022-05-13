@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Agent_app_android">
 
         <activity
-            android:name=".view.activity.OnBoardingActivity"
+            android:name=".presentation.OnBoardingActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait"
             android:exported="true">
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".view.activity.HomeActivity"
+            android:name=".presentation.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait">
         </activity>

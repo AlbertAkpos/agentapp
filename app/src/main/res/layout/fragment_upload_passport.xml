@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/padding_24"
     android:paddingEnd="@dimen/padding_24"
-    tools:context=".view.fragment.home.verification.UploadPassportFragment">
+    tools:context=".presentation.verification.UploadPassportFragment">
 
 
     <ImageButton

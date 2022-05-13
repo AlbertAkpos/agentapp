@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.youverify.agent_app_android.view.activity.OnBoardingActivity">
+    tools:context="com.youverify.agent_app_android.presentation.OnBoardingActivity">
 
 
     <androidx.fragment.app.FragmentContainerView
