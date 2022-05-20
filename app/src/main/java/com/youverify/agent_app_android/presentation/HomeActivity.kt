@@ -10,7 +10,9 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
 import com.youverify.agent_app_android.util.removeNavBar
 import com.youverify.agent_app_android.util.showNavBar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSaveAreasBinding
 
+
 class SaveAreasFragment : Fragment(R.layout.fragment_save_areas) {
 
     private lateinit var binding : FragmentSaveAreasBinding
