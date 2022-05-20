@@ -8,14 +8,14 @@ This project follows the Clean Architecture, is based on the MVVM model and is o
 ### core
 This contains functional logic for results returned from API and DB calls, base classes and custom views used accross the entire application
 
-### data layer:
+### data layer
 ## api
 This contains logic concerning interaction to the server, including data classes (for holding serialized objects such as json) used for the client-server communication. 
 
 ## db
 This contains any logic relating to creating, reading, writing, updating, and securing the database.
 
-### domain layer:
+### domain layer
 This is a contract between the data layer and the presentation layer and contains all the use cases of the application and the repository
 
 ## repository
