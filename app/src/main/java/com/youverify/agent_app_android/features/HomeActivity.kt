@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.presentation
+package com.youverify.agent_app_android.features
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
