@@ -105,9 +105,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         binding.buttonSignIn.setOnClickListener {
-//            login()
-            startActivity(Intent(requireContext(), HomeActivity::class.java))
-            activity?.finish()
+            login()
         }
 
         binding.forgotPassword.setOnClickListener {
@@ -116,7 +114,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun login() {
-        if (validateFields()) {
+        if (true) {
             println("Reached here oooooo, credentials validated")
             val loginRequest = LoginRequest(
                 email = emailLayout.editText?.text.toString().trim(),
@@ -132,14 +130,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             progressLoader.show(message = "Logging In...")
                         }
                         is LoginViewState.Success -> {
-                            println("Reached here oooooo in success")
                             progressLoader.hide()
                             loginSuccessfulOrFailed(it.loginResponseData)
-//                            startActivity(Intent(requireContext(), HomeActivity::class.java))
-//                            activity?.finish()
+                            startActivity(Intent(requireContext(), HomeActivity::class.java))
+                            activity?.finish()
                         }
                         is LoginViewState.Failure -> {
-                            println("Reached here oooooo in failure")
                             progressLoader.hide()
                             Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
                                 .show()
