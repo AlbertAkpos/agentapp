@@ -105,9 +105,9 @@
     </fragment>
     <fragment
         android:id="@+id/enableLocationFragment"
-        android:name="com.youverify.agent_app_android.features.onboarding.EnableLocationFragment"
+        android:name="com.youverify.agent_app_android.features.onboarding.EnablePermissionsFragment"
         android:label="fragment_enable_location"
-        tools:layout="@layout/fragment_enable_location" >
+        tools:layout="@layout/fragment_enable_permissions" >
         <action
             android:id="@+id/action_enableLocationFragment_to_LoginScreen"
             app:destination="@id/LoginScreen" />
