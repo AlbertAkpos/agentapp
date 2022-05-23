@@ -4,9 +4,20 @@
     package="com.youverify.agent_app_android"
     tools:ignore="LockedOrientationActivity">
 
+<!--    Compile time permissions-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+<!--    Runtime permissions-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:name=".AgentApplication"
@@ -18,7 +29,7 @@
         android:theme="@style/Theme.Agent_app_android">
 
         <activity
-            android:name=".presentation.OnBoardingActivity"
+            android:name=".features.OnBoardingActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait"
             android:exported="true">
@@ -30,13 +41,13 @@
         </activity>
 
         <activity
-            android:name=".presentation.HomeActivity"
+            android:name=".features.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".presentation.SplashActivity"
+            android:name=".features.SplashActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>
