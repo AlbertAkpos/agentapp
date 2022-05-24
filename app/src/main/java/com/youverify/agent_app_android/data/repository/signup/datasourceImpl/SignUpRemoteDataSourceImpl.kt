@@ -3,12 +3,8 @@ package com.youverify.agent_app_android.data.repository.signup.datasourceImpl
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
-import com.youverify.agent_app_android.data.model.response.ErrorMessage
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
-import com.youverify.agent_app_android.data.model.signup.SignUpResponse
 import com.youverify.agent_app_android.data.repository.signup.datasource.SignUpRemoteDataSource
-import com.youverify.agent_app_android.util.handleErrorMessage
-import java.lang.Exception
 import javax.inject.Inject
 
 class SignUpRemoteDataSourceImpl @Inject constructor(

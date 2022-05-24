@@ -37,6 +37,7 @@
         <entry key="app/src/main/res/drawable/dashboard_card_bg.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/dashboard_image_bg.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.3055" />
+        <entry key="app/src/main/res/drawable/ic_arrow_up.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_bell_icon.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/ic_bg_performance.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_btn_check.xml" value="0.183" />
@@ -66,6 +67,7 @@
         <entry key="app/src/main/res/drawable/ic_splash.xml" value="0.118" />
         <entry key="app/src/main/res/drawable/ic_splash_logo.xml" value="0.2555" />
         <entry key="app/src/main/res/drawable/ic_splash_screen.xml" value="0.1985" />
+        <entry key="app/src/main/res/drawable/ic_state.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_stroke_vector.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/ic_task_icon.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/ic_toast_check_circle.xml" value="0.202" />
@@ -76,6 +78,7 @@
         <entry key="app/src/main/res/drawable/ic_vp_image_two.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/ic_warning.xml" value="0.203" />
         <entry key="app/src/main/res/drawable/ic_warning_icon.xml" value="0.203" />
+        <entry key="app/src/main/res/drawable/ic_youv_logo.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/link_dialog_bg.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/loc_switch_track.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/profile_image_bg.xml" value="0.183" />
@@ -119,6 +122,8 @@
         <entry key="app/src/main/res/layout/fragment_create_new_password.xml" value="0.28020833333333334" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_enable_location.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_enable_permissions.xml" value="0.29025641025641025" />
+        <entry key="app/src/main/res/layout/fragment_enter_token.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_first_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_fourth_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3885416666666667" />
@@ -127,7 +132,9 @@
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.24230072463768115" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_report_incident.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_reset_pass.xml" value="0.29025641025641025" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.28020833333333334" />
+        <entry key="app/src/main/res/layout/fragment_reset_token.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_save_areas.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/fragment_scrolling.xml" value="0.3885416666666667" />
         <entry key="app/src/main/res/layout/fragment_second_screen.xml" value="0.3729617309570313" />
@@ -159,6 +166,7 @@
         <entry key="app/src/main/res/layout/signature_dialog.xml" value="0.28882537841796874" />
         <entry key="app/src/main/res/layout/single_input_chip.xml" value="0.335" />
         <entry key="app/src/main/res/layout/states_drop_down_item.xml" value="0.28020833333333334" />
+        <entry key="app/src/main/res/layout/success_dialog.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/layout/task_accepted_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/task_assigned_dialog.xml" value="0.33" />
         <entry key="app/src/main/res/layout/task_item.xml" value="0.25" />

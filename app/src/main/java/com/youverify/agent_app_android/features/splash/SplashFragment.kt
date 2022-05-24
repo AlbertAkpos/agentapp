@@ -29,7 +29,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             }else{
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
-        }, 1000)
+        }, 1500)
 
         // Inflate the layout for this fragment
         return binding.root

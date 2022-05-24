@@ -107,7 +107,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     //In Between
                     binding.toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
                     binding.signUpText.visibility = View.GONE
-                    binding.signUpText.animate().alpha(percentage);
+                    binding.signUpText.animate().alpha(percentage)
                 }
             }
         })
@@ -123,9 +123,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         okButton.setOnClickListener {
             dialogBuilder.dismiss()
-//            startActivity(Intent(requireContext(), HomeActivity::class.java))
-//            activity?.finish()
-
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
         }
         dialogBuilder.setCancelable(false)
@@ -264,10 +261,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         validatePhone()
         validateEmail()
         validateStateOfResidence()
+        validatePassword(password)
+        validatePassword(confirmPassword)
 
-        return if(validatePassword(password) &&
-            validatePassword(confirmPassword) &&
-            password == confirmPassword){
+        return if(password == confirmPassword){
             confirmPassLayout.error = null
             confirmPassLayout.isErrorEnabled = false
             true
@@ -283,7 +280,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     //   call to api service to sign up the user
     private fun signUp(){
         if (validateInputs()) {
-            val fieldPartnerId = "1234567890123456789012345";
+            val fieldPartnerId = "1234567890123456789012345"
             val signUpRequest = SignUpRequest(
                 firstName = firstNameLayout.editText?.text.toString().trim(),
                 lastName = lastNameLayout.editText?.text.toString().trim(),

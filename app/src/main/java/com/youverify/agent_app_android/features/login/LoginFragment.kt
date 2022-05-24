@@ -114,8 +114,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun login() {
-        if (true) {
-            println("Reached here oooooo, credentials validated")
+        if (validateFields()) {
             val loginRequest = LoginRequest(
                 email = emailLayout.editText?.text.toString().trim(),
                 password = passLayout.editText?.text.toString().trim()

@@ -92,12 +92,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private fun submit(){
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
-        val view = layoutInflater.inflate(R.layout.reset_password_dialog, null)
-        val successText = view.findViewById<TextView>(R.id.text_pass_changed)
+        val view = layoutInflater.inflate(R.layout.success_dialog, null)
         val okButton = view.findViewById<TextView>(R.id.text_ok)
         dialogBuilder.setView(view)
 
-        successText.text = "Report Submitted"
         okButton.setOnClickListener{
             dialogBuilder.dismiss()
             activity?.onBackPressed()

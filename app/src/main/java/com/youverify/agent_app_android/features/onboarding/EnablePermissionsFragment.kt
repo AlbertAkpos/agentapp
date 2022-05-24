@@ -130,6 +130,7 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
                 }
             }else {
                 binding.verifyButton.visibility = View.GONE
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -144,6 +145,7 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
                 }
             }else {
                 binding.verifyButton.visibility = View.GONE
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -157,6 +159,7 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
                 }
             }else {
                 binding.verifyButton.visibility = View.GONE
+                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
 
