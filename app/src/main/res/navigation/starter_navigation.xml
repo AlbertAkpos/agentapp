@@ -75,7 +75,7 @@
         android:id="@+id/resetPasswordFragment"
         android:name="com.youverify.agent_app_android.features.resetpassword.ResetPassFragment"
         android:label="fragment_reset_password"
-        tools:layout="@layout/fragment_reset_token" >
+        tools:layout="@layout/fragment_reset_password" >
         <action
             android:id="@+id/action_resetPasswordFragment_to_LoginScreen"
             app:destination="@id/LoginScreen" />

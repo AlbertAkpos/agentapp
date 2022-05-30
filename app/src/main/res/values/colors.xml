@@ -8,7 +8,6 @@
 
     <color name="colorTextPrimary">#757575</color>
     <color name="colorTextSecondary">#115766</color>
-    <color name="colorBackground">#FFFFFFFF</color>
 
     <color name="colorOnBoardingIndicatorActive1">#EC7A07</color>
     <color name="colorOnBoardingIndicatorActive2">#21BFAF</color>

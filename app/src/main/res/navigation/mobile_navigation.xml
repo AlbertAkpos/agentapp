@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_notificationsFragment"
             app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
     </fragment>
 
     <fragment
@@ -144,6 +147,15 @@
             app:destination="@id/taskFragment"
             app:popUpTo="@id/taskFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.youverify.agent_app_android.features.verification.TrainingFragment"
+        android:label="fragment_training"
+        tools:layout="@layout/fragment_training" >
+        <action
+            android:id="@+id/action_trainingFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
     </fragment>
 
 

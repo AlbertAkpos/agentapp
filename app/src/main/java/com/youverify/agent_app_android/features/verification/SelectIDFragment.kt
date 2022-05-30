@@ -11,11 +11,13 @@ import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
+import com.youverify.agent_app_android.features.HomeActivity
 
 
 class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
 
     private lateinit var binding: FragmentSelectIdBinding
+    private lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +25,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     ): View{
 
         binding = FragmentSelectIdBinding.inflate(layoutInflater)
+        homeActivity = requireActivity() as HomeActivity
         return binding.root
     }
 
@@ -59,5 +62,10 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         binding.backBtn.setOnClickListener {
             activity?.onBackPressed()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        homeActivity.showNavBar()
     }
 }

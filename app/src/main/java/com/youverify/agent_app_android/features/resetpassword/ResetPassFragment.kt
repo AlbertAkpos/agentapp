@@ -19,17 +19,17 @@ import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
-import com.youverify.agent_app_android.databinding.FragmentResetTokenBinding
+import com.youverify.agent_app_android.databinding.FragmentResetPasswordBinding
 import com.youverify.agent_app_android.util.ProgressLoader
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ResetPassFragment : Fragment(R.layout.fragment_reset_token) {
+class ResetPassFragment : Fragment(R.layout.fragment_reset_password) {
 
     @Inject
     lateinit var progressLoader: ProgressLoader
-    private lateinit var binding: FragmentResetTokenBinding
+    private lateinit var binding: FragmentResetPasswordBinding
     private val resetPassViewModel: ResetPassViewModel by viewModels()
     private lateinit var emailLayout: TextInputLayout
 
@@ -38,7 +38,7 @@ class ResetPassFragment : Fragment(R.layout.fragment_reset_token) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
-        binding = FragmentResetTokenBinding.inflate(layoutInflater)
+        binding = FragmentResetPasswordBinding.inflate(layoutInflater)
 
         emailLayout = binding.emailLayout
 

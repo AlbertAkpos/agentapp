@@ -16,9 +16,11 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
+import com.youverify.agent_app_android.features.HomeActivity
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
+    private lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +28,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
+        homeActivity = requireActivity() as HomeActivity
 
         binding.notificationIcon.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_notificationsFragment)
@@ -41,11 +44,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 //            setupRangePickerDialog()
         }
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            showCompleteOnboardingDialog()
-//        }, 500)
+        if(verificationNotDone()){
+            Handler(Looper.getMainLooper()).postDelayed({
+                showCompleteOnboardingDialog()
+            }, 500)
+        }
+
 
         return binding.root
+    }
+
+    private fun verificationNotDone(): Boolean {
+       return true
     }
 
 
@@ -127,7 +137,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-
     private fun showCompleteOnboardingDialog() {
         val dialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
@@ -136,13 +145,22 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val checkVerifyIdentity = view.findViewById<CheckBox>(R.id.check_verify_identity)
         val checkSelectPrefAreas = view.findViewById<CheckBox>(R.id.check_select_areas)
         dialogBuilder.setView(view)
+
+        checkCompleteTraining.setOnClickListener{
+            dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
+            findNavController().navigate(R.id.action_dashboardFragment_to_trainingFragment)
+        }
+
         checkVerifyIdentity.setOnClickListener {
             dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectIDFragment)
         }
 
         checkSelectPrefAreas.setOnClickListener {
             dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectAreasFragment)
         }
 

@@ -114,11 +114,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun login() {
-        if (validateFields()) {
+        if (true) {
             val loginRequest = LoginRequest(
-                email = emailLayout.editText?.text.toString().trim(),
-                password = passLayout.editText?.text.toString().trim()
+                email = "richardebboh@gmail.com",  //emailLayout.editText?.text.toString().trim()
+                password = "12345678"    // passLayout.editText?.text.toString().trim()
             )
+
 
             loginViewModel.login(loginRequest = loginRequest)
 
@@ -131,6 +132,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         is LoginViewState.Success -> {
                             progressLoader.hide()
                             loginSuccessfulOrFailed(it.loginResponseData)
+
+                            //save this token inside sharedPref or db
+                            val token = it.loginResponseData?.token
+
                             startActivity(Intent(requireContext(), HomeActivity::class.java))
                             activity?.finish()
                         }

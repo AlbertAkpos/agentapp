@@ -84,21 +84,62 @@
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
                     android:text="@string/select"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_14"
                     android:dropDownWidth="135dp"
                     android:dropDownHeight="280dp"
-                    tools:ignore="LabelFor"/>
-
-
-<!--                <com.google.android.material.chip.ChipGroup-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
-
-
-<!--                </com.google.android.material.chip.ChipGroup>-->
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
+<!--            <com.google.android.flexbox.FlexboxLayout-->
+<!--                android:id="@+id/recipient_group"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="0dp"-->
+<!--                android:layout_marginTop="@dimen/margin_24"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:background="@drawable/id_verify_bg"-->
+<!--                app:flexWrap="wrap"-->
+<!--                app:justifyContent="flex_end"-->
+<!--                app:alignItems="stretch"-->
+<!--                app:alignContent="space_around"-->
+<!--                app:showDivider="beginning|middle|end"-->
+<!--                app:dividerDrawable="@null"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_verify_email">-->
+
+<!--                <EditText-->
+<!--                    android:id="@+id/recipient_input"-->
+<!--                    app:layout_flexGrow="1"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:paddingStart="@dimen/margin_24"-->
+<!--                    android:paddingEnd="0dp"-->
+<!--                    android:imeOptions="actionDone"-->
+<!--                   android:inputType="textAutoComplete"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:fontFamily="@font/br_sonoma_regular"-->
+<!--                    android:text="@string/select"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="@dimen/text_14"-->
+<!--                    tools:ignore="LabelFor"/>-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/ic_arrow_down2"-->
+<!--                    android:layout_marginEnd="@dimen/margin_16"-->
+<!--                    android:contentDescription="@string/select"-->
+<!--                    android:gravity="end"/>-->
+
+<!--            </com.google.android.flexbox.FlexboxLayout>-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/done_btn"
@@ -110,6 +151,7 @@
                 android:text="@string/done"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_select_id"
