@@ -41,7 +41,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.youverify.agent_app_android.features.settings.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
@@ -54,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectIDFragment"
-        android:name="com.youverify.agent_app_android.features.verification.SelectIDFragment"
+        android:name="com.youverify.agent_app_android.features.verification.id.SelectIDFragment"
         android:label="fragment_select_id"
         tools:layout="@layout/fragment_select_id" >
         <action
@@ -63,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadPassportFragment"
-        android:name="com.youverify.agent_app_android.features.verification.UploadPassportFragment"
+        android:name="com.youverify.agent_app_android.features.verification.id.UploadPassportFragment"
         android:label="fragment_upload_passport"
         tools:layout="@layout/fragment_upload_passport" >
         <action
@@ -72,10 +76,14 @@
         <action
             android:id="@+id/action_uploadPassportFragment_to_verificationFailedFragment"
             app:destination="@id/verificationFailedFragment" />
+        <argument
+            android:name="uploadInfo"
+            app:argType="com.youverify.agent_app_android.data.model.upload.UploadInfo" />
+
     </fragment>
     <fragment
         android:id="@+id/verificationResponseFragment"
-        android:name="com.youverify.agent_app_android.features.verification.VerificationResponseFragment"
+        android:name="com.youverify.agent_app_android.features.verification.id.VerificationResponseFragment"
         android:label="fragment_verification_success"
         tools:layout="@layout/fragment_verification_success" >
         <action
@@ -84,16 +92,19 @@
     </fragment>
     <fragment
         android:id="@+id/verificationFailedFragment"
-        android:name="com.youverify.agent_app_android.features.verification.VerificationFailedFragment"
+        android:name="com.youverify.agent_app_android.features.verification.id.VerificationFailedFragment"
         android:label="fragment_verification_failed"
         tools:layout="@layout/fragment_verification_failed" >
         <action
             android:id="@+id/action_verificationFailedFragment_to_selectIDFragment"
             app:destination="@id/selectIDFragment" />
+        <action
+            android:id="@+id/action_verificationFailedFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectAreasFragment"
-        android:name="com.youverify.agent_app_android.features.verification.SelectAreasFragment"
+        android:name="com.youverify.agent_app_android.features.verification.areas.SelectAreasFragment"
         android:label="fragment_select_areas"
         tools:layout="@layout/fragment_select_areas" >
         <action
@@ -102,7 +113,7 @@
     </fragment>
     <fragment
         android:id="@+id/saveAreasFragment"
-        android:name="com.youverify.agent_app_android.features.verification.SaveAreasFragment"
+        android:name="com.youverify.agent_app_android.features.verification.areas.SaveAreasFragment"
         android:label="fragment_save_areas"
         tools:layout="@layout/fragment_save_areas" >
         <action
@@ -130,9 +141,6 @@
         android:name="com.youverify.agent_app_android.features.task.TaskDetailsFragment"
         android:label="fragment_task_details"
         tools:layout="@layout/fragment_task_details" >
-<!--        <argument-->
-<!--            android:name="currentItem"-->
-<!--            app:argType="com.youverify.agent_app_android.model.NotificationsItem" />-->
         <action
             android:id="@+id/action_taskDetailsFragment_to_accessBuildingFragment"
             app:destination="@id/accessBuildingFragment" />
@@ -150,7 +158,7 @@
     </fragment>
     <fragment
         android:id="@+id/trainingFragment"
-        android:name="com.youverify.agent_app_android.features.verification.TrainingFragment"
+        android:name="com.youverify.agent_app_android.features.verification.training.TrainingFragment"
         android:label="fragment_training"
         tools:layout="@layout/fragment_training" >
         <action

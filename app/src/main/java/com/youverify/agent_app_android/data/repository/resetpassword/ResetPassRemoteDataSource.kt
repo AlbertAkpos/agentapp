@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.data.repository.resetpassword.datasource
+package com.youverify.agent_app_android.data.repository.resetpassword
 
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.resetpassword.Email

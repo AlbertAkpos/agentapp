@@ -1,19 +1,19 @@
-package com.youverify.agent_app_android.data.repository.login.datasourceImpl
+package com.youverify.agent_app_android.data.repository.signup
 
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
-import com.youverify.agent_app_android.data.model.login.LoginRequest
-import com.youverify.agent_app_android.data.repository.login.datasource.LoginRemoteDataSource
+import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import javax.inject.Inject
 
-class LoginRemoteDataSourceImpl @Inject constructor(
-    private val agentService : AgentService
-    ): LoginRemoteDataSource {
+class SignUpRemoteDataSourceImpl @Inject constructor(
+    private val agentService: AgentService,
+) : SignUpRemoteDataSource {
 
-    override suspend fun login(loginRequest: LoginRequest): Result<*> {
+
+    override suspend fun signUp(signUpRequest: SignUpRequest): Result<*> {
         return try{
-            val res = agentService.loginAgent(loginRequest)
+            val res = agentService.signUpAgent(signUpRequest)
 
             when(res.isSuccessful){
                 true -> {
@@ -25,8 +25,10 @@ class LoginRemoteDataSourceImpl @Inject constructor(
                     Result.Failed(res.errorBody())
                 }
             }
+
         }catch (e: Throwable){
             Result.Failed(e.message)
         }
     }
+
 }

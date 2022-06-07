@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.verification.VerificationFailedFragment">
+    tools:context=".features.verification.id.VerificationFailedFragment">
 
     <ImageView
         android:id="@+id/failed_img"
@@ -46,6 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_select_identity" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/try_again_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_48"

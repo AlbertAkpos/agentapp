@@ -18,6 +18,8 @@ data class Agent(
     val firstName: String,
     @SerializedName("hasVerifiedEmail")
     val hasVerifiedEmail: Boolean,
+    @SerializedName("isTrained")
+    val isTrained: Boolean,
     @SerializedName("id")
     val id: String,
     @SerializedName("isVerified")

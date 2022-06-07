@@ -9,7 +9,10 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.viewbinding.library.fragment.viewBinding
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -33,7 +36,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     @Inject
     lateinit var progressLoader: ProgressLoader
     private val signUpViewModel: SignUpViewModel by viewModels()
-    private lateinit var binding: FragmentSignUpBinding
+    private val binding: FragmentSignUpBinding by viewBinding()
 
     private lateinit var firstNameLayout: TextInputLayout
     private lateinit var lastNameLayout: TextInputLayout
@@ -48,7 +51,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignUpBinding.inflate(layoutInflater)
 
         firstNameLayout = binding.firstNameLayout
         lastNameLayout = binding.lastNameLayout
@@ -83,7 +85,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
 
         binding.signUpButton.setOnClickListener {
-           signUp()
+            signUp()
         }
 
         //show the sign up text on collapse of toolbar and vice versa
@@ -95,17 +97,32 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     //  Collapsed
                     //Show TextView here
                     binding.signUpText.visibility = View.VISIBLE
-                    binding.toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorDark))
+                    binding.toolbar.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorDark
+                        )
+                    )
                 }
                 verticalOffset == 0 -> {
                     //Expanded
                     //Hide TextView here
                     binding.signUpText.visibility = View.GONE
-                    binding.toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+                    binding.toolbar.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimaryDark
+                        )
+                    )
                 }
                 else -> {
                     //In Between
-                    binding.toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
+                    binding.toolbar.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimaryDark
+                        )
+                    )
                     binding.signUpText.visibility = View.GONE
                     binding.signUpText.animate().alpha(percentage)
                 }
@@ -123,6 +140,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         okButton.setOnClickListener {
             dialogBuilder.dismiss()
+            clearFields()
             findNavController().navigate(R.id.action_SignUpScreen_to_LoginScreen)
         }
         dialogBuilder.setCancelable(false)
@@ -130,31 +148,61 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
+    private fun clearFields() {
+        firstNameLayout.editText?.text?.clear()
+        lastNameLayout.editText?.text?.clear()
+        phoneLayout.editText?.text?.clear()
+        emailLayout.editText?.text?.clear()
+        stateOfResLayout.editText?.text?.clear()
+        passLayout.editText?.text?.clear()
+        confirmPassLayout.editText?.text?.clear()
+    }
+
     private fun validateFirstName(): Boolean {
         val value = firstNameLayout.editText?.text.toString().trim()
 
-        return if (value.isEmpty()) {
-            firstNameLayout.error = "Field cannot be empty"
-            firstNameLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            false
-        } else {
-            firstNameLayout.error = null
-            firstNameLayout.isErrorEnabled = false
-            true
+        return when {
+            value.isEmpty() -> {
+                firstNameLayout.error = "Field cannot be empty"
+                firstNameLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+            !value.matches("^[a-zA-Z]+(([',.\\-][a-zA-Z])?[a-zA-Z]*)*\$".toRegex()) -> {
+                firstNameLayout.error = "Name cannot contain number or special character"
+                firstNameLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+            else -> {
+                firstNameLayout.error = null
+                firstNameLayout.isErrorEnabled = false
+                true
+            }
         }
     }
 
     private fun validateLastName(): Boolean {
         val value = lastNameLayout.editText?.text.toString().trim()
 
-        return if (value.isEmpty()) {
-            lastNameLayout.error = "Field cannot be empty"
-            lastNameLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            false
-        } else {
-            lastNameLayout.error = null
-            lastNameLayout.isErrorEnabled = false
-            true
+        return when {
+            value.isEmpty() -> {
+                lastNameLayout.error = "Field cannot be empty"
+                lastNameLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+            !value.matches("^[a-zA-Z]+(([',.\\-][a-zA-Z])?[a-zA-Z]*)*\$".toRegex()) -> {
+                lastNameLayout.error = "Name contains invalid characters or whitespaces"
+                lastNameLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+            else -> {
+                lastNameLayout.error = null
+                lastNameLayout.isErrorEnabled = false
+                true
+            }
         }
     }
 
@@ -165,17 +213,26 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         return when {
             value.isEmpty() -> {
                 phoneLayout.error = "Field cannot be empty"
-                phoneLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                phoneLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             !value.matches(checkSpaces.toRegex()) -> {
                 phoneLayout.error = "No whitespaces are allowed!"
-                phoneLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                phoneLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             value.length < 11 || value.length > 11 -> {
                 phoneLayout.error = "Phone number less than 11 digits"
-                phoneLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                phoneLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+            !value.matches("^([0]{1})[0-9]{10}\$".toRegex()) -> {
+                phoneLayout.error = "Invalid phone number"
+                phoneLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
@@ -192,12 +249,14 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         return when {
             value.isEmpty() -> {
                 emailLayout.error = "Field cannot be empty"
-                emailLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                emailLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> {
                 emailLayout.error = "Invalid email"
-                emailLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                emailLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
@@ -214,7 +273,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         return when {
             value.isEmpty() -> {
                 stateOfResLayout.error = "Field cannot be empty"
-                stateOfResLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                stateOfResLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
@@ -225,23 +285,26 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         }
     }
 
-    private fun validatePassword(value : String): Boolean {
+    private fun validatePassword(value: String): Boolean {
         val checkSpaces = "\\A\\w{1,20}\\z"
 
         return when {
             value.isEmpty() -> {
                 passLayout.error = "Field cannot be empty"
-                passLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                passLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             value.length < 8 -> {
                 passLayout.error = "Password must be up to 8 characters"
-                passLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                passLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             !value.matches(checkSpaces.toRegex()) -> {
                 passLayout.error = "No whitespaces are allowed!"
-                passLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                passLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
@@ -252,7 +315,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         }
     }
 
-    private fun validateInputs(): Boolean {
+    private fun inputsIsValid(): Boolean {
         val password = passLayout.editText?.text.toString().trim()
         val confirmPassword = confirmPassLayout.editText?.text.toString().trim()
 
@@ -261,26 +324,28 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         validatePhone()
         validateEmail()
         validateStateOfResidence()
-        validatePassword(password)
-        validatePassword(confirmPassword)
 
-        return if(password == confirmPassword){
-            confirmPassLayout.error = null
-            confirmPassLayout.isErrorEnabled = false
-            true
-        }else{
-            passLayout.error = "Passwords do not match"
-            confirmPassLayout.error = "Passwords do not match"
-            passLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            confirmPassLayout.errorIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            false
-        }
+        if (validatePassword(password) && validatePassword(confirmPassword)) {
+            return if (password == confirmPassword) {
+                confirmPassLayout.error = null
+                confirmPassLayout.isErrorEnabled = false
+                true
+            } else {
+                passLayout.error = "Passwords do not match"
+                confirmPassLayout.error = "Passwords do not match"
+                passLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                confirmPassLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
+        } else return false
     }
 
     //   call to api service to sign up the user
-    private fun signUp(){
-        if (validateInputs()) {
-            val fieldPartnerId = "1234567890123456789012345"
+    private fun signUp() {
+        if (inputsIsValid()) {
+            val fieldPartnerId = "628df5053fad01748fdee367"
             val signUpRequest = SignUpRequest(
                 firstName = firstNameLayout.editText?.text.toString().trim(),
                 lastName = lastNameLayout.editText?.text.toString().trim(),

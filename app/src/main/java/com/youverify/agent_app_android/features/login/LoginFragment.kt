@@ -1,6 +1,8 @@
 package com.youverify.agent_app_android.features.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -22,6 +24,7 @@ import com.youverify.agent_app_android.util.ProgressLoader
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -32,6 +35,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var emailLayout: TextInputLayout
     private lateinit var passLayout: TextInputLayout
+    private val pkgName = "com.youverify.agent_app_android.features.login"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -114,10 +118,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun login() {
-        if (true) {
+        if (validateFields()) {
             val loginRequest = LoginRequest(
-                email = "richardebboh@gmail.com",  //emailLayout.editText?.text.toString().trim()
-                password = "12345678"    // passLayout.editText?.text.toString().trim()
+                email = emailLayout.editText?.text.toString().trim(),    //"richardmeboh@gmail.com",
+                password = passLayout.editText?.text.toString().trim()   //"12345678"
             )
 
 
@@ -131,11 +135,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         }
                         is LoginViewState.Success -> {
                             progressLoader.hide()
-                            loginSuccessfulOrFailed(it.loginResponseData)
-
-                            //save this token inside sharedPref or db
-                            val token = it.loginResponseData?.token
-
+                            saveLoginResponse(it.loginResponseData)
                             startActivity(Intent(requireContext(), HomeActivity::class.java))
                             activity?.finish()
                         }
@@ -151,8 +151,22 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun loginSuccessfulOrFailed(loginResponse: LoginResponseData?) {
-        Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+    private fun saveLoginResponse(loginResponse: LoginResponseData?) {
+
+        if(loginResponse != null){
+            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+
+            val sharedPreferences: SharedPreferences =
+                requireActivity().getPreferences( Context.MODE_PRIVATE)
+            sharedPreferences.edit().putString("token", loginResponse.token).apply()
+            sharedPreferences.edit().putBoolean("isTrained", loginResponse.agent.isTrained).apply()
+            sharedPreferences.edit().putBoolean("isVerified", loginResponse.agent.isVerified).apply()
+//            sharedPreferences.edit().putString("firstName", loginResponse.agent.firstName).apply()
+//            sharedPreferences.edit().putString("lastName", loginResponse.agent.lastName).apply()
+//            if(loginResponse.agent.preferredAreas.isNotEmpty()) {
+//                sharedPreferences.edit().putBoolean("prefAreas", true).apply()
+//            }
+        }
         println("Response: $loginResponse")
     }
 }

@@ -1,22 +1,22 @@
 package com.youverify.agent_app_android.data.repository
 
 import com.youverify.agent_app_android.core.functional.Result
-import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponse
-import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSource
-import com.youverify.agent_app_android.domain.repository.LoginRepository
+import com.youverify.agent_app_android.data.repository.upload.UploadRemoteDataSource
+import com.youverify.agent_app_android.domain.repository.UploadRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
+import retrofit2.http.Part
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(
-    private val loginRemoteDataSource: LoginRemoteDataSource
-)
-    : LoginRepository {
+class UploadRepositoryImpl @Inject constructor(
+    private val uploadRemoteDataSource: UploadRemoteDataSource
+) : UploadRepository {
 
-    override fun login(loginRequest: LoginRequest): Flow<Result<Any>> {
+    override fun uploadImage(@Part uploadRequest: MultipartBody.Part): Flow<Result<Any>> {
         return flow {
-            when (val res = loginRemoteDataSource.login(loginRequest)){
+            when (val res = uploadRemoteDataSource.uploadImage(uploadRequest)) {
                 is Result.Success<*> -> {
                     if (res.data is LoginResponse) {
                         emit(Result.Success(res.data))
@@ -29,6 +29,4 @@ class LoginRepositoryImpl @Inject constructor(
             }
         }
     }
-
-
 }

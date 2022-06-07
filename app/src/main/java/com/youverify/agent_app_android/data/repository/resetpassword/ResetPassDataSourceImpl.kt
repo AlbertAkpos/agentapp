@@ -1,10 +1,9 @@
-package com.youverify.agent_app_android.data.repository.resetpassword.datasourceImpl
+package com.youverify.agent_app_android.data.repository.resetpassword
 
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.model.resetpassword.Email
-import com.youverify.agent_app_android.data.repository.resetpassword.datasource.ResetPassRemoteDataSource
 import com.youverify.agent_app_android.util.handleErrorMessage
 import javax.inject.Inject
 

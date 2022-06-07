@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/padding_24"
     android:paddingEnd="@dimen/padding_24"
-    tools:context=".features.verification.UploadPassportFragment">
+    tools:context=".features.verification.id.UploadPassportFragment">
 
 
     <ImageButton
@@ -133,20 +133,39 @@
                 app:layout_constraintTop_toBottomOf="@id/root_upload" />
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/images_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/upload_img_bg"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/text_warning"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/verify_btn"
+                android:id="@+id/submit_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_80"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="@string/verify"
+                android:text="@string/submit"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_warning"
+                app:layout_constraintTop_toBottomOf="@id/images_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="TextContrastCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -126,15 +126,15 @@
     <string name="image_must_be_either_jpg_or_png_and_not_more_than_8mb">Image must be either .jpg or .png and not more than 8MB</string>
     <string name="verify">Verify</string>
     <string name="congratulations_your_identity_verification_was_successful">Congratulations, your identity verification was\n successful</string>
-    <string name="identity_verification_successful">Identity Verification Successful</string>
-    <string name="identity_verification_failed">Identity Verification Failed</string>
+    <string name="identity_verification_successful">Identity Verification Request Sent</string>
+    <string name="identity_verification_failed">Identity Verification Request Failed</string>
     <string name="ok_btn">OK</string>
     <string name="failed_text">Sorry, your identity verification failed. You\n have <b>2 </b>more chances</string>
     <string name="try_again">Try Again</string>
     <string name="select_preferred_areas">Select Preferred Areas</string>
     <string name="preferred_areas_saved">Preferred Areas Saved</string>
     <string name="your_referred_areas_have_been_saves_n_successfully">Your preferred areas have been saved\n successfully</string>
-    <string name="enable_location">Enable Location</string>
+    <string name="enable_location">Enable Permissions</string>
     <string name="please_give_access_to_the_following_features">Please give access to the following features:</string>
     <string name="location_access">Location access</string>
     <string name="photos_gallery">Photos / Gallery</string>
@@ -209,6 +209,8 @@
     <string-array name="idType">
         <item>BVN</item>
         <item>NIN</item>
+        <item>PVC</item>
+        <item>I\'ntl Passport</item>
     </string-array>
 
 

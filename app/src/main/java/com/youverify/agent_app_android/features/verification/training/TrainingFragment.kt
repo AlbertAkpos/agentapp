@@ -1,12 +1,10 @@
-package com.youverify.agent_app_android.features.verification
+package com.youverify.agent_app_android.features.verification.training
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
