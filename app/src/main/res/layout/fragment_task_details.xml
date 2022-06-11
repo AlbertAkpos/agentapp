@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.task.TaskDetailsFragment">
+    tools:context=".features.task.views.TaskDetailsFragment">
 
     <Toolbar
         android:id="@+id/toolbar"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_4"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="Live Photo Address Verification"
+                tools:text="Live Photo Address Verification"
                 android:textColor="@color/createNewPassTextColor"
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
@@ -122,7 +122,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginTop="@dimen/margin_4"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="Thomas Opeyemi"
+                tools:text="Thomas Opeyemi"
                 android:textColor="@color/createNewPassTextColor"
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
@@ -146,7 +146,7 @@
                 android:layout_marginStart="@dimen/margin_16"
                 android:layout_marginTop="@dimen/margin_14"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="13, Bishop Street, Illupeju, Lagos"
+                tools:text="13, Bishop Street, Illupeju, Lagos"
                 android:textColor="@color/createNewPassTextColor"
                 android:textSize="13sp"
                 android:textStyle="normal"
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_4"
                 android:fontFamily="@font/br_sonoma_regular"
-                android:text="Candidate is also known as Mr. Classic"
+                tools:text="Candidate is also known as Mr. Classic"
                 android:textColor="@color/createNewPassTextColor"
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
@@ -266,6 +266,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_24"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/layout_access_loc"
                 app:layout_constraintStart_toStartOf="@+id/layout_access_loc"
                 app:layout_constraintEnd_toEndOf="@+id/layout_access_loc">
@@ -318,6 +319,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/choice_layout"
@@ -335,6 +337,7 @@
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/choice_layout" />
 
@@ -350,6 +353,7 @@
                 app:hintEnabled="false"
                 app:endIconMode="custom"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/select_reason_text"
                 app:layout_constraintStart_toStartOf="@+id/select_reason_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -382,6 +386,7 @@
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reason_layout" />
 
@@ -392,6 +397,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:background="@drawable/upload_img_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/images_text">
@@ -423,6 +429,7 @@
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upload_view" />
 
@@ -439,6 +446,7 @@
                 app:endIconMode="custom"
                 app:endIconTint="@null"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/get_tag_text"
                 app:layout_constraintStart_toStartOf="@+id/get_tag_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -470,6 +478,7 @@
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/geo_tag_layout" />
 
@@ -485,6 +494,7 @@
                 app:endIconMode="custom"
                 app:hintEnabled="false"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/landmark_text"
                 app:layout_constraintStart_toStartOf="@+id/landmark_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -515,6 +525,7 @@
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/landmark_layout" />
 
@@ -530,6 +541,7 @@
                 app:endIconMode="custom"
                 app:hintEnabled="false"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/info_text"
                 app:layout_constraintStart_toStartOf="@+id/info_text"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -562,6 +574,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/info_layout"

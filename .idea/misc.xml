@@ -95,6 +95,7 @@
         <entry key="app/src/main/res/layout/activity_on_boarding_items.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_starter.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_task.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/appbar_drop_background.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/appbar_drop_item.xml" value="0.2164855072463768" />
         <entry key="app/src/main/res/layout/areas_drop_down_item.xml" value="0.2947916666666667" />

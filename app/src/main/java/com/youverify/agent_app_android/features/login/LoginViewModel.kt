@@ -7,6 +7,7 @@ import com.youverify.agent_app_android.data.model.login.LoginRequest
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.data.api.TokenInterceptor
 import com.youverify.agent_app_android.data.model.login.LoginResponse
 import com.youverify.agent_app_android.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val interceptor: TokenInterceptor
 ) : ViewModel() {
 
    private val _loginChannel = Channel<LoginViewState>()
@@ -29,13 +31,12 @@ class LoginViewModel @Inject constructor(
 
                 when(it){
                     is Result.Success -> {
-                        print("This was successful ${it.data}")
                         if (it.data is LoginResponse){
+                            interceptor.setToken(it.data.data.token)
                             _loginChannel.send(LoginViewState.Success(R.string.sign_in, it.data.data))
                         }
                     }
                     is Result.Failed -> {
-                        println("This call failed")
                         _loginChannel.send(LoginViewState.Failure(R.string.sign_in, "Wrong username or password"))
                     }
                     else -> {}

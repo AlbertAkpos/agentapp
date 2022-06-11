@@ -2,16 +2,15 @@ package com.youverify.agent_app_android.features.task
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.youverify.agent_app_android.data.model.TaskItem
+import com.youverify.agent_app_android.util.SingleEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class TaskViewModel : ViewModel() {
+    val taskItemState = MutableLiveData<SingleEvent<TaskItem>>()
 
-    val verificationTypeText = MutableLiveData<String?>()      //data that will be in the verification type field
-    val addressText = MutableLiveData<String?>()     //data that will be in the address field
-    val timeText =  MutableLiveData<String?>()      //data that will be in the time field
-
-
-
-//    fun getTaskList() = liveData {
-//
-//    }
+    fun setTaskItem(taskItem: TaskItem) {
+        taskItemState.postValue(SingleEvent(taskItem))
+    }
 }

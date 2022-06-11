@@ -28,7 +28,6 @@ class TCScreen : Fragment(R.layout.fragment_t_c_screen) {
             activity?.onBackPressed()
         }
 
-        // Inflate the layout for this fragment
         return binding.root
     }
 }

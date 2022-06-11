@@ -8,7 +8,6 @@
 
     <color name="colorTextPrimary">#757575</color>
     <color name="colorTextSecondary">#115766</color>
-    <color name="colorBackground">#FFFFFFFF</color>
 
     <color name="colorOnBoardingIndicatorActive1">#EC7A07</color>
     <color name="colorOnBoardingIndicatorActive2">#21BFAF</color>
@@ -44,7 +43,6 @@
 
 
 <!--    Notifications and dashboard screen colors-->
-    <color name="accessGrantedColor">#4C963F</color>
     <color name="nameTextColor">#46B2C8</color>
     <color name="accessExpColor">#EC7A07</color>
     <color name="taskRejectedColor">#E5382B</color>
@@ -54,7 +52,6 @@
     <color name="viewBackgroundColor">#EFF8F9</color>
     <color name="transparent">#E6F7FF</color>
     <color name="cardGreenColor">#2EB255</color>
-    <color name="bottomHandleBg">#DADBDC</color>
     <color name="handleColor">#DADBDC</color>
 
 

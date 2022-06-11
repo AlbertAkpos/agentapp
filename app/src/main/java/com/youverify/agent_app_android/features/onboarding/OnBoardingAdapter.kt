@@ -8,7 +8,7 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.OnboardingItemsBinding
 import com.youverify.agent_app_android.data.model.OnBoardingItem
 
-class OnBoardingItemsAdapter()
+class OnBoardingItemsAdapter
     : RecyclerView.Adapter<OnBoardingViewHolder>(){
 
     private val onboardingItemList = ArrayList<OnBoardingItem>()

@@ -3,7 +3,7 @@ package com.youverify.agent_app_android.data.repository
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
-import com.youverify.agent_app_android.data.repository.signup.datasource.SignUpRemoteDataSource
+import com.youverify.agent_app_android.data.repository.signup.SignUpRemoteDataSource
 import com.youverify.agent_app_android.domain.repository.SignUpRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
