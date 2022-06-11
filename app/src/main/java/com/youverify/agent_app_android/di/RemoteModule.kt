@@ -6,10 +6,13 @@ import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSour
 import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSourceImpl
 import com.youverify.agent_app_android.data.repository.resetpassword.ResetPassRemoteDataSource
 import com.youverify.agent_app_android.data.repository.resetpassword.ResetPassDataSourceImpl
-import com.youverify.agent_app_android.data.repository.signup.SignUpRemoteDataSource
-import com.youverify.agent_app_android.data.repository.signup.SignUpRemoteDataSourceImpl
-import com.youverify.agent_app_android.data.repository.upload.UploadRemoteDataSource
-import com.youverify.agent_app_android.data.repository.upload.UploadRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.signup.*
+import com.youverify.agent_app_android.data.repository.verification.StateLgaCacheDataSource
+import com.youverify.agent_app_android.data.repository.verification.StateLgaCacheDataSourceImpl
+import com.youverify.agent_app_android.data.repository.verification.upload.UploadRemoteDataSource
+import com.youverify.agent_app_android.data.repository.verification.upload.UploadRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.verification.StateLgaRemoteDataSource
+import com.youverify.agent_app_android.data.repository.verification.StateLgaRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -33,6 +36,18 @@ interface RemoteModule {
     @get:Binds
     val UploadRemoteDataSourceImpl.uploadRemoteImpl: UploadRemoteDataSource
 
+    @get:Binds
+    val StateRemoteDataSourceImpl.stateRemoteImpl: StateRemoteDataSource
+
+    @get:Binds
+    val StateCacheDataSourceImpl.stateCacheImpl: StateCacheDataSource
+
+    @get:Binds
+    val StateLgaRemoteDataSourceImpl.stateLgasRemoteImpl: StateLgaRemoteDataSource
+
+    @get:Binds
+    val StateLgaCacheDataSourceImpl.stateLgaCacheImpl: StateLgaCacheDataSource
+
     companion object {
         @[Provides Singleton]
         fun provideApiService(tokenInterceptor: TokenInterceptor): AgentService =
@@ -41,6 +56,10 @@ interface RemoteModule {
         @[Provides Singleton]
         fun provideUploadApiService(tokenInterceptor: TokenInterceptor): UploadService =
             UploadServiceFactory.createApiService(BuildConfig.DEBUG, tokenInterceptor)
+
+        @[Provides Singleton]
+        fun provideAddressTaskApiService(tokenInterceptor: TokenInterceptor): AddressTaskService =
+            AdressTaskServiceFactory.createApiService(BuildConfig.DEBUG, tokenInterceptor)
     }
 
 }

@@ -1,13 +1,7 @@
 package com.youverify.agent_app_android.di
 
-import com.youverify.agent_app_android.data.repository.LoginRepositoryImpl
-import com.youverify.agent_app_android.data.repository.ResetPassRepositoryImpl
-import com.youverify.agent_app_android.data.repository.SignUpRepositoryImpl
-import com.youverify.agent_app_android.data.repository.UploadRepositoryImpl
-import com.youverify.agent_app_android.domain.repository.LoginRepository
-import com.youverify.agent_app_android.domain.repository.ResetPassRepository
-import com.youverify.agent_app_android.domain.repository.SignUpRepository
-import com.youverify.agent_app_android.domain.repository.UploadRepository
+import com.youverify.agent_app_android.data.repository.*
+import com.youverify.agent_app_android.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +22,10 @@ interface DataModule {
 
     @get:Binds
     val UploadRepositoryImpl.uploadRepoImpl: UploadRepository
+
+    @get:Binds
+    val StateRepositoryImpl.stateRepoImpl: StateRepository
+
+    @get:Binds
+    val StateLgaRepositoryImpl.stateLgaRepoImpl: StateLgaRepository
 }

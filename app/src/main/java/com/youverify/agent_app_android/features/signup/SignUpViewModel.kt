@@ -1,22 +1,26 @@
 package com.youverify.agent_app_android.features.signup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
+import com.youverify.agent_app_android.domain.usecase.GetStatesUseCase
 import com.youverify.agent_app_android.domain.usecase.SignupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 import javax.inject.Inject
 
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val yvAgentSignupUseCase: SignupUseCase
+    private val yvAgentSignupUseCase: SignupUseCase,
+    private val getAllStatesUseCase: GetStatesUseCase
     ): ViewModel(){
 
 
@@ -44,5 +48,17 @@ class SignUpViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+
+    fun getStates() = liveData {
+        val stateList = getAllStatesUseCase.execute()
+        val states: ArrayList<String> = arrayListOf()
+        if (stateList != null){
+            for (state in stateList){
+                states.add(state.name)
+            }
+        }
+        emit(states)
     }
 }

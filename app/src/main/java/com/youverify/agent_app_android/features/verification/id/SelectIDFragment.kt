@@ -1,8 +1,6 @@
 package com.youverify.agent_app_android.features.verification.id
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,9 +17,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.data.model.upload.UploadInfo
+import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,8 +29,6 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
 
     private lateinit var binding: FragmentSelectIdBinding
     private lateinit var homeActivity: HomeActivity
-    private val pkgName = "com.youverify.agent_app_android.features.verification.id"
-
     private lateinit var idTypeLayout: TextInputLayout
     private lateinit var dateOfBirth: TextInputLayout
     private lateinit var reference: TextInputLayout
@@ -39,7 +36,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     private lateinit var dobEditText: AutoCompleteTextView
     private lateinit var continueBtn: MaterialButton
     private lateinit var backBtn: ImageButton
-    var formatDate = SimpleDateFormat("dd MM yyyy", Locale.US)
+    var formatDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,10 +63,6 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     }
 
     private fun configureUI() {
-        //passing the array adapter for states in the autocomplete textview
-        val idType = resources.getStringArray(R.array.idType)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.id_type_drop_down_item, idType)
-        idTypeEditText.setAdapter(arrayAdapter)
         idTypeEditText.setOnClickListener {
             idTypeEditText.showDropDown()
         }
@@ -114,28 +107,24 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         }
 
         continueBtn.setOnClickListener {
-            val sharedPreferences: SharedPreferences =
-                requireActivity().getSharedPreferences(pkgName, Context.MODE_PRIVATE)
-
-            val firstName = sharedPreferences.getString("firstName", "")
-            val lastName = sharedPreferences.getString("lastName", "")
+            val firstName = AgentSharePreference(requireContext()).getString("FIRST_NAME")
+            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
             val id = idTypeLayout.editText?.text.toString()
             val dateOfBirth = dateOfBirth.editText?.text?.trim().toString()
             val reference = reference.editText?.text?.trim().toString()
 
-            val uploadInfo = UploadInfo(
-                firstName = firstName!!,
-                lastName = lastName!!,
+            val verifyIdRequest = VerifyIDRequest(
+                firstName = firstName,
+                lastName = lastName,
                 idType = id,
                 dateOfBirth = dateOfBirth,
                 reference = reference,
-                image = ""
+                imageUrl = ""
             )
 
-            println("From SelectID: $uploadInfo")
+            println("From SelectID: $verifyIdRequest")
 
-            val action =
-                SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(uploadInfo)
+            val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)
             findNavController().navigate(action)
         }
 
@@ -147,5 +136,14 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     override fun onDestroy() {
         super.onDestroy()
         homeActivity.showNavBar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        //passing the array adapter for states in the autocomplete textview
+        val idType = resources.getStringArray(R.array.idType)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.id_type_drop_down_item, idType)
+        idTypeEditText.setAdapter(arrayAdapter)
     }
 }

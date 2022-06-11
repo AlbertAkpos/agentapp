@@ -21,6 +21,7 @@ android {
 
         buildConfigField "String", "BASE_URL", "\"https://agent.dev.svc.youverify.co/v1/\""
         buildConfigField "String", "BASE_URL_UPLOAD", "\"https://cdn.svc.youverify.co/v1/\""
+        buildConfigField "String", "BASE_URL_ADDRESS_TASK", "\"https://address-task.dev.svc.youverify.co/v1/\""
     }
 
     buildTypes {
@@ -120,5 +121,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:$camerax_version"
 
+    //viewbinding delegate
     implementation 'com.github.yogacp:android-viewbinding:1.0.1'
 }

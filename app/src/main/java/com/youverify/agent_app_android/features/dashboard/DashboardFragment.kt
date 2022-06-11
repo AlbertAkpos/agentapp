@@ -20,6 +20,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -33,8 +34,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var isVerified: Boolean = false
     private var  isTrained: Boolean = false
     private var prefAreasIsChosen: Boolean = false
-    private val pkgName = "com.youverify.agent_app_android.features.dashboard"
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,11 +57,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 //            setupRangePickerDialog()
         }
 
-//        if (!verificationNotDone()) {
+        if (!verificationNotDone()) {
+            showCompleteOnboardingDialog()
 //            Handler(Looper.getMainLooper()).postDelayed({
-//                showCompleteOnboardingDialog()
+//
 //            }, 500)
-//        }
+        }
 
         return binding.root
     }
@@ -72,16 +72,16 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val sharedPreferences: SharedPreferences =
             requireActivity().getSharedPreferences( "pkgName", Context.MODE_PRIVATE)
 
-        isVerified = sharedPreferences.getBoolean("isVerified", false)
-        isTrained = sharedPreferences.getBoolean("isTrained", false)
-        prefAreasIsChosen = sharedPreferences.getBoolean("prefAreas", false)
+        isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
+        isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
+        prefAreasIsChosen = sharedPreferences.getBoolean("PREF_AREAS", false)
 
         println("From dashboard")
         println("isTrained: $isTrained")
         println("isVerified: $isVerified")
         println("prefAreas chosen: $prefAreasIsChosen")
 
-        return isVerified && prefAreasIsChosen
+        return isTrained && isVerified && prefAreasIsChosen
     }
 
     private fun setupRangePickerDialog() {

@@ -9,11 +9,13 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentSplashBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
     private lateinit var binding: FragmentSplashBinding
@@ -22,7 +24,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentSplashBinding.inflate(layoutInflater)
 
         //carefully handle user onboarding.
@@ -51,11 +52,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     //getting the token from sharedPreferences
     private fun tokenIsValid(): Boolean{
-        val sharedPreference: SharedPreferences =
-            requireActivity().getPreferences(Context.MODE_PRIVATE)
-        val token: String? = sharedPreference.getString("token", "")
-        println(token)
-
-        return token != ""
+        return AgentSharePreference(requireContext()).getString("TOKEN") != ""
     }
 }

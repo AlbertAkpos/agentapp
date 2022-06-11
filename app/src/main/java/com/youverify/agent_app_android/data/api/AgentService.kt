@@ -6,10 +6,11 @@ import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
+import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
+import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface AgentService {
 
@@ -21,4 +22,7 @@ interface AgentService {
 
     @POST("auth/reset-password")
     suspend fun sendResetEmail(@Body email: Email) : Response<ResetPassResponse>
+
+    @POST("agents/verify")
+    suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
 }

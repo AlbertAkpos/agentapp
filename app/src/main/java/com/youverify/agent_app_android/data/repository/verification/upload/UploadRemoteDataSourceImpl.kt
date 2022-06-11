@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.data.repository.upload
+package com.youverify.agent_app_android.data.repository.verification.upload
 
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result

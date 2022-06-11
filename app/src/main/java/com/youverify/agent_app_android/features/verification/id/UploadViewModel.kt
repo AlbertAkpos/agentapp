@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.Result
-import com.youverify.agent_app_android.data.model.upload.UploadResponse
+import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.domain.usecase.UploadUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -29,17 +29,19 @@ class UploadViewModel @Inject constructor(
 
                 when (it) {
                     is Result.Success -> {
-                        if (it.data is UploadResponse) {
+                        if (it.data is UploadImageResponse) {
                             _uploadChannel.send(UploadViewState.Success(R.string.upload, it.data))
                         }
                     }
                     is Result.Failed -> {
-                        _uploadChannel.send(
-                            UploadViewState.Failure(
-                                R.string.upload,
-                                "Unable to upload Image"
+                        if(it.errorMessage is String){
+                            _uploadChannel.send(
+                                UploadViewState.Failure(
+                                    R.string.upload,
+                                    it.errorMessage
+                                )
                             )
-                        )
+                        }
                     }
                     else -> {}
                 }

@@ -67,9 +67,9 @@
     </fragment>
     <fragment
         android:id="@+id/uploadPassportFragment"
-        android:name="com.youverify.agent_app_android.features.verification.id.UploadPassportFragment"
+        android:name="com.youverify.agent_app_android.features.verification.id.UploadImageFragment"
         android:label="fragment_upload_passport"
-        tools:layout="@layout/fragment_upload_passport" >
+        tools:layout="@layout/fragment_upload_image" >
         <action
             android:id="@+id/action_uploadPassportFragment_to_verificationResponseFragment"
             app:destination="@id/verificationResponseFragment" />
@@ -77,8 +77,8 @@
             android:id="@+id/action_uploadPassportFragment_to_verificationFailedFragment"
             app:destination="@id/verificationFailedFragment" />
         <argument
-            android:name="uploadInfo"
-            app:argType="com.youverify.agent_app_android.data.model.upload.UploadInfo" />
+            android:name="verifyIdRequest"
+            app:argType="com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest" />
 
     </fragment>
     <fragment

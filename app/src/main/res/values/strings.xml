@@ -152,59 +152,6 @@
     <string name="phone">Phone</string>
     <string name="address">Address</string>
 
-
-    //sign-up dropdown strings
-    <string-array name="states">
-        <item>Abia</item>
-        <item>Adamawa</item>
-        <item>Akwa Ibom</item>
-        <item>Anambra</item>
-        <item>Bauchi</item>
-        <item>Bayelsa</item>
-        <item>Benue</item>
-        <item>Borno</item>
-        <item>Cross River</item>
-        <item>Ebonyi</item>
-        <item>Edo</item>
-        <item>Ekiti</item>
-        <item>Enugu</item>
-        <item>Gombe</item>
-        <item>Imo</item>
-        <item>Jigawa</item>
-        <item>Kaduna</item>
-        <item>Kano</item>
-        <item>Katsina</item>
-        <item>Kebbi</item>
-        <item>Kogi</item>
-        <item>Kwara</item>
-        <item>Lagos</item>
-        <item>Nasarawa</item>
-        <item>Niger</item>
-        <item>Ogun</item>
-        <item>Ondo</item>
-        <item>Osun</item>
-        <item>Oyo</item>
-        <item>Plateau</item>
-        <item>Rivers</item>
-        <item>Sokoto</item>
-        <item>Taraba</item>
-        <item>Yobe</item>
-        <item>Zamfara</item>
-    </string-array>
-
-
-    //select areas dropdown strings
-    <string-array name="areas">
-        <item>Ojota</item>
-        <item>Surulere</item>
-        <item>Yaba</item>
-        <item>Ikorodu</item>
-        <item>Stadium</item>
-        <item>Ketu</item>
-        <item>Ikeja</item>
-        <item>Anthony</item>
-    </string-array>
-
     //select id type dropdown strings
     <string-array name="idType">
         <item>BVN</item>
@@ -212,7 +159,6 @@
         <item>PVC</item>
         <item>I\'ntl Passport</item>
     </string-array>
-
 
     <string name="change_password">Change password</string>
     <string name="old_password">Old password</string>

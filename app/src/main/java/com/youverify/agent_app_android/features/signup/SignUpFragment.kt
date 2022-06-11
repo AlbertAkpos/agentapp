@@ -9,7 +9,6 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -36,7 +35,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     @Inject
     lateinit var progressLoader: ProgressLoader
     private val signUpViewModel: SignUpViewModel by viewModels()
-    private val binding: FragmentSignUpBinding by viewBinding()
+    private lateinit var binding: FragmentSignUpBinding
 
     private lateinit var firstNameLayout: TextInputLayout
     private lateinit var lastNameLayout: TextInputLayout
@@ -52,6 +51,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         savedInstanceState: Bundle?
     ): View {
 
+        binding = FragmentSignUpBinding.inflate(layoutInflater)
         firstNameLayout = binding.firstNameLayout
         lastNameLayout = binding.lastNameLayout
         phoneLayout = binding.phoneLayout
@@ -61,16 +61,12 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         confirmPassLayout = binding.confirmPassLayout
 
         registerListeners()
+        getStates()
 
         return binding.root
     }
 
     private fun registerListeners() {
-        //passing the array adapter for states in the autocomplete textview
-        val states = resources.getStringArray(R.array.states)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.states_drop_down_item, states)
-        binding.stateOfResidenceInput.setAdapter(arrayAdapter)
-
         binding.stateOfResidenceInput.setOnClickListener {
             binding.stateOfResidenceInput.showDropDown()
         }
@@ -325,8 +321,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         validateEmail()
         validateStateOfResidence()
 
-        if (validatePassword(password) && validatePassword(confirmPassword)) {
-            return if (password == confirmPassword) {
+        return if (validatePassword(password) && validatePassword(confirmPassword)) {
+            if (password == confirmPassword) {
                 confirmPassLayout.error = null
                 confirmPassLayout.isErrorEnabled = false
                 true
@@ -339,7 +335,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
-        } else return false
+        } else false
     }
 
     //   call to api service to sign up the user
@@ -356,7 +352,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 password = passLayout.editText?.text.toString().trim()
             )
 
-            println(signUpRequest.toString())
             signUpViewModel.signUpYvAgent(signUpRequest = signUpRequest)
 
             lifecycleScope.launchWhenCreated {
@@ -387,5 +382,18 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private fun signUpSuccessful(signUpResponse: SignUpResponseData?) {
         Toast.makeText(requireContext(), "SignUp Successful", Toast.LENGTH_SHORT).show()
         println("Successful: $signUpResponse")
+    }
+
+    private fun getStates() {
+        val responseLiveData = signUpViewModel.getStates()
+        responseLiveData.observe(requireActivity()) {
+            if (it != null) {
+                val arrayAdapter =
+                    ArrayAdapter(requireContext(), R.layout.states_drop_down_item, it)
+                binding.stateOfResidenceInput.setAdapter(arrayAdapter)
+            } else {
+                Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

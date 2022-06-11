@@ -20,6 +20,7 @@ import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponseData
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.ProgressLoader
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -32,10 +33,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     lateinit var progressLoader: ProgressLoader
     private lateinit var binding: FragmentLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
-
     private lateinit var emailLayout: TextInputLayout
     private lateinit var passLayout: TextInputLayout
-    private val pkgName = "com.youverify.agent_app_android.features.login"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -153,20 +152,25 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun saveLoginResponse(loginResponse: LoginResponseData?) {
 
-        if(loginResponse != null){
+        if (loginResponse != null) {
             Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+            AgentSharePreference(requireContext()).setString("TOKEN", loginResponse.token)
+            AgentSharePreference(requireContext()).setString("FIRST_NAME", loginResponse.agent.firstName)
+            AgentSharePreference(requireContext()).setString("LAST_NAME", loginResponse.agent.lastName)
+            AgentSharePreference(requireContext()).setString("STATE_OF_RESIDENCE", loginResponse.agent.stateOfResidence)
+            AgentSharePreference(requireContext()).setBoolean(
+                "IS_TRAINED",
+                loginResponse.agent.isTrained
+            )
+            AgentSharePreference(requireContext()).setBoolean(
+                "IS_VERIFIED",
+                loginResponse.agent.isVerified
+            )
+            if (loginResponse.agent.preferredAreas.isNotEmpty()) {
+                AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
+            }
 
-            val sharedPreferences: SharedPreferences =
-                requireActivity().getPreferences( Context.MODE_PRIVATE)
-            sharedPreferences.edit().putString("token", loginResponse.token).apply()
-            sharedPreferences.edit().putBoolean("isTrained", loginResponse.agent.isTrained).apply()
-            sharedPreferences.edit().putBoolean("isVerified", loginResponse.agent.isVerified).apply()
-//            sharedPreferences.edit().putString("firstName", loginResponse.agent.firstName).apply()
-//            sharedPreferences.edit().putString("lastName", loginResponse.agent.lastName).apply()
-//            if(loginResponse.agent.preferredAreas.isNotEmpty()) {
-//                sharedPreferences.edit().putBoolean("prefAreas", true).apply()
-//            }
+            println("Response: $loginResponse")
         }
-        println("Response: $loginResponse")
     }
 }
