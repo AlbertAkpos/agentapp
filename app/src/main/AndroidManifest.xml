@@ -19,9 +19,14 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+<!--    hardware permissions-->
+    <uses-feature android:name="android.hardware.camera.any"/>
+
     <application
         android:name=".AgentApplication"
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
         android:label="YV Agents"
         android:roundIcon="@mipmap/ic_launcher_round"

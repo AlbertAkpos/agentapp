@@ -3,7 +3,7 @@ package com.youverify.agent_app_android.data.repository
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
-import com.youverify.agent_app_android.data.repository.resetpassword.datasource.ResetPassRemoteDataSource
+import com.youverify.agent_app_android.data.repository.resetpassword.ResetPassRemoteDataSource
 import com.youverify.agent_app_android.domain.repository.ResetPassRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

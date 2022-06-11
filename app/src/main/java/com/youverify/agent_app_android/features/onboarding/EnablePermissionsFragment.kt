@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,7 +30,6 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentEnablePermissionsBinding.inflate(layoutInflater)
 
         location = binding.switchLocAccess

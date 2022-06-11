@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.features.verification
+package com.youverify.agent_app_android.features.verification.id
 
 import android.os.Bundle
 import android.view.LayoutInflater

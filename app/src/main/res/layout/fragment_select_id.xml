@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/padding_24"
     android:paddingEnd="@dimen/padding_24"
-    tools:context=".features.verification.SelectIDFragment">
+    tools:context=".features.verification.id.SelectIDFragment">
 
 
     <ImageButton
@@ -82,7 +82,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
-                    android:text="@string/select"
+                    android:hint="@string/select"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"
                     android:clickable="true"
@@ -92,7 +92,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_date_of_birth"
+                android:id="@+id/date_of_birth_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -101,20 +101,23 @@
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom"
                 app:hintEnabled="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_select_id">
 
                 <AutoCompleteTextView
-                    android:id="@+id/select_dob_edit_text"
+                    android:id="@+id/select_dob"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:inputType="date"
+                    android:inputType="none"
                     android:hint="@string/enter_date_of_birth"
                     android:textColor="@color/colorTextPrimary"
-                    android:textSize="@dimen/text_14"/>
+                    android:textSize="@dimen/text_14"
+                    android:focusable="false"
+                    android:clickable="true"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,10 +129,10 @@
                 android:layout_marginTop="@dimen/margin_32"
                 app:boxStrokeColor="@color/colorTextPrimary"
                 app:hintEnabled="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_date_of_birth">
+                app:layout_constraintTop_toBottomOf="@+id/date_of_birth_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

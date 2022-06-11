@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.data.repository.login.datasource
+package com.youverify.agent_app_android.data.repository.login
 
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.login.LoginRequest

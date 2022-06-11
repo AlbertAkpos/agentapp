@@ -10,8 +10,8 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment"
+            android:id="@+id/action_splashFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
@@ -21,14 +21,14 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/viewPagerFragment"
+        android:id="@+id/onboardingFragment"
         android:name="com.youverify.agent_app_android.features.onboarding.OnBoardingFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_onboarding" >
         <action
             android:id="@+id/action_viewPagerFragment_to_TCScreen"
             app:destination="@id/TCScreen"
-            app:popUpTo="@id/viewPagerFragment"
+            app:popUpTo="@id/onboardingFragment"
             app:popUpToInclusive="false" />
     </fragment>
     <fragment
@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_t_c_screen" >
         <action
             android:id="@+id/action_TCScreen_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/onboardingFragment" />
         <action
             android:id="@+id/action_TCScreen_to_SignUpScreen"
             app:destination="@id/SignUpScreen" />

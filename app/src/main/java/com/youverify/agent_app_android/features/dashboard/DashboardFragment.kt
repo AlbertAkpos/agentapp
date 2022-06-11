@@ -2,6 +2,8 @@ package com.youverify.agent_app_android.features.dashboard
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,15 +12,28 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
+import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
+    private lateinit var homeActivity: HomeActivity
+
+    private var isVerified: Boolean = false
+    private var  isTrained: Boolean = false
+    private var prefAreasIsChosen: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +41,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
+        homeActivity = requireActivity() as HomeActivity
 
         binding.notificationIcon.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_notificationsFragment)
@@ -41,13 +57,32 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 //            setupRangePickerDialog()
         }
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            showCompleteOnboardingDialog()
-//        }, 500)
+        if (!verificationNotDone()) {
+            showCompleteOnboardingDialog()
+//            Handler(Looper.getMainLooper()).postDelayed({
+//
+//            }, 500)
+        }
 
         return binding.root
     }
 
+    //verify that user has finished onboarding
+    private fun verificationNotDone(): Boolean {
+        val sharedPreferences: SharedPreferences =
+            requireActivity().getSharedPreferences( "pkgName", Context.MODE_PRIVATE)
+
+        isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
+        isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
+        prefAreasIsChosen = sharedPreferences.getBoolean("PREF_AREAS", false)
+
+        println("From dashboard")
+        println("isTrained: $isTrained")
+        println("isVerified: $isVerified")
+        println("prefAreas chosen: $prefAreasIsChosen")
+
+        return isTrained && isVerified && prefAreasIsChosen
+    }
 
     private fun setupRangePickerDialog() {
         val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.dateRangePicker()
@@ -57,7 +92,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         getDateRange(picker)
         picker.show(parentFragmentManager, picker.toString())
     }
-
 
     private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
@@ -127,27 +161,57 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-
     private fun showCompleteOnboardingDialog() {
         val dialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.complete_onboarding_dialog, null)
-        val checkCompleteTraining = view.findViewById<CheckBox>(R.id.check_complete_training)
-        val checkVerifyIdentity = view.findViewById<CheckBox>(R.id.check_verify_identity)
-        val checkSelectPrefAreas = view.findViewById<CheckBox>(R.id.check_select_areas)
+        val trainingCheck = view.findViewById<CheckBox>(R.id.check_complete_training)
+        val verifyIdCheck = view.findViewById<CheckBox>(R.id.check_verify_identity)
+        val prefAreasCheck = view.findViewById<CheckBox>(R.id.check_select_areas)
         dialogBuilder.setView(view)
-        checkVerifyIdentity.setOnClickListener {
-            dialogBuilder.dismiss()
-            findNavController().navigate(R.id.action_dashboardFragment_to_selectIDFragment)
+
+        if(isTrained){
+            trainingCheck.isChecked = true
+            trainingCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
         }
 
-        checkSelectPrefAreas.setOnClickListener {
+        if (isVerified) {
+            verifyIdCheck.isChecked = true
+            verifyIdCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+        }
+
+        if (prefAreasIsChosen) {
+            prefAreasCheck.isChecked = true
+            prefAreasCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+        }
+
+        trainingCheck.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_trainingFragment)
             dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
+        }
+
+        verifyIdCheck.setOnClickListener {
+            dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
+            findNavController().navigate(R.id.action_dashboardFragment_to_selectIDFragment)
+
+        }
+
+        prefAreasCheck.setOnClickListener {
+            dialogBuilder.dismiss()
+            homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectAreasFragment)
+
         }
 
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeActivity.showNavBar()
     }
 }
