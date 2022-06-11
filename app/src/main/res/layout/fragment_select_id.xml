@@ -56,9 +56,8 @@
                 android:text="@string/perform_address_verification"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="@dimen/text_13"
+                android:textSize="@dimen/text_12"
                 android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_select_identity" />
 

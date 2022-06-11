@@ -29,13 +29,11 @@ class LoginViewModel @Inject constructor(
 
                 when(it){
                     is Result.Success -> {
-                        print("This was successful ${it.data}")
                         if (it.data is LoginResponse){
                             _loginChannel.send(LoginViewState.Success(R.string.sign_in, it.data.data))
                         }
                     }
                     is Result.Failed -> {
-                        println("This call failed")
                         _loginChannel.send(LoginViewState.Failure(R.string.sign_in, "Wrong username or password"))
                     }
                     else -> {}

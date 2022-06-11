@@ -60,7 +60,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun displaySubscribersList(){
 
-         val taskItems = listOf<TaskItem>(
+         val taskItems = listOf(
              TaskItem("Live photo address verification",
                  "56a, Bishop Street, Ilupeju Police station, \n" +
                          "Yaba, Lagos State.",

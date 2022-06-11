@@ -73,35 +73,12 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="com.youverify.agent_app_android.features.resetpassword.ResetPasswordFragment"
+        android:name="com.youverify.agent_app_android.features.resetpassword.ResetPassFragment"
         android:label="fragment_reset_password"
-        tools:layout="@layout/fragment_reset_password" >
+        tools:layout="@layout/fragment_reset_token" >
         <action
-            android:id="@+id/action_resetPasswordFragment_to_checkEmailFragment"
-            app:destination="@id/checkEmailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/checkEmailFragment"
-        android:name="com.youverify.agent_app_android.features.resetpassword.CheckEmailFragment"
-        android:label="fragment_check_email"
-        tools:layout="@layout/fragment_check_email" >
-        <action
-            android:id="@+id/action_checkEmailFragment_to_createNewPasswordFragment"
-            app:destination="@id/createNewPasswordFragment" />
-        <action
-            android:id="@+id/action_checkEmailFragment_to_resetPasswordFragment"
-            app:destination="@id/resetPasswordFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/createNewPasswordFragment"
-        android:name="com.youverify.agent_app_android.features.resetpassword.CreateNewPasswordFragment"
-        android:label="fragment_create_new_password"
-        tools:layout="@layout/fragment_create_new_password" >
-        <action
-            android:id="@+id/action_createNewPasswordFragment_to_LoginScreen"
-            app:destination="@id/LoginScreen"
-            app:popUpTo="@id/LoginScreen"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_resetPasswordFragment_to_LoginScreen"
+            app:destination="@id/LoginScreen" />
     </fragment>
     <fragment
         android:id="@+id/enableLocationFragment"

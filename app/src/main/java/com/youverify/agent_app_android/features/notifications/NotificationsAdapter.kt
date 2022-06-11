@@ -15,7 +15,7 @@ private const val TASK_REJECTED = "Task rejected"
 private const val OFFLINE_TASK = "Offline task"
 private const val ACCESS_EXPIRED = "Access time expired"
 
-class NotificationsAdapter ()
+class NotificationsAdapter
     : RecyclerView.Adapter<NotificationsItemViewHolder>(){
 
     private var notificationItems = ArrayList<NotificationItem>()

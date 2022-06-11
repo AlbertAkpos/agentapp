@@ -74,9 +74,6 @@ dependencies {
     //gif image-view
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
 
-    //easy permissions
-    implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
-
     //recyclerview swipe background decorator
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.4'
 
