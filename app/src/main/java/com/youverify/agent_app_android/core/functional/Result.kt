@@ -11,7 +11,7 @@ sealed class Result<out R> {
     data class Failed<F>(val errorMessage:F) : Result<F>(),
         Flow<Result<SignUpResponseData?>> {     // Status Failed message
         override suspend fun collect(collector: FlowCollector<Result<SignUpResponseData?>>) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
     }
 

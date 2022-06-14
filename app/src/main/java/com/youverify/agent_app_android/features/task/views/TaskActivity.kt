@@ -19,10 +19,9 @@ class TaskActivity : BaseActivity() {
 
     private val startDestination by lazy { intent?.getIntExtra(START_DESTINATION_KEY, DEFAULT_DESTINATION) ?: DEFAULT_DESTINATION }
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<TaskViewModel> { factory }
+
+    private val viewModel by viewModels<TaskViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

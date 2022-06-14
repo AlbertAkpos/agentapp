@@ -49,4 +49,8 @@
 
     <dimen name="corners_15">15dp</dimen>
     <dimen name="corners_10">10dp</dimen>
+    <dimen name="md">30dp</dimen>
+    <dimen name="sm">20dp</dimen>
+    <dimen name="xsm">10dp</dimen>
+    <dimen name="btnSize">60dp</dimen>
 </resources>

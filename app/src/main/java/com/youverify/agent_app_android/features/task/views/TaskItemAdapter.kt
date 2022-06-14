@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.TaskItemBinding
 import com.youverify.agent_app_android.data.model.TaskItem
+import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 
 class TaskItemAdapter(
-    private val clickListener: (TaskItem) -> Unit)
+    private val clickListener: (TasksDomain.AgentTask) -> Unit)
     : RecyclerView.Adapter<TaskItemViewHolder>(){
 
-    private val taskItemList = ArrayList<TaskItem>()
+    private val taskItemList = ArrayList<TasksDomain.AgentTask>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -28,15 +29,16 @@ class TaskItemAdapter(
         return taskItemList.size
     }
 
-    fun setItemsList(taskItems: List<TaskItem>){
+    fun setItemsList(taskItems: List<TasksDomain.AgentTask>){
         taskItemList.clear()
         taskItemList.addAll(taskItems)
+        notifyDataSetChanged()
     }
 }
 
 class TaskItemViewHolder(val binding : TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(taskItem: TaskItem, clickListener: (TaskItem) -> Unit){
+    fun bind(taskItem: TasksDomain.AgentTask, clickListener: (TasksDomain.AgentTask) -> Unit){
         binding.verificationTypeText.text = taskItem.verificationType
         binding.addressText.text = taskItem.address
         binding.timeText.text = taskItem.time

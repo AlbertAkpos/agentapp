@@ -2,108 +2,102 @@ package com.youverify.agent_app_android.features.task.views
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.data.model.TaskItem
+import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.AgentTaskStatus
+import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.extension.showDialog
+import com.youverify.agent_app_android.util.extension.toJson
+import com.youverify.agent_app_android.util.extension.viewBindings
+import com.youverify.agent_app_android.util.extension.visibleIf
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TaskListFragment : Fragment(R.layout.fragment_task) {
     //code to get the view model object
     private lateinit var taskViewModel: TaskViewModel
     //adapter object
-    private lateinit var adapter: TaskItemAdapter
-    private lateinit var homeActivity : HomeActivity
-    private lateinit var binding: FragmentTaskBinding
+    private val adapter by lazy { TaskItemAdapter {
+            selectedItem: TasksDomain.AgentTask -> listItemClicked(selectedItem)
+    } }
+    private val binding by viewBindings(FragmentTaskBinding::bind)
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View {
-        binding  = FragmentTaskBinding.inflate(layoutInflater)
-        homeActivity = requireActivity() as HomeActivity
+    @Inject
+    lateinit var preference: AgentSharePreference
+
+    @Inject lateinit var progressLoader: ProgressLoader
+
+    private val viewModel by viewModels<TaskViewModel>()
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            viewModel.fetchAgentTasks(AgentTaskStatus.PENDING)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        setObservers()
+    }
+
+    private fun setupUI() {
         binding.notificationIcon.setOnClickListener {
             findNavController().navigate(R.id.action_taskFragment_to_notificationsFragment)
         }
 
-        initRecyclerView()
+        binding.taskRecyclerView.adapter = adapter
 
         binding.filterBtn.setOnClickListener{
             showBottomBar()
         }
-
-        return  binding.root
     }
 
-    private fun initRecyclerView(){
-        binding.taskRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        //initialize the adapter
-        adapter = TaskItemAdapter {
-                selectedItem: TaskItem -> listItemClicked(selectedItem)
+    private fun setObservers() {
+        viewModel.tasksState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when(state) {
+                is ResultState.Loading -> { progressLoader.show(message = "Please wait...", false) }
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+                is ResultState.Success -> {
+                    progressLoader.hide()
+                    binding.noTasksMessage.visibleIf(state.data.isNullOrEmpty())
+                    adapter.setItemsList(state.data)
+                }
+            }
         }
-
-        binding.taskRecyclerView.adapter = adapter
-
-        displaySubscribersList()
     }
 
-    private fun displaySubscribersList(){
 
-         val taskItems = listOf(
-             TaskItem("Live photo address verification",
-                 "56a, Bishop Street, Ilupeju Police station, \n" +
-                         "Yaba, Lagos State.",
-                   "12 min. ago"),
-
-             TaskItem("Live photo address verification",
-                 "302 Bornu way, Off Alagomeji, Yaba, \nLagos State",
-                 "32 min. ago"),
-
-             TaskItem("Live photo address verification",
-                 "56a, Sum Building, Ilupeju Police station, \n" +
-                         "Yaba, Lagos State.",
-                 "49 min. ago"),
-
-             TaskItem("Live photo address verification",
-                 "400, Law Union & Rock House, Hughes\n" +
-                         "Avenue, Yaba Lagos",
-                 "1 hr. ago"),
-
-             TaskItem("Live photo address verification",
-                 "56a, Bishop Street, Ilupeju Police station, \n" +
-                         "Yaba, Lagos State.",
-                 "1 hr. ago"),
-
-             TaskItem("Live photo address verification",
-                 "276, Tejuosho Market, Off Akeem Street\n" +
-                         "Yaba, Lagos State.",
-                 "2 hours. ago")
-         )
-          adapter.setItemsList(taskItems)
-
-//        taskViewModel.getTaskList().observe(this, Observer {
-//            adapter.setItemsList(it)
-//            adapter.notifyDataSetChanged()
-//        })
-    }
-
-    private fun listItemClicked(taskItem: TaskItem){
+    private fun listItemClicked(taskItem: TasksDomain.AgentTask){
         displayTaskDialog(taskItem)
     }
 
-    private fun displayTaskDialog(taskItem: TaskItem) {
+    private fun displayTaskDialog(taskItem: TasksDomain.AgentTask) {
         //we should use the taskItem passed in here to set the data on the dialog
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
@@ -118,8 +112,12 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         slideRightButton.setOnClickListener {
             dialogBuilder.dismiss()
-            homeActivity.removeNavBar()
-            findNavController().navigate(R.id.action_taskFragment_to_taskDetailsFragment)
+            val taskBundle = TaskBundle(taskItem = taskItem).toJson()
+            val taskIntent = Intent(requireContext(), TaskActivity::class.java).apply {
+                putExtra(TaskActivity.START_DESTINATION_KEY, R.id.taskDetailsFragment2)
+                putExtra(TaskActivity.BUNDLE_KEY, taskBundle)
+            }
+            startActivity(taskIntent)
         }
 
         slideLeftButton.setOnClickListener {

@@ -1,6 +1,9 @@
 package com.youverify.agent_app_android.di
 
 import com.youverify.agent_app_android.data.repository.*
+import com.youverify.agent_app_android.data.repository.tasks.TasksRepository
+import com.youverify.agent_app_android.data.source.AgentDataSource
+import com.youverify.agent_app_android.data.source.IAgentSource
 import com.youverify.agent_app_android.domain.repository.*
 import dagger.Binds
 import dagger.Module
@@ -28,4 +31,10 @@ interface DataModule {
 
     @get:Binds
     val StateLgaRepositoryImpl.stateLgaRepoImpl: StateLgaRepository
+
+    @get:Binds
+    val TasksRepository.taskRepository: ITaskRepository
+
+    @get:Binds
+    val AgentDataSource.agentDataSource: IAgentSource
 }

@@ -6,23 +6,28 @@ import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
+import com.youverify.agent_app_android.util.AgentTaskStatus
+import com.youverify.agent_app_android.util.AgentTaskVerificationType
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AgentService {
 
     @POST("agents")
-    suspend fun signUpAgent(@Body body : SignUpRequest) : Response<SignUpResponse?>
+    suspend fun signUpAgent(@Body body: SignUpRequest): Response<SignUpResponse?>
 
     @POST("auth/token")
-    suspend fun loginAgent(@Body body: LoginRequest) : Response<LoginResponse?>
+    suspend fun loginAgent(@Body body: LoginRequest): Response<LoginResponse?>
 
     @POST("auth/reset-password")
-    suspend fun sendResetEmail(@Body email: Email) : Response<ResetPassResponse>
+    suspend fun sendResetEmail(@Body email: Email): Response<ResetPassResponse>
 
     @POST("agents/verify")
     suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
+
+    @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
+    suspend fun getAgentTasks(): TasksDto.AgentTasksResponse
 }

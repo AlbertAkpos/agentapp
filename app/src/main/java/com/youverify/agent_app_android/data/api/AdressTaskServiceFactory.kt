@@ -27,6 +27,14 @@ object AdressTaskServiceFactory {
         return retrofit.create(AddressTaskService::class.java)
     }
 
+    fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
     private fun makeOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         tokenInterceptor: TokenInterceptor

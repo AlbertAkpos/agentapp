@@ -15,30 +15,32 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.TaskItem
+import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.databinding.BuildingTypesLayoutBinding
 import com.youverify.agent_app_android.databinding.FragmentTaskDetailsBinding
+import com.youverify.agent_app_android.databinding.RadioButtonLayoutBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.util.SingleEvent
+import com.youverify.agent_app_android.util.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private lateinit var binding: FragmentTaskDetailsBinding
-    private lateinit var homeActivity : HomeActivity
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
 
-    private val viewModel by activityViewModels<TaskViewModel> { factory }
+    private val viewModel by activityViewModels<TaskViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
         binding = FragmentTaskDetailsBinding.inflate(layoutInflater)
-        homeActivity = requireActivity() as HomeActivity
         configureUI()
 
         return binding.root
@@ -46,7 +48,42 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupClicks()
         setObservers()
+    }
+
+    private fun setupClicks() = with(binding) {
+        proceedToCaptureDetailsBtn.setOnClickListener {
+            canLocateAddressContainer.show()
+            it.gone()
+        }
+
+        yesBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(true)) }
+
+        noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
+
+        buildingTypeInput.setOnClickListener { openBuildingTypeSheet() }
+    }
+
+    private fun openBuildingTypeSheet() {
+        var dialog: MaterialDialog? = null
+        val binding = BuildingTypesLayoutBinding.inflate(layoutInflater)
+        val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater)
+        for (item in viewModel.typesOfBuildings) {
+            binding.radioGroup.removeAllViews()
+            radioButton.radio.text = item
+            binding.radioGroup.addView(radioButton.root)
+        }
+        binding.radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+            val button = radioGroup?.findViewById<RadioButton>(i)
+            if (button?.isChecked == true) {
+                val selectedBuilding = button.text?.toString() ?: ""
+                dialog?.dismiss()
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
+            }
+        }
+
+        dialog = context?.inflateBottomSheet(binding.root)
     }
 
     private fun setObservers() {
@@ -54,9 +91,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             val taskItem = it.getContentIfNotHandled() ?: return@observe
             updateUI(taskItem)
         }
+
+        viewModel.canYouLocateTheAddressState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+                binding.yesCanLocateAddress.setColor(state, R.color.colorDark, R.color.white)
+                binding.noCantLocateAddress.setColor(!state, R.color.colorDark, R.color.white)
+                binding.proceedToCaptureDetailsBtn.visibleIf(state && binding.canLocateAddressContainer.visibility == View.GONE)
+                if (!state) { binding.canLocateAddressContainer.gone() }
+                binding.cantLocateAddressContainer.visibleIf(!state)
+        }
     }
 
-    private fun updateUI(taskItem: TaskItem) = with(binding) {
+    private fun updateUI(taskItem: TasksDomain.AgentTask) = with(binding) {
         verificationTypeText.text = taskItem.verificationType
         candidateAddress.text = taskItem.address
     }
@@ -69,7 +115,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         binding.yesBtn.setOnClickListener {
-            binding.proceedButton.visibility = View.VISIBLE
+
 
             binding.selectReasonText.visibility = View.GONE
             binding.reasonLayout.visibility = View.GONE
@@ -81,11 +127,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.landmarkLayout.visibility = View.GONE
             binding.infoText.visibility = View.GONE
             binding.infoLayout.visibility = View.GONE
-            binding.submitButton.visibility = View.GONE
         }
 
         binding.noBtn.setOnClickListener {
-            binding.proceedButton.visibility = View.GONE
 
             binding.selectReasonText.visibility = View.VISIBLE
             binding.reasonLayout.visibility = View.VISIBLE
@@ -97,25 +141,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.landmarkLayout.visibility = View.VISIBLE
             binding.infoText.visibility = View.VISIBLE
             binding.infoLayout.visibility = View.VISIBLE
-            binding.submitButton.visibility = View.VISIBLE
         }
 
         binding.reasonInput.setOnClickListener {
             showBottomBar()
         }
 
-        binding.submitButton.setOnClickListener {
-            submit()
-        }
+
 
         binding.toolbar.setNavigationOnClickListener {
-            homeActivity.showNavBar()
             activity?.onBackPressed()
         }
 
-        binding.proceedButton.setOnClickListener {
-            findNavController().navigate(R.id.action_taskDetailsFragment_to_accessBuildingFragment)
-        }
     }
 
     private fun submit(){

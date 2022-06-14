@@ -36,6 +36,7 @@
         <entry key="app/src/main/res/drawable/custom_img_btn.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/dashboard_card_bg.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/dashboard_image_bg.xml" value="0.202" />
+        <entry key="app/src/main/res/drawable/dotted_background.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.3055" />
         <entry key="app/src/main/res/drawable/ic_bell_icon.xml" value="0.183" />
         <entry key="app/src/main/res/drawable/ic_bg_performance.xml" value="0.18" />
@@ -107,6 +108,7 @@
         <entry key="app/src/main/res/layout/bottom_select_color.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_select_period_layout.xml" value="0.25956315852767986" />
         <entry key="app/src/main/res/layout/bottom_select_reason.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/building_types_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/choice_drop_down.xml" value="0.23541666666666666" />
         <entry key="app/src/main/res/layout/complete_onboarding_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/custom_toast.xml" value="0.2947916666666667" />
@@ -155,6 +157,7 @@
         <entry key="app/src/main/res/layout/onboarding_items.xml" value="0.25" />
         <entry key="app/src/main/res/layout/performance_card_dialog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/performance_filter_dialog.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/layout/radio_button_layout.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/reset_password_dialog.xml" value="0.2983734130859375" />
         <entry key="app/src/main/res/layout/root_settings.xml" value="0.2658514492753623" />
         <entry key="app/src/main/res/layout/signature_dialog.xml" value="0.28882537841796874" />

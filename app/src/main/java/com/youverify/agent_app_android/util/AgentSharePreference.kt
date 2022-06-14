@@ -9,6 +9,11 @@ import javax.inject.Inject
 
 class AgentSharePreference @Inject constructor(@ApplicationContext context: Context) {
 
+    companion object {
+        private const val AGENT_ID_KEY = "AGENT_ID_KEY"
+        private const val TOKEN_KEY = "TOKEN"
+    }
+
     private var sharedPreferences: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -18,6 +23,18 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
             apply()
         }
     }
+
+    var agentId: String
+        get() = sharedPreferences.getString(AGENT_ID_KEY, "") ?: ""
+        set(value) {
+            sharedPreferences.edit().putString(AGENT_ID_KEY, value).apply()
+        }
+
+    var token: String
+        get() = sharedPreferences.getString(TOKEN_KEY, "") ?: ""
+        set(value) {
+            sharedPreferences.edit().putString(TOKEN_KEY, value).apply()
+        }
 
     fun setBoolean(key: String, value: Boolean) {
         sharedPreferences.edit {
@@ -41,7 +58,7 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
 
     fun getInt(key: String, defaultInt: Int = 0) = sharedPreferences.getInt(key, defaultInt)
 
-    fun clear(key: String){
+    fun clear(key: String) {
         sharedPreferences.edit().remove(key).apply()
     }
 }
