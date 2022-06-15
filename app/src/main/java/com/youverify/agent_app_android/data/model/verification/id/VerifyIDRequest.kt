@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.data.model.verification.upload
+package com.youverify.agent_app_android.data.model.verification.id
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class VerifyIDRequest(
     val firstName : String,
     val lastName: String,
-    val idType : String,
+    val type : String,
     val dateOfBirth : String,
     val reference : String,
-    val imageUrl : String
+    var imageUrl : String
 ): Parcelable

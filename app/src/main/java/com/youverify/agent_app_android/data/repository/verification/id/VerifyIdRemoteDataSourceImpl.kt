@@ -1,0 +1,32 @@
+package com.youverify.agent_app_android.data.repository.verification.id
+
+import com.youverify.agent_app_android.core.functional.Failure
+import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.data.api.AgentService
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import javax.inject.Inject
+
+class VerifyIdRemoteDataSourceImpl @Inject constructor(
+    private val agentService: AgentService,
+) : VerifyIdRemoteDataSource {
+
+    override suspend fun verifyId(verifyIDRequest: VerifyIDRequest, token: String): Result<*> {
+        return try {
+            val res = agentService.verifyId(verifyIDRequest, token)
+
+            when (res.isSuccessful) {
+                true -> {
+                    res.body()?.let {
+                        Result.Success(it)
+                    } ?: Result.Error(Failure.ServerError)
+                }
+                false -> {
+                    Result.Failed(res.errorBody())
+                }
+            }
+
+        } catch (e: Throwable) {
+            Result.Failed(e.message)
+        }
+    }
+}

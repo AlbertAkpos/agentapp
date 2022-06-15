@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.repository
 
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.model.login.LoginResponse
+import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.repository.verification.upload.UploadRemoteDataSource
 import com.youverify.agent_app_android.domain.repository.UploadRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ class UploadRepositoryImpl @Inject constructor(
         return flow {
             when (val res = uploadRemoteDataSource.uploadImage(uploadRequest)) {
                 is Result.Success<*> -> {
-                    if (res.data is LoginResponse) {
+                    if (res.data is UploadImageResponse) {
                         emit(Result.Success(res.data))
                     }
                 }

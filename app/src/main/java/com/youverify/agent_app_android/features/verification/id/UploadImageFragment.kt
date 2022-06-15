@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
@@ -21,17 +22,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentUploadImageBinding
+import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.ProgressLoader
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.FileDescriptor
-import java.io.IOException
+import java.io.*
 import javax.inject.Inject
 
 
@@ -53,7 +55,7 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
 
         configureUI()
 
-        println(args.verifyIdRequest.toString())
+//        println(args.verifyIdRequest.toString())
         return binding.root
     }
 
@@ -97,12 +99,13 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
 
                     if (imagepath != null) {
 
-                        val uri: Uri? = selectedImageUri
+                        val uri: Uri = selectedImageUri
+                        imagePath = copyFile("Agents", "IdImage", uri)
                         val uriString = uri.toString()
                         val myFile = File(uriString)
                         var displayName: String? = null
                         displayName = retrieveSelected(uriString, uri, displayName, myFile)
-                        imagePath = File(displayName!!)
+//                        imagePath = File(displayName!!)
                         binding.uploadText.text = displayName
                     }
                 }
@@ -145,7 +148,6 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
         return null
     }
 
-
     @SuppressLint("Range")
     private fun retrieveSelected(
         uriString: String,
@@ -173,42 +175,134 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
         return displayName1
     }
 
+    private fun copyFile(directoryName: String, filename: String, contentUri: Uri): File {
+        var inputStream: InputStream? = null
+        var outputStream: FileOutputStream? = null
+        val directory = File(
+            context?.applicationContext?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+            directoryName
+        )
+        if (!directory.exists()) {
+            directory.mkdir()
+        }
+        val file = File(directory, filename)
+        return try {
+            val fileSize = 4096
+            val fileReader = ByteArray(fileSize)
+
+            inputStream = context?.contentResolver?.openInputStream(contentUri)
+            outputStream = FileOutputStream(file)
+            var filesDownloaded: Double = 0.0
+            while (true) {
+                val read = inputStream?.read(fileReader)
+                if (read == -1) {
+                    break
+                }
+                outputStream.write(fileReader, 0, read ?: 0)
+                filesDownloaded += read ?: 0
+
+            }
+            outputStream.flush()
+            inputStream?.close()
+            outputStream.close()
+            file.absoluteFile
+        } catch (exp: Exception) {
+            exp.printStackTrace()
+            File("")
+        } finally {
+            inputStream?.close()
+            outputStream?.close()
+        }
+    }
 
     private fun uploadImage() {
 
-        val filePart: MultipartBody.Part = MultipartBody.Part.createFormData(
-            "files",
-            imagePath.name,
-            imagePath.asRequestBody("image/*".toMediaTypeOrNull())
-        )
+        if(binding.uploadText.text == "Upload"){
+            Snackbar.make(requireView(), "No Photo Selected", Snackbar.LENGTH_SHORT).show()
+        }else{
+            val filePart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "files",
+                imagePath.name,
+                imagePath.asRequestBody("image/png".toMediaTypeOrNull())
+            )
 
-        println("Upload Request: $filePart")
-        uploadViewModel.uploadImage(uploadRequest = filePart)
+            uploadViewModel.uploadImage(uploadRequest = filePart)
 
-        lifecycleScope.launchWhenCreated {
-            uploadViewModel.uploadChannel.collect {
-                when (it) {
-                    is UploadViewState.Loading -> {
-                        progressLoader.show(message = "Submitting...")
+            lifecycleScope.launchWhenCreated {
+                uploadViewModel.uploadChannel.collect {
+                    when (it) {
+                        is UploadViewState.Loading -> {
+                            progressLoader.show(message = "Uploading Image...")
+                        }
+                        is UploadViewState.Success -> {
+                            progressLoader.hide()
+                            passUploadData(it.uploadResponse)
+                        }
+                        is UploadViewState.Failure -> {
+                            progressLoader.hide()
+                            Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        else -> {progressLoader.hide()}
                     }
-                    is UploadViewState.Success -> {
-                        progressLoader.hide()
-                        passUploadData(it.uploadResponse)
-                        findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationResponseFragment)
-                    }
-                    is UploadViewState.Failure -> {
-                        progressLoader.hide()
-                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
-                            .show()
-                        findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationFailedFragment)
-                    }
-                    else -> {}
                 }
             }
         }
     }
 
     private fun passUploadData(uploadResponse: UploadImageResponse?) {
-        println("Response: $uploadResponse")
+        val verifyIdRequestDummy = VerifyIDRequest(   //Remove this after this endpoint has being rectified
+            type = "NIN",
+            reference = "11111111111",
+            firstName = "Sarah",
+            lastName = "Doe",
+            dateOfBirth = "1988-04-04",
+            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
+        )
+
+        val token = AgentSharePreference(requireContext()).getString("TOKEN")
+        val verificationDetails : VerifyIDRequest = args.verifyIdRequest
+        verificationDetails.imageUrl = uploadResponse?.data?.get(0)?.location ?: ""
+
+        submitIdInfo(verifyIdRequestDummy, token)
     }
+
+    private fun submitIdInfo(verificationDetails: VerifyIDRequest, token: String){
+        val verifyIdRequestDummy = VerifyIDRequest(   //Remove this after this endpoint has being rectified
+            type = "NIN",
+            reference = "11111111111",
+            firstName = "Sarah",
+            lastName = "Doe",
+            dateOfBirth = "1988-04-04",
+            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
+        )
+
+        uploadViewModel.verifyId(verifyIdRequestDummy, token)
+
+        lifecycleScope.launchWhenCreated {
+            uploadViewModel.verifyIdChannel.collect {
+                when (it) {
+                    is VerifyIdViewState.Loading -> {
+                        progressLoader.show(message = "Submitting...")
+                    }
+                    is VerifyIdViewState.Success -> {
+                        progressLoader.hide()
+                        AgentSharePreference(requireContext()).setBoolean("IS_VERIFIED",
+                            it.verifyIdResponse?.data?.isVerified ?: false
+                        )
+                        findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationResponseFragment)
+                    }
+                    is VerifyIdViewState.Failure -> {
+                        progressLoader.hide()
+                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
+                            .show()
+                        findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationFailedFragment)
+                        println(it.errorMessage)
+                    }
+                    else -> {progressLoader.hide()}
+                }
+            }
+        }
+    }
+
 }

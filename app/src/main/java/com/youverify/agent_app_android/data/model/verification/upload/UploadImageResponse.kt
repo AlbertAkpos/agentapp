@@ -7,5 +7,7 @@ data class UploadImageResponse(
     @SerializedName("data")
     val `data`: List<UploadImageData>,
     @SerializedName("message")
-    val message: String
+    val message: String,
+    @SerializedName("statusCode")
+    val statusCode: Int
 )

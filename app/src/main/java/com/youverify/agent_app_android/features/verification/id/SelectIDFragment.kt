@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
@@ -63,6 +63,9 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     }
 
     private fun configureUI() {
+        dateOfBirth.visibility = View.GONE
+        reference.visibility = View.GONE
+
         idTypeEditText.setOnClickListener {
             idTypeEditText.showDropDown()
         }
@@ -116,7 +119,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
             val verifyIdRequest = VerifyIDRequest(
                 firstName = firstName,
                 lastName = lastName,
-                idType = id,
+                type = id,
                 dateOfBirth = dateOfBirth,
                 reference = reference,
                 imageUrl = ""
