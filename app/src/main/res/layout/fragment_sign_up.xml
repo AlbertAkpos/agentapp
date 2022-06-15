@@ -122,6 +122,8 @@
                     android:hint="@string/enter_first_name"
                     android:inputType="textEmailAddress"
                     android:textColorHint="@color/colorTextPrimary"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:textSize="@dimen/text_14" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -156,10 +158,11 @@
                     android:id="@+id/last_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
                     android:hint="@string/enter_last_name"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:textSize="@dimen/text_14"
                     android:textColorHint="@color/colorTextPrimary" />
 
@@ -196,12 +199,13 @@
                     android:id="@+id/phone_num_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="number"
                     android:selectAllOnFocus="true"
                     android:textColorHint="@color/colorTextPrimary"
                     android:hint="@string/enter_phone_number"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:textSize="@dimen/text_14"
                     app:hintTextColor="@color/colorTextPrimary"/>
 
@@ -235,10 +239,11 @@
                     android:id="@+id/email_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textEmailAddress"
                     android:hint="@string/email"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:textColorHint="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"/>
 
@@ -276,8 +281,10 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
+                    android:dropDownHeight="250dp"
+                    android:dropDownAnchor="@+id/state_of_residence_layout"
                     android:hint="@string/select_state_of_residence"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textColor="@color/black_varient"
                     android:textSize="@dimen/text_14"
                     android:focusable="false"
                     android:clickable="true"
@@ -306,13 +313,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 app:boxStrokeColor="@color/colorTextPrimary"
-
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="@+id/email_layout"
                 app:layout_constraintStart_toStartOf="@+id/email_layout"
                 app:layout_constraintTop_toBottomOf="@+id/label_email"
-                app:passwordToggleEnabled="true"
-                >
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_field"
@@ -323,7 +328,8 @@
                     android:textColorHint="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"
                     android:hint="@string/enter_password"
-                    tools:ignore="TextContrastCheck" />
+                    android:focusable="true"
+                    android:clickable="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -356,12 +362,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
+                    android:clickable="true"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:textSize="@dimen/text_14"
                     android:inputType="textPassword"
                     android:hint="@string/confirm_password"
-                    android:textColorHint="@color/colorTextPrimary"
-                    tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
+                    android:textColorHint="@color/colorTextPrimary" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
