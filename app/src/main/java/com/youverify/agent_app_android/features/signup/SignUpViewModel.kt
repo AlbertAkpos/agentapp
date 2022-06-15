@@ -42,7 +42,7 @@ class SignUpViewModel @Inject constructor(
                         }
                     }
                     is Result.Failed -> {
-                        _signUpChannel.send(SignUpViewState.Failure(R.string.sign_up, "Error from server"))
+                        _signUpChannel.send(SignUpViewState.Failure(R.string.sign_up, it.errorMessage.toString()))
                     }
                     else -> {}
                 }
