@@ -13,6 +13,10 @@ import com.youverify.agent_app_android.data.repository.verification.upload.Uploa
 import com.youverify.agent_app_android.data.repository.verification.upload.UploadRemoteDataSourceImpl
 import com.youverify.agent_app_android.data.repository.verification.StateLgaRemoteDataSource
 import com.youverify.agent_app_android.data.repository.verification.StateLgaRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.verification.areas.PrefAreasRemoteDataSource
+import com.youverify.agent_app_android.data.repository.verification.areas.PrefAreasRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.verification.id.VerifyIdRemoteDataSource
+import com.youverify.agent_app_android.data.repository.verification.id.VerifyIdRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -47,6 +51,12 @@ interface RemoteModule {
 
     @get:Binds
     val StateLgaCacheDataSourceImpl.stateLgaCacheImpl: StateLgaCacheDataSource
+
+    @get:Binds
+    val PrefAreasRemoteDataSourceImpl.prefAreasRemoteImpl: PrefAreasRemoteDataSource
+
+    @get:Binds
+    val VerifyIdRemoteDataSourceImpl.verifyIdRemoteImpl: VerifyIdRemoteDataSource
 
     companion object {
         @[Provides Singleton]

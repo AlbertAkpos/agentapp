@@ -6,11 +6,16 @@ import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreaRequest
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreasResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
-import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface AgentService {
 
@@ -24,5 +29,8 @@ interface AgentService {
     suspend fun sendResetEmail(@Body email: Email) : Response<ResetPassResponse>
 
     @POST("agents/verify")
-    suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
+    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest,  @Header("AUTHORIZATION") token: String): Response<VerifyIdResponse>
+
+    @PUT("agents/me/areas")
+    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest, @Header("AUTHORIZATION") token: String): Response<PrefAreasResponse>
 }
