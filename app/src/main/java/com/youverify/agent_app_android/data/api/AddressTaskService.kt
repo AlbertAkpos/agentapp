@@ -1,6 +1,6 @@
 package com.youverify.agent_app_android.data.api
 
-import com.youverify.agent_app_android.data.model.verification.StateLgaList
+import com.youverify.agent_app_android.data.model.verification.areas.StateLgaList
 import com.youverify.agent_app_android.data.model.signup.StatesList
 import retrofit2.Response
 import retrofit2.http.GET

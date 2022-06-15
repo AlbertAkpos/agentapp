@@ -1,9 +1,7 @@
 package com.youverify.agent_app_android.data.repository.verification
 
-import com.youverify.agent_app_android.core.functional.Failure
-import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AddressTaskService
-import com.youverify.agent_app_android.data.model.verification.StateLgaList
+import com.youverify.agent_app_android.data.model.verification.areas.StateLgaList
 import retrofit2.Response
 import javax.inject.Inject
 

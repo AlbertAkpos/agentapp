@@ -1,4 +1,4 @@
-package com.youverify.agent_app_android.data.model.verification
+package com.youverify.agent_app_android.data.model.verification.areas
 
 
 import com.google.gson.annotations.SerializedName
