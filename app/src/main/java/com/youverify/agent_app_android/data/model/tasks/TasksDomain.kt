@@ -46,4 +46,19 @@ object TasksDomain {
         val buildingType: String = ""
     )
 
+    data class StartTaskResponse(
+        val success: Boolean,
+        val message: String
+    )
+
+    data class MessagesResponse(
+        val success: Boolean?,
+        val data: List<String>?
+    )
+
+    data class LatLong(
+        val lat: Double,
+        val long: Double
+    )
+
 }

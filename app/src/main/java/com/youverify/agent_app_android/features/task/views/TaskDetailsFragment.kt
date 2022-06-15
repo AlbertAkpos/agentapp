@@ -1,31 +1,34 @@
 package com.youverify.agent_app_android.features.task.views
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.*
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.data.model.TaskItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.databinding.BuildingTypesLayoutBinding
 import com.youverify.agent_app_android.databinding.FragmentTaskDetailsBinding
 import com.youverify.agent_app_android.databinding.RadioButtonLayoutBinding
-import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.extension.*
+import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,8 +36,30 @@ import javax.inject.Inject
 class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private lateinit var binding: FragmentTaskDetailsBinding
 
+    /**
+     * Steps:
+     * 1. Start task - call api
+     * 2. Fetch and set response reason endpoint
+     */
+
+    @Inject lateinit var locationHelper: LocationHelper
 
     private val viewModel by activityViewModels<TaskViewModel>()
+
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permission ->
+        val somePermissionsNotGranted = permissions.any { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
+        if (somePermissionsNotGranted) {
+            context?.showDialog("Permission required", message = "You need to accept all permissions for us to get your location", negativeTitle = "Cancel", positiveTitle = "Continue") {}
+        }
+    }
+
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+           getCurrentLocation()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +88,34 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
         buildingTypeInput.setOnClickListener { openBuildingTypeSheet() }
+
+        noGeoTaginput.setOnClickListener { getCurrentLocation() }
+    }
+
+    private fun getCurrentLocation() {
+        val somePermissionsNotGranted = permissions.any { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
+        if (somePermissionsNotGranted) {
+            context?.showDialog("Permission required", message = "Please accept all permissions to continue", negativeTitle = "Cancel", positiveTitle = "Continue") {
+                requestNeededPermissions()
+            }
+            return
+        }
+
+        if (!locationHelper.isGpsEnabled()) {
+            context?.showDialog(title = "Location is Off", message = "Please turn location ON", positiveTitle = "Turn on", negativeTitle = "Cancel") {
+                resultLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+        }
+
+        locationHelper.getCurrentLocation { latLng, address ->
+            binding.yesGeoTaginput.setText(address)
+            binding.noGeoTaginput.setText(address)
+        }
+
+    }
+
+    private fun requestNeededPermissions() {
+        locationPermissionRequest.launch(permissions)
     }
 
     private fun openBuildingTypeSheet() {
@@ -100,6 +153,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 if (!state) { binding.canLocateAddressContainer.gone() }
                 binding.cantLocateAddressContainer.visibleIf(!state)
         }
+
+        viewModel.rejectionMessages.observe(viewLifecycleOwner) {
+            val messages = it ?: return@observe
+            binding.reasonInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, messages))
+        }
+
+        viewModel.submissionMessages.observe(viewLifecycleOwner) {
+            val messages = it ?: return@observe
+            binding.cantFindCandidateInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, messages))
+        }
     }
 
     private fun updateUI(taskItem: TasksDomain.AgentTask) = with(binding) {
@@ -120,9 +183,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.selectReasonText.visibility = View.GONE
             binding.reasonLayout.visibility = View.GONE
             binding.imagesText.visibility = View.GONE
-            binding.uploadView.visibility = View.GONE
             binding.getTagText.visibility = View.GONE
-            binding.geoTagLayout.visibility = View.GONE
             binding.landmarkText.visibility = View.GONE
             binding.landmarkLayout.visibility = View.GONE
             binding.infoText.visibility = View.GONE
@@ -134,9 +195,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.selectReasonText.visibility = View.VISIBLE
             binding.reasonLayout.visibility = View.VISIBLE
             binding.imagesText.visibility = View.VISIBLE
-            binding.uploadView.visibility = View.VISIBLE
             binding.getTagText.visibility = View.VISIBLE
-            binding.geoTagLayout.visibility = View.VISIBLE
             binding.landmarkText.visibility = View.VISIBLE
             binding.landmarkLayout.visibility = View.VISIBLE
             binding.infoText.visibility = View.VISIBLE
@@ -198,5 +257,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
+    }
+
+    companion object {
+        private val permissions = arrayOf(Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_FINE_LOCATION)
     }
 }

@@ -25,5 +25,11 @@ object AgentTaskVerificationType {
 
 }
 
+object Permissions {
+    const val ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION"
+    const val ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION"
+    const val  ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION"
+}
+
 private fun getBuildingTyepes() =
     arrayListOf("Townhouse", "Terraced house", "Semi detached house", "Detached house", "Bungalow", "Duplex", "Mansion", "Penthouse", "Container house", "One room (face-me-I-face-you)")

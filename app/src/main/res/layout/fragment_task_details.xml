@@ -407,31 +407,30 @@
                     tools:visibility="visible" />
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/upload_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:background="@drawable/upload_img_bg"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/images_text"
-                    tools:visibility="visible">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_48"
-                        android:layout_marginTop="@dimen/margin_24"
-                        android:layout_marginEnd="@dimen/margin_48"
-                        android:layout_marginBottom="@dimen/margin_24"
-                        android:contentDescription="@string/upload_image"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/candidateNotImageUploadBtn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/dotted_background"
                         android:src="@drawable/ic_add"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        />
+
+                    <HorizontalScrollView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:id="@+id/candidateNotFoundCapturedImagesContainer"
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="match_parent"/>
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
 
 
                 <TextView
@@ -449,7 +448,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/geo_tag_layout"
+                    android:id="@+id/noGeoTaglayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -465,12 +464,13 @@
                     tools:visibility="visible">
 
                     <AutoCompleteTextView
-                        android:id="@+id/geo_tag_input"
+                        android:id="@+id/noGeoTaginput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:hint="@string/my_location"
                         android:inputType="none"
+                        android:focusable="false"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -598,7 +598,7 @@
                 android:id="@+id/canLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -866,6 +866,34 @@
                     </com.google.android.material.card.MaterialCardView>
 
                 </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/cantFindCandidateLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:visibility="gone"
+                    app:boxStrokeColor="@color/colorTextPrimary"
+                    app:endIconDrawable="@drawable/ic_arrow_down"
+                    android:hint="--Select--"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/info_text"
+                    app:layout_constraintTop_toBottomOf="@+id/info_text"
+                    tools:visibility="visible">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/cantFindCandidateInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/br_sonoma_regular"
+                        android:inputType="none"
+                        android:paddingStart="@dimen/margin_16"
+                        android:paddingEnd="@dimen/margin_16"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="@dimen/text_14"
+                        tools:ignore="LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:id="@+id/yesConfirmedTheCandidateLives"

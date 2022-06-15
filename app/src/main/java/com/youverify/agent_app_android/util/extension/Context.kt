@@ -13,7 +13,8 @@ fun Context.showDialog(
     title: String = "Error",
     message: String,
     positiveTitle: String = "ok",
-    negativeTitle: String? = ""
+    negativeTitle: String? = "",
+    positiveCallback: (() -> Unit)? = null
 ) {
 
     MaterialDialog(this).show {

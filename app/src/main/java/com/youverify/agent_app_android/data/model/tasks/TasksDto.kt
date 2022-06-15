@@ -97,4 +97,24 @@ object TasksDto {
         @SerializedName("lon") val long : Double?,
         @SerializedName("lat") val lat : Double?
     )
+
+    data class StartTaskResponse (
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("status_code") val statusCode: Int?,
+        @SerializedName("message") val message: String?
+    )
+
+    data class RejectionMessagesResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode") val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("data") val data: List<String>?
+    )
+
+    data class SubmissionMessagesResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode") val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("data") val data: List<String>?
+    )
 }

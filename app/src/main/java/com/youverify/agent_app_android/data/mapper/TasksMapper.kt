@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.mapper
 
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
+import okhttp3.internal.concurrent.Task
 
 fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
     val listAgentTasks = arrayListOf<TasksDomain.AgentTask>()
@@ -40,5 +41,26 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
         success = success == true,
         message = message,
         taskItems = listAgentTasks
+    )
+}
+
+fun TasksDto.StartTaskResponse.map(): TasksDomain.StartTaskResponse {
+    return TasksDomain.StartTaskResponse(
+        success = this.success == true,
+        message = this.message ?: ""
+    )
+}
+
+fun TasksDto.RejectionMessagesResponse.map(): TasksDomain.MessagesResponse {
+    return TasksDomain.MessagesResponse(
+        success = this.success == true,
+        data = data
+    )
+}
+
+fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
+    return TasksDomain.MessagesResponse(
+        success = this.success == true,
+        data = data
     )
 }

@@ -30,4 +30,13 @@ interface AgentService {
 
     @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
     suspend fun getAgentTasks(): TasksDto.AgentTasksResponse
+
+    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/start")
+    suspend fun startTask(@Path("taskId") taskId: String) : TasksDto.StartTaskResponse
+
+    @GET("https://address-task.dev.svc.youverify.co/v1/messages/reject")
+    suspend fun getRejectionMessages(): TasksDto.RejectionMessagesResponse
+
+    @GET("https://address-task.dev.svc.youverify.co/v1/messages/submit")
+    suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse
 }
