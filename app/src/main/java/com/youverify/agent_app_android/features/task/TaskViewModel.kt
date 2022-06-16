@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.features.task
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,20 +12,24 @@ import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val repository: ITaskRepository) : ViewModel() {
+class TaskViewModel @Inject constructor(
+    private val repository: ITaskRepository,
+    private val coroutineScope: CoroutineScope
+) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
-    val tasksState = MutableLiveData<SingleEvent<ResultState<ArrayList<TasksDomain.AgentTask>>>>()
+    val tasksState = MutableLiveData<ResultState<ArrayList<TasksDomain.AgentTask>>>()
 
     val canYouLocateTheAddressState = MutableLiveData<SingleEvent<Boolean>>()
 
     val typesOfBuildings = Constants.buildTypes
+
+    val colors = Constants.colors
 
     var taskAnswers = TasksDomain.TaskAnswers()
 
@@ -36,22 +41,22 @@ class TaskViewModel @Inject constructor(private val repository: ITaskRepository)
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
-            tasksState.postValue(SingleEvent(ResultState.Error(message)))
+            tasksState.postValue(ResultState.Error(message))
         }
         viewModelScope.launch(coroutineExceptionHandler) {
-            tasksState.postValue(SingleEvent(ResultState.Loading()))
+            tasksState.postValue(ResultState.Loading())
             val response = repository.fetchAgentTasks()
             if (response.success) {
-                tasksState.postValue(SingleEvent(ResultState.Success(response.taskItems)))
+                tasksState.postValue(ResultState.Success(response.taskItems))
             } else {
-                tasksState.postValue(SingleEvent(ResultState.Error(response.message ?: "Some error occurred")))
+                tasksState.postValue(ResultState.Error(response.message ?: "Some error occurred"))
             }
         }
     }
 
     val startTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
-    val rejectionMessages = MutableLiveData<List<String>?>()
-    val submissionMessages = MutableLiveData<List<String>?>()
+    val rejectionMessages = arrayListOf<String>()
+    val submissionMessages = arrayListOf<String>()
 
     /**
      * startTasks calls several endpoints
@@ -63,39 +68,60 @@ class TaskViewModel @Inject constructor(private val repository: ITaskRepository)
             startTaskState.postValue(SingleEvent(ResultState.Error(message)))
         }
 
-        val asynCoroutneExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            // Exception is handled silently
-            throwable.printStackTrace()
-        }
 
-        viewModelScope.launch(coroutineExceptionHandler) {
-            val startTaskResponse = async(coroutineExceptionHandler) {
-                repository.startTask(taskId)
-            }.await()
-
-            val rejectionMessagesResponse = async(asynCoroutneExceptionHandler) {
-                repository.getRejectionMessages()
-            }.await()
-
-            val submissionMessagesResponse = async(asynCoroutneExceptionHandler) {
-                repository.getSubmissionMessages()
-            }.await()
-
-            // Handle start task response
-            if (startTaskResponse.success) {
-                startTaskState.postValue(SingleEvent(ResultState.Success(startTaskResponse.message)))
-            } else {
-                startTaskState.postValue(SingleEvent(ResultState.Error(startTaskResponse.message)))
+        val asynCoroutneExceptionHandler =
+            CoroutineExceptionHandler { coroutineContext, throwable ->
+                // Exception is handled silently
+                throwable.printStackTrace()
             }
 
-            // Handle rejectionMessages response
-            rejectionMessages.postValue(rejectionMessagesResponse.data)
+        val scope = CoroutineScope( SupervisorJob() + coroutineExceptionHandler)
 
-            // Handle submission reponse
-            submissionMessages.postValue(submissionMessagesResponse.data)
+
+        scope.launch {
+
+            val startTaskResponse = async {
+                repository.startTask(taskId)
+            }
+
+            val rejectionMessagesResponse = async {
+                repository.getRejectionMessages()
+            }
+
+            val submissionMessagesResponse = async {
+                repository.getSubmissionMessages()
+            }
+
+            kotlin.runCatching {
+                val startTask = startTaskResponse.await()
+                // Handle start task response
+                if (startTask.success) {
+                    startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
+                } else {
+                    startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
+                }
+            }
+
+            kotlin.runCatching {
+                // Handle rejectionMessages response
+                val rejectionData = rejectionMessagesResponse.await()
+                rejectionMessages.clear()
+                Log.d("TaskViewModel", "Rejection messages ==> ${rejectionData.data}")
+                rejectionMessages.addAll(rejectionData.data ?: emptyList())
+
+            }
+
+
+            kotlin.runCatching {
+                // Handle submission reponse
+                submissionMessages.clear()
+                val submissionData = submissionMessagesResponse.await()
+                submissionMessages.addAll(submissionData.data ?: emptyList())
+            }
 
 
         }
+
     }
 
 }

@@ -131,4 +131,10 @@ dependencies {
     //play services
     implementation 'com.google.android.gms:play-services-location:20.0.0'
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //Recycler view adapter
+    implementation 'io.github.ibrahimyilmaz:kiel:1.2.1'
+
 }

@@ -35,25 +35,27 @@ import javax.inject.Inject
 class TaskListFragment : Fragment(R.layout.fragment_task) {
     //code to get the view model object
     private lateinit var taskViewModel: TaskViewModel
+
     //adapter object
-    private val adapter by lazy { TaskItemAdapter {
-            selectedItem: TasksDomain.AgentTask -> listItemClicked(selectedItem)
-    } }
+    private val adapter by lazy {
+        TaskItemAdapter { selectedItem: TasksDomain.AgentTask ->
+            listItemClicked(selectedItem)
+        }
+    }
     private val binding by viewBindings(FragmentTaskBinding::bind)
 
     @Inject
     lateinit var preference: AgentSharePreference
 
-    @Inject lateinit var progressLoader: ProgressLoader
+    @Inject
+    lateinit var progressLoader: ProgressLoader
 
     private val viewModel by viewModels<TaskViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            viewModel.fetchAgentTasks(AgentTaskStatus.PENDING)
-        }
+        viewModel.fetchAgentTasks(AgentTaskStatus.PENDING)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,16 +71,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         binding.taskRecyclerView.adapter = adapter
 
-        binding.filterBtn.setOnClickListener{
+        binding.filterBtn.setOnClickListener {
             showBottomBar()
         }
     }
 
     private fun setObservers() {
         viewModel.tasksState.observe(viewLifecycleOwner) {
-            val state = it.getContentIfNotHandled() ?: return@observe
-            when(state) {
-                is ResultState.Loading -> { progressLoader.show(message = "Please wait...", false) }
+            val state = it ?: return@observe
+            when (state) {
+                is ResultState.Loading -> {
+                    progressLoader.show(message = "Please wait...", false)
+                }
                 is ResultState.Error -> {
                     progressLoader.hide()
                     context?.showDialog(message = state.error)
@@ -93,14 +97,15 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
     }
 
 
-    private fun listItemClicked(taskItem: TasksDomain.AgentTask){
+    private fun listItemClicked(taskItem: TasksDomain.AgentTask) {
         displayTaskDialog(taskItem)
     }
 
     private fun displayTaskDialog(taskItem: TasksDomain.AgentTask) {
         //we should use the taskItem passed in here to set the data on the dialog
 
-        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.task_assigned_dialog, null)
         view.findViewById<TextView>(R.id.address_text).text = taskItem.address
 
@@ -147,7 +152,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation

@@ -10,26 +10,30 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
-import com.youverify.agent_app_android.databinding.BuildingTypesLayoutBinding
-import com.youverify.agent_app_android.databinding.FragmentTaskDetailsBinding
-import com.youverify.agent_app_android.databinding.RadioButtonLayoutBinding
+import com.youverify.agent_app_android.databinding.*
+import com.youverify.agent_app_android.features.common.adapter.createColorsAdapter
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.extension.*
 import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,6 +48,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     @Inject lateinit var locationHelper: LocationHelper
 
+    private var colorDialog: MaterialDialog? = null
+
+
     private val viewModel by activityViewModels<TaskViewModel>()
 
     private val locationPermissionRequest = registerForActivityResult(
@@ -55,19 +62,23 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
     }
 
+    private val colorListAdapter = createColorsAdapter { color ->
+        // Maybe update the selected color on the view also
+        binding.buildingColorInput.setText(color.name)
+    }
+
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
            getCurrentLocation()
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
         binding = FragmentTaskDetailsBinding.inflate(layoutInflater)
-        configureUI()
-
         return binding.root
     }
 
@@ -76,6 +87,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         setupClicks()
         setObservers()
     }
+
+
 
     private fun setupClicks() = with(binding) {
         proceedToCaptureDetailsBtn.setOnClickListener {
@@ -90,6 +103,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         buildingTypeInput.setOnClickListener { openBuildingTypeSheet() }
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
+
+        reasonInput.setOnClickListener { showMessagesBottomSheet(viewModel.rejectionMessages) {
+            binding.reasonInput.setText(it)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
+        } }
     }
 
     private fun getCurrentLocation() {
@@ -102,16 +120,37 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         if (!locationHelper.isGpsEnabled()) {
-            context?.showDialog(title = "Location is Off", message = "Please turn location ON", positiveTitle = "Turn on", negativeTitle = "Cancel") {
-                resultLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            locationHelper.onLocationSettingsSuccessListener { getLocation() }
+                .addOnFailureListener { doLocationResolution(it) }
+        }
+
+    }
+
+
+    @RequiresPermission(allOf = [Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_BACKGROUND_LOCATION, Permissions.ACCESS_FINE_LOCATION])
+    private fun getLocation() {
+        locationHelper.getCurrentLocation { latLng, address ->
+            binding.yesGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+            binding.noGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+        }
+    }
+
+    private fun doLocationResolution(exception: Exception) {
+        if (exception is ApiException) {
+            when(exception.statusCode) {
+                LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                    try {
+                        val rae = exception as? ResolvableApiException
+                        activity?.apply {
+                            rae?.startResolutionForResult(this, LOCATION_RESOLUTION_RC)
+                        }
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                        Timber.e("Location settings error $ex")
+                    }
+                }
             }
         }
-
-        locationHelper.getCurrentLocation { latLng, address ->
-            binding.yesGeoTaginput.setText(address)
-            binding.noGeoTaginput.setText(address)
-        }
-
     }
 
     private fun requestNeededPermissions() {
@@ -120,7 +159,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private fun openBuildingTypeSheet() {
         var dialog: MaterialDialog? = null
-        val binding = BuildingTypesLayoutBinding.inflate(layoutInflater)
+        val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
         val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater)
         for (item in viewModel.typesOfBuildings) {
             binding.radioGroup.removeAllViews()
@@ -139,6 +178,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         dialog = context?.inflateBottomSheet(binding.root)
     }
 
+    private fun showColorButtomSheet() {
+        val binding = BottomSelectColorBinding.inflate(layoutInflater)
+        binding.colorList.adapter = colorListAdapter
+        colorListAdapter.currentList.clear()
+        colorListAdapter.submitList(viewModel.colors)
+
+        colorDialog = context?.inflateBottomSheet(binding.root)
+
+    }
+
     private fun setObservers() {
         viewModel.taskItemState.observe(viewLifecycleOwner) {
             val taskItem = it.getContentIfNotHandled() ?: return@observe
@@ -153,21 +202,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 if (!state) { binding.canLocateAddressContainer.gone() }
                 binding.cantLocateAddressContainer.visibleIf(!state)
         }
-
-        viewModel.rejectionMessages.observe(viewLifecycleOwner) {
-            val messages = it ?: return@observe
-            binding.reasonInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, messages))
-        }
-
-        viewModel.submissionMessages.observe(viewLifecycleOwner) {
-            val messages = it ?: return@observe
-            binding.cantFindCandidateInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, messages))
-        }
     }
 
     private fun updateUI(taskItem: TasksDomain.AgentTask) = with(binding) {
         verificationTypeText.text = taskItem.verificationType
         candidateAddress.text = taskItem.address
+        candidateImage.loadImage(taskItem.candidate?.photo)
+
+        viewModel.startTask(taskItem.id)
+
     }
 
     //implement this function
@@ -259,7 +302,40 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
     }
 
+    private fun showMessagesBottomSheet(reasons: List<String>, callback: (reason: String) -> Unit) {
+        Timber.d("Messsage ==> $reasons")
+        var dialog: MaterialDialog? = null
+        val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
+        binding.radioGroup.removeAllViews()
+        for (item in reasons) {
+            val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater, binding.root, false)
+            radioButton.radio.text = item
+            radioButton.radio.id = item.hashCode()
+            binding.radioGroup.addView(radioButton.root)
+        }
+        binding.radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+            val button = radioGroup?.findViewById<RadioButton>(i)
+            if (button?.isChecked == true) {
+                val reason = button.text?.toString() ?: ""
+                dialog?.dismiss()
+                callback(reason)
+            }
+        }
+
+        dialog = context?.inflateBottomSheet(binding.root, cancelable = true)
+    }
+
+    @Deprecated("Deprecated in Java")
+    @Suppress("deprecation")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOCATION_RESOLUTION_RC && resultCode != Activity.RESULT_OK) {
+            context?.toast("Please accept all permissions")
+        }
+    }
+
     companion object {
+        private const val LOCATION_RESOLUTION_RC = 209
         private val permissions = arrayOf(Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_FINE_LOCATION)
     }
 }

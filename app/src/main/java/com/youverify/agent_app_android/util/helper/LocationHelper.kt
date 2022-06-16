@@ -9,6 +9,7 @@ import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.google.android.gms.tasks.Task
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.util.Permissions
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,7 +26,7 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
         )
     }
 
-    private val settinsClient by lazy { LocationServices.getSettingsClient(this) }
+   private val settinsClient by lazy { LocationServices.getSettingsClient(this) }
 
     private val currentLocationRequest = CurrentLocationRequest.Builder().apply {
         setDurationMillis(1000)
@@ -78,6 +79,10 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
     }
 
     fun isGpsEnabled() = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+    fun onLocationSettingsSuccessListener(onSuccess: () -> Unit): Task<LocationSettingsResponse> {
+      return settinsClient.checkLocationSettings(locationSettinsRequest).addOnSuccessListener { onSuccess() }
+    }
 
     companion object {
         const val NOT_FOUND = "Location not found"

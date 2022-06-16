@@ -3,6 +3,7 @@ package com.youverify.agent_app_android.util.extension
 import android.content.Context
 import android.content.res.Resources
 import android.view.View
+import android.widget.Toast
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -23,7 +24,7 @@ fun Context.showDialog(
         message(text = message)
 
         positiveButton(text = positiveTitle) { dialog ->
-            positiveButton()
+           positiveCallback?.invoke()
         }
 
         negativeButton(text = negativeTitle) {
@@ -39,4 +40,9 @@ fun Context.inflateBottomSheet(views: View, cancelable: Boolean = false, cornerR
         cancelable(cancelable)
         setPeekHeight(Resources.getSystem().displayMetrics.heightPixels)
     }
+}
+
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
 }

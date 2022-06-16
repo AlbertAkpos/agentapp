@@ -194,19 +194,19 @@ class AccessBuildingFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_select_color)
 
-        val choice1 = dialog.findViewById<ImageView>(R.id.view1)
+//        val choice1 = dialog.findViewById<ImageView>(R.id.view1)
 //        val choice2 = dialog.findViewById<ImageView>(R.id.view2)
 
 
-        choice1.setOnClickListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                Toast.makeText(requireContext(), "Chose null", Toast.LENGTH_SHORT).show()
-                binding.buildingColorInput.setText("None")
-                binding.gateLayout.visibility = View.VISIBLE
-                dialog.dismiss()
-                scrollView.post { scrollView.scrollTo(0, binding.gateLayout.y.toInt()) }
-            }, 500)
-        }
+//        choice1.setOnClickListener {
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Toast.makeText(requireContext(), "Chose null", Toast.LENGTH_SHORT).show()
+//                binding.buildingColorInput.setText("None")
+//                binding.gateLayout.visibility = View.VISIBLE
+//                dialog.dismiss()
+//                scrollView.post { scrollView.scrollTo(0, binding.gateLayout.y.toInt()) }
+//            }, 500)
+//        }
 
 //        choice2.setOnClickListener {
 //            Handler(Looper.getMainLooper()).postDelayed({
@@ -230,19 +230,19 @@ class AccessBuildingFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_select_color)
 
-        val choice1 = dialog.findViewById<ImageView>(R.id.view1)
+//        val choice1 = dialog.findViewById<ImageView>(R.id.view1)
 //        val choice2 = dialog.findViewById<ImageView>(R.id.view2)
 
 
-        choice1.setOnClickListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                Toast.makeText(requireContext(), "Chose null", Toast.LENGTH_SHORT).show()
-                binding.gateColorInput.setText("None")
-                binding.candidateLayout.visibility = View.VISIBLE
-                dialog.dismiss()
-                scrollView.post { scrollView.scrollTo(0, binding.candidateLayout.y.toInt()) }
-            }, 500)
-        }
+//        choice1.setOnClickListener {
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Toast.makeText(requireContext(), "Chose null", Toast.LENGTH_SHORT).show()
+//                binding.gateColorInput.setText("None")
+//                binding.candidateLayout.visibility = View.VISIBLE
+//                dialog.dismiss()
+//                scrollView.post { scrollView.scrollTo(0, binding.candidateLayout.y.toInt()) }
+//            }, 500)
+//        }
 
 //        choice2.setOnClickListener {
 //            Handler(Looper.getMainLooper()).postDelayed({

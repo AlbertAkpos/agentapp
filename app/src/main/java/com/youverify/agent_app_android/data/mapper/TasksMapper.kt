@@ -31,7 +31,8 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
                 status = doc.status,
                 street = doc.address?.street ?: "",
                 verificationType = doc.verificationType ?: "",
-                candidate = candidate
+                candidate = candidate,
+                id = doc.id ?: ""
             )
             listAgentTasks.add(agentTasks)
         }

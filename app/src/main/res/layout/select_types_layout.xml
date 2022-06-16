@@ -24,7 +24,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/br_sonoma_regular"
         android:textColor="@color/colorOnBoardingIndicatorActive1"
-        tools:text="@string/select_reason"
+        android:text="@string/select_reason"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center"
@@ -37,15 +37,7 @@
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/sm"
         android:layout_marginTop="@dimen/sm"
-        android:layout_height="wrap_content">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Hello world"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            />
-    </RadioGroup>
-
+        android:orientation="vertical"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

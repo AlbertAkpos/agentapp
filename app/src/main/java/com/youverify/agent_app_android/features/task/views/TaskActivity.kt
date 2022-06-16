@@ -19,8 +19,6 @@ class TaskActivity : BaseActivity() {
 
     private val startDestination by lazy { intent?.getIntExtra(START_DESTINATION_KEY, DEFAULT_DESTINATION) ?: DEFAULT_DESTINATION }
 
-
-
     private val viewModel by viewModels<TaskViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +38,8 @@ class TaskActivity : BaseActivity() {
             viewModel.setTaskItem(taskItem)
         }
     }
+
+    override val navigationId: Int = R.navigation.task_nav
 
     override fun getNavId(): Int = R.id.taskNavHost
 

@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.data.model.tasks
 
+import androidx.annotation.ColorRes
 import com.google.gson.annotations.SerializedName
 
 object TasksDomain {
@@ -11,6 +12,7 @@ object TasksDomain {
     )
 
     data class AgentTask(
+        val id: String,
         val flatNumber: String,
         val verificationType: String,
         val status: String?,
@@ -43,7 +45,8 @@ object TasksDomain {
     }
 
     data class TaskAnswers(
-        val buildingType: String = ""
+        val buildingType: String = "",
+        val rejectionReason: String = ""
     )
 
     data class StartTaskResponse(
@@ -59,6 +62,11 @@ object TasksDomain {
     data class LatLong(
         val lat: Double,
         val long: Double
+    )
+
+    data class Color(
+        @ColorRes val colorId: Int?,
+        val name: String
     )
 
 }

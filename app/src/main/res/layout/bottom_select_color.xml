@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/select_period_bg"
+    android:orientation="vertical"
     android:padding="24dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/drawer_handle"
         android:layout_width="50dp"
         android:layout_height="4dp"
+        android:layout_gravity="center"
         android:backgroundTint="@color/handleColor"
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +24,7 @@
         android:id="@+id/select_color_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/br_sonoma_regular"
         android:text="@string/select_color"
@@ -33,331 +37,14 @@
         app:layout_constraintTop_toBottomOf="@+id/drawer_handle" />
 
 
-    <ImageButton
-        android:id="@+id/view1"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/ic_ellipse"
-        android:src="@drawable/ic_none"
-        app:layout_constraintEnd_toStartOf="@+id/view2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
-        android:contentDescription="@string/none"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/colorList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/sm"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4"
+        tools:listitem="@layout/image_color_item" />
 
-    <ImageButton
-        android:id="@+id/view2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/ic_ellipse"
-        app:layout_constraintEnd_toStartOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view1"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view4"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/yellow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
-        android:contentDescription="@string/none"/>
-
-
-<!--  Second row of colors -->
-
-    <ImageButton
-        android:id="@+id/view5"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/teal_green"
-        app:layout_constraintEnd_toStartOf="@+id/view6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view1"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view6"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/lemon_green"
-        app:layout_constraintEnd_toStartOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view5"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view7"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/shady_green"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/view3"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view8"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/purple_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view7"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        android:contentDescription="@string/none"/>
-
-
-    <!--  Third row of colors -->
-
-    <ImageButton
-        android:id="@+id/view9"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/purple_blue"
-        app:layout_constraintEnd_toStartOf="@+id/view10"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view5"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view10"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/light_blue"
-        app:layout_constraintEnd_toStartOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view9"
-        app:layout_constraintTop_toBottomOf="@+id/view6"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view11"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/greyish_blue"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view10"
-        app:layout_constraintTop_toBottomOf="@+id/view7"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view12"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/red_wine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view11"
-        app:layout_constraintTop_toBottomOf="@+id/view8"
-        android:contentDescription="@string/none"/>
-
-
-
-    <!--  Fourth row of colors -->
-
-    <ImageButton
-        android:id="@+id/view13"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/dark_red"
-        app:layout_constraintEnd_toStartOf="@+id/view14"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view9"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view14"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/red"
-        app:layout_constraintEnd_toStartOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view13"
-        app:layout_constraintTop_toBottomOf="@+id/view10"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view15"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/faded_red"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view14"
-        app:layout_constraintTop_toBottomOf="@+id/view11"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view16"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/dark_purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view15"
-        app:layout_constraintTop_toBottomOf="@+id/view12"
-        android:contentDescription="@string/none"/>
-
-
-    <!--  Fith row of colors -->
-
-    <ImageButton
-        android:id="@+id/view17"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/light_purple"
-        app:layout_constraintEnd_toStartOf="@+id/view18"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view13"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view18"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/purple"
-        app:layout_constraintEnd_toStartOf="@+id/view19"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view17"
-        app:layout_constraintTop_toBottomOf="@+id/view14"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view19"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/faded_purple"
-        app:layout_constraintEnd_toStartOf="@+id/view4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view18"
-        app:layout_constraintTop_toBottomOf="@+id/view15"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view20"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/orange"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view19"
-        app:layout_constraintTop_toBottomOf="@+id/view16"
-        android:contentDescription="@string/none"/>
-
-
-    <!--  Fith row of colors -->
-
-    <ImageButton
-        android:id="@+id/view21"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/brown"
-        app:layout_constraintEnd_toStartOf="@+id/view22"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view17"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view22"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/peach"
-        app:layout_constraintEnd_toStartOf="@+id/view23"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view21"
-        app:layout_constraintTop_toBottomOf="@+id/view18"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view23"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/color_circle"
-        android:backgroundTint="@color/off_white"
-        app:layout_constraintEnd_toStartOf="@+id/view24"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view22"
-        app:layout_constraintTop_toBottomOf="@+id/view19"
-        android:contentDescription="@string/none"/>
-
-    <ImageButton
-        android:id="@+id/view24"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_ellipse"
-        android:backgroundTint="@color/same_dark_purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view23"
-        app:layout_constraintTop_toBottomOf="@+id/view20"
-        android:contentDescription="@string/none"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

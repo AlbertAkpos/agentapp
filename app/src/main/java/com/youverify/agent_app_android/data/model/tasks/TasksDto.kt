@@ -26,9 +26,9 @@ object TasksDto {
         @SerializedName("verificationType") val verificationType: String?,
         @SerializedName("_lastModifiedAt") val _lastModifiedAt: String?,
         @SerializedName("candidate") val candidate : Candidate?,
-        @SerializedName("lastModifiedAt") val lastModifiedAt : String,
-        @SerializedName("_id") val _id : String,
-        @SerializedName("id") val id : String
+        @SerializedName("lastModifiedAt") val lastModifiedAt : String?,
+        @SerializedName("_id") val _id : String?,
+        @SerializedName("id") val id : String?
     )
 
     data class Pagination(

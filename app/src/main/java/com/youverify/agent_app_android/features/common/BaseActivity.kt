@@ -13,10 +13,12 @@ abstract class BaseActivity: AppCompatActivity() {
 
     open fun setStartDestination() {
         val graphInflater = navController.navInflater
-        val navGraph = graphInflater.inflate(R.navigation.task_nav)
+        val navGraph = graphInflater.inflate(navigationId)
         navGraph.setStartDestination(getStartDesination())
         navController.graph = navGraph
     }
 
     abstract fun getStartDesination(): Int
+
+    abstract val navigationId: Int
 }
