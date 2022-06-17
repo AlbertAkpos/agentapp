@@ -5,11 +5,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,13 +29,16 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.databinding.*
 import com.youverify.agent_app_android.features.common.adapter.createColorsAdapter
+import com.youverify.agent_app_android.features.common.adapter.createImagesAdapter
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.extension.*
+import com.youverify.agent_app_android.util.helper.FileHelper
 import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.io.File
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -50,6 +56,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private var colorDialog: MaterialDialog? = null
 
+    @Inject lateinit var fileHelper: FileHelper
+
 
     private val viewModel by activityViewModels<TaskViewModel>()
 
@@ -59,6 +67,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val somePermissionsNotGranted = permissions.any { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
         if (somePermissionsNotGranted) {
             context?.showDialog("Permission required", message = "You need to accept all permissions for us to get your location", negativeTitle = "Cancel", positiveTitle = "Continue") {}
+        } else {
+            getCurrentLocation()
         }
     }
 
@@ -67,11 +77,33 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         binding.buildingColorInput.setText(color.name)
     }
 
-    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-           getCurrentLocation()
+    private val imageResultLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {  result ->
+        val granted = result.entries.all { ContextCompat.checkSelfPermission(requireContext(), it.key) == PackageManager.PERMISSION_GRANTED }
+        if (granted) {
+            // Pick image file
+            pickImage()
+        } else {
+            context?.showDialog(message = "Please accept all permissions to continue")
         }
     }
+
+    private val pickImageLaucher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val imageBitMap = it.data?.extras?.get("data") as? Bitmap
+            Timber.d("Image picked ==> $imageBitMap")
+
+            if (imageBitMap != null) {
+                val file = fileHelper.writeToFile(imageBitMap, "image")
+
+                Timber.d("File gotten: ${file?.absolutePath}")
+                if (file != null) {
+                    viewModel.updateImagesPicked(file)
+                }
+            }
+        }
+    }
+
+    private val imagesAdapter = createImagesAdapter()
 
 
     override fun onCreateView(
@@ -84,11 +116,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUI()
         setupClicks()
         setObservers()
     }
 
-
+    private fun setupUI() = with(binding) {
+        noImageList.adapter = imagesAdapter
+        yesImageList.adapter = imagesAdapter
+    }
 
     private fun setupClicks() = with(binding) {
         proceedToCaptureDetailsBtn.setOnClickListener {
@@ -104,10 +140,31 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
 
+        yesGeoTaginput.setOnClickListener { getCurrentLocation() }
+
         reasonInput.setOnClickListener { showMessagesBottomSheet(viewModel.rejectionMessages) {
             binding.reasonInput.setText(it)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
         } }
+
+        candidateNotImageUploadBtn.setOnClickListener { onPickImageClicked() }
+
+        binding.accessLocBtn.setOnClickListener {
+            binding.layoutAccessLoc.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up2)
+            binding.choiceLayout.show()
+        }
+
+        noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
+    }
+
+    private fun onNoSubmissionButtionClicked() {
+        validateNoSubmition {
+
+        }
+    }
+
+    private fun validateNoSubmition(callback: () -> Unit) {
+
     }
 
     private fun getCurrentLocation() {
@@ -122,16 +179,47 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         if (!locationHelper.isGpsEnabled()) {
             locationHelper.onLocationSettingsSuccessListener { getLocation() }
                 .addOnFailureListener { doLocationResolution(it) }
+        } else {
+            getLocation()
         }
 
     }
 
+    private fun onPickImageClicked() {
+        val granted = context?.isPermissionsGranted(*imagePermissions) == true
+        if (!granted) {
+            requestImagePermissions()
+            return
+        }
+
+        pickImage()
+    }
+
+    private fun requestImagePermissions() {
+        imageResultLauncher.launch(imagePermissions)
+    }
 
     @RequiresPermission(allOf = [Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_BACKGROUND_LOCATION, Permissions.ACCESS_FINE_LOCATION])
     private fun getLocation() {
-        locationHelper.getCurrentLocation { latLng, address ->
-            binding.yesGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
-            binding.noGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+        Timber.d("getLocation()")
+        binding.progressIndicationNo.visibleIf(true)
+        binding.progressIndicationYes.visibleIf(true)
+
+        locationHelper.requestLocationUpdate {
+
+            locationHelper.getCurrentLocation { latLng, address ->
+
+                Timber.d("Current location: $latLng $address")
+                binding.yesGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+                binding.noGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+
+                // Remove location callback on getting location
+                locationHelper.stopLocationUpdate()
+
+                //Hide Loaders
+                binding.progressIndicationNo.gone()
+                binding.progressIndicationYes.gone()
+            }
         }
     }
 
@@ -188,6 +276,12 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     }
 
+    private fun pickImage() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra("android.intent.extras.CAMERA_FACING", 1)
+        pickImageLaucher.launch(intent)
+    }
+
     private fun setObservers() {
         viewModel.taskItemState.observe(viewLifecycleOwner) {
             val taskItem = it.getContentIfNotHandled() ?: return@observe
@@ -202,23 +296,32 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 if (!state) { binding.canLocateAddressContainer.gone() }
                 binding.cantLocateAddressContainer.visibleIf(!state)
         }
+
+        viewModel.imagesPicked.observe(viewLifecycleOwner) {
+            val imageList = it ?: return@observe
+            Log.d("image", "Image size ${imageList.size}")
+            updateImageList(imageList)
+        }
     }
 
     private fun updateUI(taskItem: TasksDomain.AgentTask) = with(binding) {
         verificationTypeText.text = taskItem.verificationType
         candidateAddress.text = taskItem.address
         candidateImage.loadImage(taskItem.candidate?.photo)
+        candidateName.text = taskItem.candidate?.name
 
         viewModel.startTask(taskItem.id)
 
     }
 
+    private fun updateImageList(imageList: ArrayList<File>) {
+        imagesAdapter.submitList(imageList)
+        imagesAdapter.notifyDataSetChanged()
+    }
+
     //implement this function
     private fun configureUI(){
-        binding.accessLocBtn.setOnClickListener {
-           binding.layoutAccessLoc.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up2)
-            binding.choiceLayout.visibility = View.VISIBLE
-        }
+
 
         binding.yesBtn.setOnClickListener {
 
@@ -337,5 +440,6 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     companion object {
         private const val LOCATION_RESOLUTION_RC = 209
         private val permissions = arrayOf(Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_FINE_LOCATION)
+        private val imagePermissions = arrayOf(Permissions.CAMERA, Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE)
     }
 }

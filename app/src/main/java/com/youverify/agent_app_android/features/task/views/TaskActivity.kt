@@ -9,6 +9,7 @@ import com.youverify.agent_app_android.features.common.BaseActivity
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.extension.toObject
+import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

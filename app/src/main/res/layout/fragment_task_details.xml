@@ -409,25 +409,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/xsm"
                     android:layout_height="wrap_content">
                     <ImageButton
                         android:id="@+id/candidateNotImageUploadBtn"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:layout_gravity="center_vertical"
                         android:background="@drawable/dotted_background"
                         android:src="@drawable/ic_add"
                         />
 
-                    <HorizontalScrollView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/noImageList"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_height="match_parent">
-                        <LinearLayout
-                            android:id="@+id/candidateNotFoundCapturedImagesContainer"
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_height="match_parent"/>
-                    </HorizontalScrollView>
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/image_item" />
 
                 </LinearLayout>
 
@@ -479,6 +479,15 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressIndicationNo"
+                    android:layout_width="100dp"
+                    android:visibility="gone"
+                    android:indeterminate="true"
+                    android:layout_marginTop="@dimen/xsm"
+                    app:indicatorColor="@color/colorDark"
+                    android:layout_height="4dp"/>
+
 
                 <TextView
                     android:id="@+id/landmark_text"
@@ -500,7 +509,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:visibility="gone"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@null"
                     app:endIconMode="custom"
@@ -573,8 +581,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/noSubmitButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
+                    android:layout_height="@dimen/btnSize"
+                    android:layout_marginTop="@dimen/md"
                     android:layout_marginBottom="@dimen/margin_48"
                     android:backgroundTint="@color/colorPrimary"
                     android:fontFamily="@font/br_sonoma_regular"
@@ -587,7 +595,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_layout"
                     tools:ignore="TextContrastCheck"
-                    tools:visibility="visible" />
+                    app:elevation="0dp"
+                    android:elevation="0dp"
+                     />
 
             </LinearLayout>
 
@@ -598,7 +608,7 @@
                 android:id="@+id/canLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -990,16 +1000,14 @@
                             android:src="@drawable/ic_add"
                             />
 
-                        <HorizontalScrollView
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/yesImageList"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_height="match_parent">
-                            <LinearLayout
-                                android:id="@+id/capturedImagesContainer"
-                                android:layout_width="match_parent"
-                                android:orientation="horizontal"
-                                android:layout_height="match_parent"/>
-                        </HorizontalScrollView>
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/image_item" />
 
                     </LinearLayout>
                     <TextView
@@ -1047,6 +1055,15 @@
                             tools:ignore="LabelFor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressIndicationYes"
+                        android:layout_width="100dp"
+                        android:visibility="gone"
+                        android:indeterminate="true"
+                        android:layout_marginTop="@dimen/xsm"
+                        app:indicatorColor="@color/colorDark"
+                        android:layout_height="4dp"/>
 
 
                     <TextView

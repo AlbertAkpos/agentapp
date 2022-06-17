@@ -14,12 +14,13 @@ import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val repository: ITaskRepository,
-    private val coroutineScope: CoroutineScope
+    private val supervisScope: CoroutineScope
 ) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
@@ -32,6 +33,14 @@ class TaskViewModel @Inject constructor(
     val colors = Constants.colors
 
     var taskAnswers = TasksDomain.TaskAnswers()
+
+    val imagesPicked = MutableLiveData<ArrayList<File>>()
+
+    fun updateImagesPicked(file: File) {
+        val values = imagesPicked.value ?: arrayListOf<File>()
+        values.add(file)
+        imagesPicked.postValue(values)
+    }
 
     fun setTaskItem(taskItem: TasksDomain.AgentTask) {
         taskItemState.postValue(SingleEvent(taskItem))
@@ -69,16 +78,7 @@ class TaskViewModel @Inject constructor(
         }
 
 
-        val asynCoroutneExceptionHandler =
-            CoroutineExceptionHandler { coroutineContext, throwable ->
-                // Exception is handled silently
-                throwable.printStackTrace()
-            }
-
-        val scope = CoroutineScope( SupervisorJob() + coroutineExceptionHandler)
-
-
-        scope.launch {
+        supervisScope.launch(coroutineExceptionHandler) {
 
             val startTaskResponse = async {
                 repository.startTask(taskId)
@@ -97,6 +97,7 @@ class TaskViewModel @Inject constructor(
                 // Handle start task response
                 if (startTask.success) {
                     startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
+                    taskAnswers = taskAnswers.copy(taskStarted = true)
                 } else {
                     startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
                 }
@@ -110,6 +111,7 @@ class TaskViewModel @Inject constructor(
                 rejectionMessages.addAll(rejectionData.data ?: emptyList())
 
             }
+
 
 
             kotlin.runCatching {

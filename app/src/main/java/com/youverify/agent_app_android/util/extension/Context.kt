@@ -1,9 +1,11 @@
 package com.youverify.agent_app_android.util.extension
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -44,5 +46,13 @@ fun Context.inflateBottomSheet(views: View, cancelable: Boolean = false, cornerR
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
 
+fun Context.isPermissionsGranted(vararg permissions: String): Boolean {
+    for (permission in permissions) {
+        if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+    }
+    return true
 }

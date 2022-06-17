@@ -42,11 +42,13 @@ object TasksDomain {
         val id: String?
     ) {
         val time get() = "$lastModifiedAt"
+        val name get() = "$lastName $firstName"
     }
 
     data class TaskAnswers(
         val buildingType: String = "",
-        val rejectionReason: String = ""
+        val rejectionReason: String = "",
+        val taskStarted: Boolean = false,
     )
 
     data class StartTaskResponse(
