@@ -25,6 +25,10 @@ class VerificationFailedFragment : Fragment(R.layout.fragment_verification_faile
             findNavController().navigate(R.id.action_verificationFailedFragment_to_dashboardFragment)
         }
 
+        binding.tryAgainBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_verificationFailedFragment_to_dashboardFragment)
+        }
+
         return binding.root
     }
 
