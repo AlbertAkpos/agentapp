@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class VerifyIDRequest(
-    val firstName : String,
-    val lastName: String,
-    val type : String,
-    val dateOfBirth : String,
-    val reference : String,
+    var firstName : String,
+    var lastName: String,
+    var type : String?,
+    var dateOfBirth : String?,
+    var reference : String?,
     var imageUrl : String
 ): Parcelable

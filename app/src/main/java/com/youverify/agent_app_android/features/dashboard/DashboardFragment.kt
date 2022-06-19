@@ -2,8 +2,6 @@ package com.youverify.agent_app_android.features.dashboard
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,11 +19,6 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
@@ -54,27 +47,16 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         //if select period button is clicked, slide the bottom bar from beneath
         binding.selectPeriodBtn.setOnClickListener {
             showBottomBar()
-//            setupRangePickerDialog()
-        }
-
-        if (!verificationNotDone()) {
-            showCompleteOnboardingDialog()
-//            Handler(Looper.getMainLooper()).postDelayed({
-//
-//            }, 500)
         }
 
         return binding.root
     }
 
     //verify that user has finished onboarding
-    private fun verificationNotDone(): Boolean {
-        val sharedPreferences: SharedPreferences =
-            requireActivity().getSharedPreferences( "pkgName", Context.MODE_PRIVATE)
-
+    private fun verificationDone(): Boolean {
         isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
         isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
-        prefAreasIsChosen = sharedPreferences.getBoolean("PREF_AREAS", false)
+        prefAreasIsChosen = AgentSharePreference(requireContext()).getBoolean("PREF_AREAS", false)
 
         println("From dashboard")
         println("isTrained: $isTrained")
@@ -168,6 +150,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val trainingCheck = view.findViewById<CheckBox>(R.id.check_complete_training)
         val verifyIdCheck = view.findViewById<CheckBox>(R.id.check_verify_identity)
         val prefAreasCheck = view.findViewById<CheckBox>(R.id.check_select_areas)
+        val activationText = view.findViewById<TextView>(R.id.activate_text)
         dialogBuilder.setView(view)
 
         if(isTrained){
@@ -205,6 +188,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         }
 
+        if(isTrained && isVerified && prefAreasIsChosen){
+            activationText.visibility = View.VISIBLE
+        }else{
+            activationText.visibility = View.GONE
+        }
+
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -213,5 +202,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onResume() {
         super.onResume()
         homeActivity.showNavBar()
+        val agentStatus = AgentSharePreference(requireContext()).getString("AGENT_STATUS")
+        if ((verificationDone() && agentStatus == "IN_ACTIVE") || !verificationDone()) {
+            showCompleteOnboardingDialog()
+        }
     }
 }

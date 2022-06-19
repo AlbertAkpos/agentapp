@@ -109,7 +109,8 @@
     <string name="completeprocess">We\'ve sent an email to verify your details. Please\nclick the link in your email to complete the\n sign-up process</string>
     <string name="complete_reset">We\'ve sent an email to reset your paassword.\nPlease click the link in your email to complete the\n process</string>
     <string name="complete_onboarding_process">Complete Onboarding Process</string>
-    <string name="perform_address_verifications">For your account to be activated so you can start\nearning money perform Address Verifications,</string>
+    <string name="perform_address_verifications">For your account to be activated so you can start\nearning money perform Address Verifications\.</string>
+    <string name="activation_text">Now that you’ve completed the Onboarding\nchecklist, a supervisor will reach out to you\nand activate your account\.</string>
     <string name="perform_address_verification">For your account to be activated so you can start earning\nmoney perform Address Verifications,</string>
     <string name="complete_training">Complete Training</string>
     <string name="select_preffered_areas">Select Preffered Areas</string>
@@ -157,6 +158,7 @@
         <item>BVN</item>
         <item>NIN</item>
         <item>PVC</item>
+        <item>Driver\'s License</item>
         <item>I\'ntl Passport</item>
     </string-array>
 

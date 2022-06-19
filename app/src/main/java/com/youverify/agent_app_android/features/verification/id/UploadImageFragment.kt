@@ -249,33 +249,14 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
     }
 
     private fun passUploadData(uploadResponse: UploadImageResponse?) {
-        val verifyIdRequestDummy = VerifyIDRequest(   //Remove this after this endpoint has being rectified
-            type = "NIN",
-            reference = "11111111111",
-            firstName = "Sarah",
-            lastName = "Doe",
-            dateOfBirth = "1988-04-04",
-            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
-        )
-
-        val token = AgentSharePreference(requireContext()).getString("TOKEN")
         val verificationDetails : VerifyIDRequest = args.verifyIdRequest
         verificationDetails.imageUrl = uploadResponse?.data?.get(0)?.location ?: ""
 
-        submitIdInfo(verifyIdRequestDummy)
+        submitIdInfo(verificationDetails)
     }
 
     private fun submitIdInfo(verificationDetails: VerifyIDRequest){
-        val verifyIdRequestDummy = VerifyIDRequest(   //Remove this after this endpoint has being rectified
-            type = "NIN",
-            reference = "11111111111",
-            firstName = "Sarah",
-            lastName = "Doe",
-            dateOfBirth = "1988-04-04",
-            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
-        )
-
-        uploadViewModel.verifyId(verifyIdRequestDummy)
+        uploadViewModel.verifyId(verificationDetails)
 
         lifecycleScope.launchWhenCreated {
             uploadViewModel.verifyIdChannel.collect {

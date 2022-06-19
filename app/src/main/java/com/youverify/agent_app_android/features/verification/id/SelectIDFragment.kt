@@ -15,6 +15,7 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
@@ -36,7 +37,10 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     private lateinit var dobEditText: AutoCompleteTextView
     private lateinit var continueBtn: MaterialButton
     private lateinit var backBtn: ImageButton
-    private var formatDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+    private var formatDate = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val verifyIdRequest: VerifyIDRequest by lazy {
+        VerifyIDRequest("", "", null, null, null, "")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -110,25 +114,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         }
 
         continueBtn.setOnClickListener {
-            val firstName = AgentSharePreference(requireContext()).getString("FIRST_NAME")
-            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
-            val id = idTypeLayout.editText?.text.toString()
-            val dateOfBirth = dateOfBirth.editText?.text?.trim().toString()
-            val reference = reference.editText?.text?.trim().toString()
-
-            val verifyIdRequest = VerifyIDRequest(
-                firstName = firstName,
-                lastName = lastName,
-                type = id,
-                dateOfBirth = dateOfBirth,
-                reference = reference,
-                imageUrl = ""
-            )
-
-            println("From SelectID: $verifyIdRequest")
-
-            val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)
-            findNavController().navigate(action)
+            passData()
         }
 
         backBtn.setOnClickListener {
@@ -141,22 +127,73 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         homeActivity.showNavBar()
     }
 
-    private fun validateInputs(){
+    private fun validateInputs(): Boolean{
       //if a particular idType is selected,
      // we need to verify that the exact test data is sent to the next screen.
+        val idType = idTypeLayout.editText?.text?.toString()?.trim()
+        val dateOfBirth = dateOfBirth.editText?.text?.toString()?.trim()
+        val reference = reference.editText?.text?.toString()?.trim()
 
-        //for bvn
+        println("idType: $idType \n dob: $dateOfBirth \n ref: $reference" )
 
-        //for nin
+        val verifyIdRequestDummy = VerifyIDRequest(
+            type = "NIN",
+            reference = "11111111111",
+            firstName = "Sarah",
+            lastName = "Doe",
+            dateOfBirth = "1988-04-04",
+            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
+        )
 
-        //for int'l passport
+        when(idType){
+            "NIN" -> {
+                println("idType: $idType \n dob: $dateOfBirth \n ref: $reference" )
+                if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
+            }
 
-        //for driver's licence
+            "BVN" -> {
 
-        //for pvc
+            }
+
+            "PVC" -> {
+
+            }
+
+            "Driver's License" -> {
+
+            }
+
+            "Int'l Passport" -> {
+
+            }
+        }
+
+        return false
     }
 
     private fun passData(){
+        val inputIsValid = validateInputs()
+
+        if(inputIsValid){
+//            val firstName = AgentSharePreference(requireContext()).getString("FIRST_NAME")
+//            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
+//            verifyIdRequest.firstName = firstName
+//            verifyIdRequest.lastName = lastName
+            verifyIdRequest.firstName = "Sarah"
+            verifyIdRequest.lastName = "Doe"
+
+            println("From SelectID: $verifyIdRequest")
+
+            val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)
+            findNavController().navigate(action)
+        }else{
+            Snackbar.make(requireView(), "Only test data is allowed", Snackbar.LENGTH_SHORT).show()
+        }
 
     }
     override fun onResume() {

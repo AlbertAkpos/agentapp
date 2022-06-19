@@ -58,53 +58,129 @@
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_13"
                 android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_select_identity" />
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_select_id"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/layout_select_id"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginTop="@dimen/margin_32"-->
+<!--                app:boxStrokeColor="@color/colorTextPrimary"-->
+<!--                app:endIconDrawable="@drawable/ic_drop_down"-->
+<!--                app:endIconMode="custom"-->
+<!--                app:hintEnabled="false"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_verify_email">-->
+
+<!--                <AutoCompleteTextView-->
+<!--                    android:id="@+id/select_areas_edit_text"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:fontFamily="@font/br_sonoma_regular"-->
+<!--                    android:inputType="none"-->
+<!--                    android:text="@string/select"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="@dimen/text_14"-->
+<!--                    android:dropDownHeight="500dp"-->
+<!--                    android:focusable="false"-->
+<!--                    android:clickable="true"-->
+<!--                    android:visibility="visible"-->
+<!--                    tools:ignore="KeyboardInaccessibleWidget,LabelFor"/>-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/select_layout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="@dimen/margin_32"
-                app:boxStrokeColor="@color/colorTextPrimary"
-                app:endIconDrawable="@drawable/ic_drop_down"
-                app:endIconMode="custom"
-                app:hintEnabled="false"
+                app:layout_constraintTop_toBottomOf="@+id/text_verify_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_verify_email">
+                android:orientation="horizontal"
+                android:background="@drawable/linear_layout_bg">
 
-                <AutoCompleteTextView
-                    android:id="@+id/select_areas_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/select_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:inputType="none"
+                    android:layout_marginStart="@dimen/padding_16"
                     android:text="@string/select"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_14"
-
-                    android:dropDownHeight="500dp"
-                    android:focusable="false"
-                    android:clickable="true"
                     android:visibility="visible"
-                    tools:ignore="KeyboardInaccessibleWidget,LabelFor"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageButton
+                    android:id="@+id/areas_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16"
+                    android:visibility="visible"
+                    android:background="@drawable/custom_img_btn"
+                    android:contentDescription="@string/previous"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_drop_down"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                app:layout_constraintTop_toBottomOf="@+id/layout_select_id"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                <HorizontalScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    android:layout_marginEnd="@dimen/margin_16"
+                    android:layout_margin="@dimen/margin_4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/areas_btn"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-            </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:animateLayoutChanges="true"
+                        app:singleLine="true"
+                        android:layout_marginStart="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/margin_4">
+
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <ScrollView
+                android:visibility="gone"
+                android:layout_width="@dimen/margin_150"
+                android:layout_height="200dp"
+                android:fillViewport="false"
+                android:elevation="@dimen/margin_16"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/select_layout"
+                app:layout_constraintEnd_toEndOf="@+id/select_layout">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/drop_down_inner"
+                    android:orientation="vertical">
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </ScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/done_btn"
@@ -119,7 +195,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chip_group"
+                app:layout_constraintTop_toBottomOf="@id/select_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="TextContrastCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
