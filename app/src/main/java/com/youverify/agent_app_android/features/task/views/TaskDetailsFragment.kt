@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,17 +20,21 @@ import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.databinding.*
 import com.youverify.agent_app_android.features.common.adapter.createColorsAdapter
 import com.youverify.agent_app_android.features.common.adapter.createImagesAdapter
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.Permissions
+import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.extension.*
 import com.youverify.agent_app_android.util.helper.FileHelper
@@ -52,11 +55,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
      * 2. Fetch and set response reason endpoint
      */
 
-    @Inject lateinit var locationHelper: LocationHelper
+    @Inject
+    lateinit var locationHelper: LocationHelper
 
     private var colorDialog: MaterialDialog? = null
 
-    @Inject lateinit var fileHelper: FileHelper
+    @Inject
+    lateinit var fileHelper: FileHelper
+
+    @Inject
+    lateinit var progressLoader: ProgressLoader
 
 
     private val viewModel by activityViewModels<TaskViewModel>()
@@ -64,9 +72,19 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permission ->
-        val somePermissionsNotGranted = permissions.any { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
+        val somePermissionsNotGranted = permissions.any {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                it
+            ) != PackageManager.PERMISSION_GRANTED
+        }
         if (somePermissionsNotGranted) {
-            context?.showDialog("Permission required", message = "You need to accept all permissions for us to get your location", negativeTitle = "Cancel", positiveTitle = "Continue") {}
+            context?.showDialog(
+                "Permission required",
+                message = "You need to accept all permissions for us to get your location",
+                negativeTitle = "Cancel",
+                positiveTitle = "Continue"
+            ) {}
         } else {
             getCurrentLocation()
         }
@@ -77,31 +95,38 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         binding.buildingColorInput.setText(color.name)
     }
 
-    private val imageResultLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {  result ->
-        val granted = result.entries.all { ContextCompat.checkSelfPermission(requireContext(), it.key) == PackageManager.PERMISSION_GRANTED }
-        if (granted) {
-            // Pick image file
-            pickImage()
-        } else {
-            context?.showDialog(message = "Please accept all permissions to continue")
+    private val imageResultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            val granted = result.entries.all {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    it.key
+                ) == PackageManager.PERMISSION_GRANTED
+            }
+            if (granted) {
+                // Pick image file
+                pickImage()
+            } else {
+                context?.showDialog(message = "Please accept all permissions to continue")
+            }
         }
-    }
 
-    private val pickImageLaucher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            val imageBitMap = it.data?.extras?.get("data") as? Bitmap
-            Timber.d("Image picked ==> $imageBitMap")
+    private val pickImageLaucher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val imageBitMap = it.data?.extras?.get("data") as? Bitmap
+                Timber.d("Image picked ==> $imageBitMap")
 
-            if (imageBitMap != null) {
-                val file = fileHelper.writeToFile(imageBitMap, "image")
+                if (imageBitMap != null) {
+                    val file = fileHelper.writeToFile(imageBitMap, "image")
 
-                Timber.d("File gotten: ${file?.absolutePath}")
-                if (file != null) {
-                    viewModel.updateImagesPicked(file)
+                    Timber.d("File gotten: ${file?.absolutePath}")
+                    if (file != null) {
+                        viewModel.updateImagesPicked(file)
+                    }
                 }
             }
         }
-    }
 
     private val imagesAdapter = createImagesAdapter()
 
@@ -109,7 +134,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
         binding = FragmentTaskDetailsBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -136,41 +161,108 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
-        buildingTypeInput.setOnClickListener { openBuildingTypeSheet() }
+        buildingTypeInput.setOnClickListener { openSelectTypeBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
+        } }
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
 
         yesGeoTaginput.setOnClickListener { getCurrentLocation() }
 
-        reasonInput.setOnClickListener { showMessagesBottomSheet(viewModel.rejectionMessages) {
-            binding.reasonInput.setText(it)
-            viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
-        } }
+        reasonInput.setOnClickListener {
+            showMessagesBottomSheet(viewModel.rejectionMessages) {
+                binding.reasonInput.setText(it)
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
+            }
+        }
 
         candidateNotImageUploadBtn.setOnClickListener { onPickImageClicked() }
 
         binding.accessLocBtn.setOnClickListener {
-            binding.layoutAccessLoc.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up2)
+            binding.layoutAccessLoc.endIconDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up2)
             binding.choiceLayout.show()
         }
 
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
+
+        whoConfirmedAdressInput.setOnClickListener { openSelectTypeBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
+        } }
+
+        buildHasGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(true)) }
+        buildDontHaveGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(false)) }
+
+        yesSubmitBtn.setOnClickListener { validateYesSubmission {
+
+        } }
+
+        candidateLiveHereBtn.setOnClickListener { viewModel.doesCandidateLiveAtAddress.postValue(
+            SingleEvent(true)
+        ) }
+        candidateDontLiveHereBtn.setOnClickListener { viewModel.doesCandidateLiveAtAddress.postValue(SingleEvent(false)) }
     }
 
-    private fun onNoSubmissionButtionClicked() {
-        validateNoSubmition {
-
+    private fun validateYesSubmission(callback: () -> Unit) {
+        val typeOfBuilding = binding.buildingTypeInput.text?.toString()
+        val buildingColor = binding.buildingColorInput.text?.toString()
+        val hasGate = viewModel.taskAnswers.hasGate
+        if (hasGate) {
+            val gateColor = binding.gateColorInput.text?.toString()
+            if (gateColor.isNullOrEmpty()) {
+                binding.gateColorLayout.error = "Pleae pick a gate color"
+                return
+            }
         }
     }
 
-    private fun validateNoSubmition(callback: () -> Unit) {
+    private fun onNoSubmissionButtionClicked() {
+        validateNoSubmition { request ->
+            viewModel.rejectTask(request, viewModel.currentTask?.id.toString())
+        }
+    }
 
+    private fun validateNoSubmition(callback: (rejectRequest: TasksDto.RejectTaskAnswers) -> Unit) {
+        val cantLocateAddressReason = binding.reasonInput.text?.toString()
+        val noOfImages = viewModel.imagesPicked.value?.size ?: 0
+        val nearestLandmark = binding.landmarkInput.text?.toString()
+        val additionalInfo = binding.infoInput.text?.toString() ?: ""
+        if (noOfImages < 1) {
+            context?.showDialog( title = "Incomplete form", message = "Please take pictures of the place")
+            return
+        }
+
+        if (cantLocateAddressReason.isNullOrEmpty()) {
+            binding.reasonLayout.error = "Please select a reason"
+            return
+        }
+
+        if (nearestLandmark.isNullOrEmpty()) {
+            binding.landmarkLayout.error = "Please enter the nearest landmark"
+            return
+        }
+
+        val rejectionAnswers = TasksDto.RejectTaskAnswers(
+            message = cantLocateAddressReason
+        )
+
+        callback(rejectionAnswers)
     }
 
     private fun getCurrentLocation() {
-        val somePermissionsNotGranted = permissions.any { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
+        val somePermissionsNotGranted = permissions.any {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                it
+            ) != PackageManager.PERMISSION_GRANTED
+        }
         if (somePermissionsNotGranted) {
-            context?.showDialog("Permission required", message = "Please accept all permissions to continue", negativeTitle = "Cancel", positiveTitle = "Continue") {
+            context?.showDialog(
+                "Permission required",
+                message = "Please accept all permissions to continue",
+                negativeTitle = "Cancel",
+                positiveTitle = "Continue"
+            ) {
                 requestNeededPermissions()
             }
             return
@@ -210,8 +302,12 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             locationHelper.getCurrentLocation { latLng, address ->
 
                 Timber.d("Current location: $latLng $address")
-                binding.yesGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
-                binding.noGeoTaginput.setText(address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}")
+                binding.yesGeoTaginput.setText(
+                    address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
+                )
+                binding.noGeoTaginput.setText(
+                    address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
+                )
 
                 // Remove location callback on getting location
                 locationHelper.stopLocationUpdate()
@@ -225,7 +321,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private fun doLocationResolution(exception: Exception) {
         if (exception is ApiException) {
-            when(exception.statusCode) {
+            when (exception.statusCode) {
                 LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
                     try {
                         val rae = exception as? ResolvableApiException
@@ -245,11 +341,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         locationPermissionRequest.launch(permissions)
     }
 
-    private fun openBuildingTypeSheet() {
+    private fun openSelectTypeBottomSheet(list: List<String>, callback: (selected: String) -> Unit) {
         var dialog: MaterialDialog? = null
         val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
         val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater)
-        for (item in viewModel.typesOfBuildings) {
+        for (item in list) {
             binding.radioGroup.removeAllViews()
             radioButton.radio.text = item
             binding.radioGroup.addView(radioButton.root)
@@ -259,7 +355,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             if (button?.isChecked == true) {
                 val selectedBuilding = button.text?.toString() ?: ""
                 dialog?.dismiss()
-                viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
+                callback(selectedBuilding)
             }
         }
 
@@ -290,17 +386,63 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         viewModel.canYouLocateTheAddressState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
-                binding.yesCanLocateAddress.setColor(state, R.color.colorDark, R.color.white)
-                binding.noCantLocateAddress.setColor(!state, R.color.colorDark, R.color.white)
-                binding.proceedToCaptureDetailsBtn.visibleIf(state && binding.canLocateAddressContainer.visibility == View.GONE)
-                if (!state) { binding.canLocateAddressContainer.gone() }
-                binding.cantLocateAddressContainer.visibleIf(!state)
+            binding.yesCanLocateAddress.setColor(state, R.color.colorDark, R.color.white)
+            binding.noCantLocateAddress.setColor(!state, R.color.colorDark, R.color.white)
+            binding.proceedToCaptureDetailsBtn.visibleIf(state && binding.canLocateAddressContainer.visibility == View.GONE)
+            if (!state) {
+                binding.canLocateAddressContainer.gone()
+            }
+            binding.cantLocateAddressContainer.visibleIf(!state)
         }
 
         viewModel.imagesPicked.observe(viewLifecycleOwner) {
             val imageList = it ?: return@observe
-            Log.d("image", "Image size ${imageList.size}")
             updateImageList(imageList)
+        }
+
+        viewModel.taskRejectionState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when (state) {
+                is ResultState.Loading -> progressLoader.show(message = "Loading...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+                is ResultState.Success -> {
+                    showMessage(state.data)
+                }
+            }
+        }
+
+        viewModel.doesBuildingHaveGate.observe(viewLifecycleOwner) {
+            val hasGate = it.getContentIfNotHandled() ?: return@observe
+            binding.gateColorLayout.visibleIf(hasGate)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(hasGate = hasGate)
+        }
+    }
+
+    private fun showMessage(message: String) {
+        var dialog: MaterialDialog? = null
+        val binding = LayoutSuccessBinding.inflate(layoutInflater)
+        binding.message.text = message
+
+        binding.process.setOnClickListener {
+            dialog?.dismiss()
+            navigateUp()
+        }
+
+        dialog = context?.inflateDialog(binding.root)
+
+    }
+
+    private fun navigateUp() {
+        when (findNavController().graph.startDestinationId) {
+            findNavController().currentDestination?.id -> {
+                activity?.finish()
+            }
+            else -> {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -320,7 +462,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     }
 
     //implement this function
-    private fun configureUI(){
+    private fun configureUI() {
 
 
         binding.yesBtn.setOnClickListener {
@@ -360,13 +502,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     }
 
-    private fun submit(){
-        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+    private fun submit() {
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.success_dialog, null)
         val okButton = view.findViewById<TextView>(R.id.text_ok)
         dialogBuilder.setView(view)
 
-        okButton.setOnClickListener{
+        okButton.setOnClickListener {
             dialogBuilder.dismiss()
             activity?.onBackPressed()
         }
@@ -399,7 +542,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
@@ -439,7 +585,12 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     companion object {
         private const val LOCATION_RESOLUTION_RC = 209
-        private val permissions = arrayOf(Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_FINE_LOCATION)
-        private val imagePermissions = arrayOf(Permissions.CAMERA, Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE)
+        private val permissions =
+            arrayOf(Permissions.ACCESS_COARSE_LOCATION, Permissions.ACCESS_FINE_LOCATION)
+        private val imagePermissions = arrayOf(
+            Permissions.CAMERA,
+            Permissions.READ_EXTERNAL_STORAGE,
+            Permissions.WRITE_EXTERNAL_STORAGE
+        )
     }
 }

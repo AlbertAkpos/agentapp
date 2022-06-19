@@ -343,7 +343,7 @@
                 android:id="@+id/cantLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -524,7 +524,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:hint="@string/enter_landmark"
-                        android:inputType="none"
+                        android:inputType="textCapSentences"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -568,8 +568,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/br_sonoma_regular"
-                        android:hint="@string/enter_landmark"
-                        android:inputType="none"
+                        android:hint="Additional information"
+                        android:inputType="textCapSentences"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -608,7 +608,7 @@
                 android:id="@+id/canLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -712,7 +712,6 @@
                     android:layout_height="wrap_content"
                     android:background="@color/choice_bg"
                     android:padding="@dimen/padding_24"
-                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/layout_access_loc"
                     app:layout_constraintStart_toStartOf="@+id/layout_access_loc"
                     app:layout_constraintTop_toBottomOf="@+id/layout_access_loc"
@@ -818,14 +817,13 @@
                     android:layout_height="wrap_content"
                     android:background="@color/choice_bg"
                     android:padding="@dimen/padding_24"
-                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/layout_access_loc"
                     app:layout_constraintStart_toStartOf="@+id/layout_access_loc"
                     app:layout_constraintTop_toBottomOf="@+id/layout_access_loc"
                     tools:visibility="visible">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/candidateLiveHere"
+                        android:id="@+id/candidateLiveHereBtn"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
                         android:layout_marginEnd="@dimen/margin_40"
@@ -849,7 +847,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/candidateDontLiveHere"
+                        android:id="@+id/candidateDontLiveHereBtn"
                         android:layout_alignParentEnd="true"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
@@ -945,6 +943,7 @@
                             android:inputType="none"
                             android:paddingStart="@dimen/margin_16"
                             android:paddingEnd="@dimen/margin_16"
+                            android:focusable="false"
                             android:textColor="@color/colorTextPrimary"
                             android:textSize="@dimen/text_14"
                             tools:ignore="LabelFor" />
@@ -962,20 +961,23 @@
                         android:textStyle="bold"
                         tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
-                    <com.google.android.material.card.MaterialCardView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/xsm"
                         android:elevation="0dp"
                         app:cardElevation="0dp"
+                        android:orientation="horizontal"
                         android:background="@drawable/dotted_background"
                         android:layout_height="70dp">
                         <ImageView
+                            android:id="@+id/signature"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:layout_gravity="center"
+                            android:clickable="false"
+                            android:layout_centerInParent="true"
                             android:src="@drawable/ic_signature"
                             />
-                    </com.google.android.material.card.MaterialCardView>
+                    </RelativeLayout>
 
 
                     <TextView
@@ -1018,7 +1020,6 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
                         android:textStyle="normal"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/upload_view"
                         tools:visibility="visible" />
@@ -1030,7 +1031,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:visibility="gone"
                         app:boxStrokeColor="@color/colorTextPrimary"
                         app:endIconDrawable="@drawable/ic_geo_tag"
                         app:endIconMode="custom"
@@ -1059,7 +1059,6 @@
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressIndicationYes"
                         android:layout_width="100dp"
-                        android:visibility="gone"
                         android:indeterminate="true"
                         android:layout_marginTop="@dimen/xsm"
                         app:indicatorColor="@color/colorDark"
@@ -1074,7 +1073,6 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
                         android:textStyle="normal"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/geo_tag_layout"
                         tools:visibility="visible" />
@@ -1086,7 +1084,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:visibility="gone"
                         app:boxStrokeColor="@color/colorTextPrimary"
                         app:endIconDrawable="@null"
                         app:endIconMode="custom"
@@ -1120,7 +1117,6 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
                         android:textStyle="normal"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/landmark_layout"
                         tools:visibility="visible" />
@@ -1132,7 +1128,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:visibility="gone"
                         app:boxStrokeColor="@color/colorTextPrimary"
                         app:endIconDrawable="@null"
                         app:endIconMode="custom"
@@ -1164,6 +1159,7 @@
                         android:layout_height="@dimen/btnSize"
                         android:text="@string/submit"
                         android:textAllCaps="false"
+                        android:textColor="@color/white"
                         />
 
                 </LinearLayout>

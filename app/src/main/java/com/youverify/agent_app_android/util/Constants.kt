@@ -14,6 +14,7 @@ object Constants {
     const val REQUIRED_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
     val buildTypes = getBuildingTyepes()
     val colors = getColorList()
+    val whoConfirmedCandidateAddressList = candidateAddressConfirmebBy()
 }
 
 
@@ -32,7 +33,7 @@ object Permissions {
     const val ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION"
     const val ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION"
     const val ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION"
-    const val  CAMERA = "android.permission.CAMERA"
+    const val CAMERA = "android.permission.CAMERA"
     const val READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE"
     const val WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE"
 }
@@ -52,7 +53,7 @@ private fun getBuildingTyepes() =
     )
 
 private fun getColorList(): List<TasksDomain.Color> {
-   return listOf(
+    return listOf(
         TasksDomain.Color(colorId = null, name = "No color"),
         TasksDomain.Color(colorId = R.color.white, name = "White"),
         TasksDomain.Color(colorId = R.color.yellow, name = "Yellow"),
@@ -76,3 +77,15 @@ private fun getColorList(): List<TasksDomain.Color> {
         TasksDomain.Color(colorId = R.color.grey, name = "Grey")
     )
 }
+
+private fun candidateAddressConfirmebBy(): List<String> = arrayListOf(
+    "Family members",
+    "Gate keeper",
+    "Neighbour",
+    "Passer's by",
+    "Near-by-retailer",
+    "Landlord/Landlady",
+    "Security personnel",
+    "Maid",
+    "Self"
+)

@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.core.functional.ResultState
-import com.youverify.agent_app_android.data.model.TaskItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.domain.repository.ITaskRepository
 import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -24,17 +23,26 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
+    var currentTask: TasksDomain.AgentTask ? = null
+        private set
+
     val tasksState = MutableLiveData<ResultState<ArrayList<TasksDomain.AgentTask>>>()
 
     val canYouLocateTheAddressState = MutableLiveData<SingleEvent<Boolean>>()
+
+    val doesBuildingHaveGate = MutableLiveData<SingleEvent<Boolean>>()
 
     val typesOfBuildings = Constants.buildTypes
 
     val colors = Constants.colors
 
+    val candidateAddressConfirmedBy = Constants.whoConfirmedCandidateAddressList
+
     var taskAnswers = TasksDomain.TaskAnswers()
 
     val imagesPicked = MutableLiveData<ArrayList<File>>()
+
+    val doesCandidateLiveAtAddress = MutableLiveData<SingleEvent<Boolean>>()
 
     fun updateImagesPicked(file: File) {
         val values = imagesPicked.value ?: arrayListOf<File>()
@@ -44,6 +52,7 @@ class TaskViewModel @Inject constructor(
 
     fun setTaskItem(taskItem: TasksDomain.AgentTask) {
         taskItemState.postValue(SingleEvent(taskItem))
+        currentTask = taskItem
     }
 
     fun fetchAgentTasks(status: String) {
@@ -124,6 +133,26 @@ class TaskViewModel @Inject constructor(
 
         }
 
+    }
+
+    val taskRejectionState = MutableLiveData<SingleEvent<ResultState<String>>>()
+
+    fun rejectTask(request: TasksDto.RejectTaskAnswers, taskId: String) {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+            val message = ErrorHelper.handleException(throwable)
+            taskRejectionState.postValue(SingleEvent(ResultState.Error(message)))
+        }
+
+        viewModelScope.launch(coroutineExceptionHandler) {
+            taskRejectionState.postValue(SingleEvent(ResultState.Loading()))
+            val response = repository.submitTaskRejection(request, taskId)
+            if (response.success) {
+                taskRejectionState.postValue(SingleEvent(ResultState.Success(response.message ?: "Task submitted successfully")))
+            } else {
+                taskRejectionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
+            }
+        }
     }
 
 }

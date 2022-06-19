@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.util.extension
 
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -41,6 +42,15 @@ fun Context.inflateBottomSheet(views: View, cancelable: Boolean = false, cornerR
         cornerRadius(cornerRadius)
         cancelable(cancelable)
         setPeekHeight(Resources.getSystem().displayMetrics.heightPixels)
+    }
+}
+
+fun Context.inflateDialog(views: View, cancelable: Boolean = false): MaterialDialog {
+    return MaterialDialog(this).show {
+        customView(view = views)
+        cornerRadius(16F)
+        cancelOnTouchOutside(cancelable)
+        cancelable(cancelable)
     }
 }
 

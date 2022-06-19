@@ -3,7 +3,7 @@ package com.youverify.agent_app_android.data.model.tasks
 import com.google.gson.annotations.SerializedName
 
 object TasksDto {
-    data class AgentTasksResponse (
+    data class AgentTasksResponse(
         @SerializedName("success") val success: Boolean?,
         @SerializedName("statusCode") val statusCode: Int?,
         @SerializedName("message") val message: String?,
@@ -25,10 +25,10 @@ object TasksDto {
         @SerializedName("createdBy") val createdBy: String?,
         @SerializedName("verificationType") val verificationType: String?,
         @SerializedName("_lastModifiedAt") val _lastModifiedAt: String?,
-        @SerializedName("candidate") val candidate : Candidate?,
-        @SerializedName("lastModifiedAt") val lastModifiedAt : String?,
-        @SerializedName("_id") val _id : String?,
-        @SerializedName("id") val id : String?
+        @SerializedName("candidate") val candidate: Candidate?,
+        @SerializedName("lastModifiedAt") val lastModifiedAt: String?,
+        @SerializedName("_id") val _id: String?,
+        @SerializedName("id") val id: String?
     )
 
     data class Pagination(
@@ -54,7 +54,7 @@ object TasksDto {
         @SerializedName("street") val street: String?,
         @SerializedName("city") val city: String?,
         @SerializedName("state") val state: String?,
-        @SerializedName("location") val location : Location,
+        @SerializedName("location") val location: Location,
     )
 
     data class Business(
@@ -72,33 +72,33 @@ object TasksDto {
         @SerializedName("image") val image: String?
     )
 
-    data class Location (
-        @SerializedName("coordinates") val coordinates : Coordinates?,
-        @SerializedName("type") val type : String?
+    data class Location(
+        @SerializedName("coordinates") val coordinates: Coordinates?,
+        @SerializedName("type") val type: String?
     )
 
-    data class Candidate (
-        @SerializedName("lastName") val lastName : String?,
-        @SerializedName("lastModifiedAt") val lastModifiedAt : String?,
-        @SerializedName("mobile") val mobile : String?,
-        @SerializedName("businessId") val businessId : String?,
-        @SerializedName("photo") val photo : String?,
-        @SerializedName("_lastModifiedAt") val _lastModifiedAt : String?,
-        @SerializedName("firstName") val firstName : String?,
-        @SerializedName("createdAt") val createdAt : String?,
-        @SerializedName("createdBy") val createdBy : String?,
-        @SerializedName("__v") val __v : Int?,
-        @SerializedName("_createdAt") val _createdAt : String?,
-        @SerializedName("_id") val _id : String?,
-        @SerializedName("id") val id : String?
+    data class Candidate(
+        @SerializedName("lastName") val lastName: String?,
+        @SerializedName("lastModifiedAt") val lastModifiedAt: String?,
+        @SerializedName("mobile") val mobile: String?,
+        @SerializedName("businessId") val businessId: String?,
+        @SerializedName("photo") val photo: String?,
+        @SerializedName("_lastModifiedAt") val _lastModifiedAt: String?,
+        @SerializedName("firstName") val firstName: String?,
+        @SerializedName("createdAt") val createdAt: String?,
+        @SerializedName("createdBy") val createdBy: String?,
+        @SerializedName("__v") val __v: Int?,
+        @SerializedName("_createdAt") val _createdAt: String?,
+        @SerializedName("_id") val _id: String?,
+        @SerializedName("id") val id: String?
     )
 
-    data class Coordinates (
-        @SerializedName("lon") val long : Double?,
-        @SerializedName("lat") val lat : Double?
+    data class Coordinates(
+        @SerializedName("lon") val long: Double?,
+        @SerializedName("lat") val lat: Double?
     )
 
-    data class StartTaskResponse (
+    data class StartTaskResponse(
         @SerializedName("success") val success: Boolean?,
         @SerializedName("status_code") val statusCode: Int?,
         @SerializedName("message") val message: String?
@@ -116,5 +116,30 @@ object TasksDto {
         @SerializedName("statusCode") val statusCode: Int?,
         @SerializedName("message") val message: String?,
         @SerializedName("data") val data: List<String>?
+    )
+
+    data class RejectTaskAnswers(
+        @SerializedName("message")
+        val message: String
+    )
+
+    data class GenericResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode", alternate = ["status_code"]) val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+    )
+
+    data class Photos(
+        @SerializedName("url") val url: String?,
+        @SerializedName("location") val location: Location?
+    )
+
+    data class UpdateTaskRequest(
+        @SerializedName("gatePresent") val gatePresent: Boolean,
+        @SerializedName("buildingColour") val buildingColour: String,
+        @SerializedName("buildingType") val buildingType: String,
+        @SerializedName("confirmedBy") val confirmedBy: String,
+        @SerializedName("agentSignature") val agentSignature: String,
+        @SerializedName("photos") val photos: List<Photos>
     )
 }

@@ -9,8 +9,6 @@ import com.youverify.agent_app_android.data.model.signup.SignUpResponse
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
-import com.youverify.agent_app_android.util.AgentTaskStatus
-import com.youverify.agent_app_android.util.AgentTaskVerificationType
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -32,11 +30,18 @@ interface AgentService {
     suspend fun getAgentTasks(): TasksDto.AgentTasksResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/start")
-    suspend fun startTask(@Path("taskId") taskId: String) : TasksDto.StartTaskResponse
+    suspend fun startTask(@Path("taskId") taskId: String): TasksDto.StartTaskResponse
 
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/reject")
     suspend fun getRejectionMessages(): TasksDto.RejectionMessagesResponse
 
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/submit")
     suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse
+
+    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/reject")
+    suspend fun submitTaskRejection(@Body request: TasksDto.RejectTaskAnswers, @Path("taskId") taskId: String): TasksDto.GenericResponse
+
+    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/report")
+    suspend fun updateTask(@Path("taskId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
+
 }

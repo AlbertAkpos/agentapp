@@ -137,4 +137,7 @@ dependencies {
     //Recycler view adapter
     implementation 'io.github.ibrahimyilmaz:kiel:1.2.1'
 
+    //lottie
+    implementation "com.airbnb.android:lottie:3.7.0"
+
 }

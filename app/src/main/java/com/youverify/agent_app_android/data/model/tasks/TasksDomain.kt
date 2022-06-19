@@ -49,6 +49,8 @@ object TasksDomain {
         val buildingType: String = "",
         val rejectionReason: String = "",
         val taskStarted: Boolean = false,
+        val confirmedBy: String = "",
+        val hasGate: Boolean = false
     )
 
     data class StartTaskResponse(
@@ -69,6 +71,12 @@ object TasksDomain {
     data class Color(
         @ColorRes val colorId: Int?,
         val name: String
+    )
+
+    data class GenericResponse(
+        val success: Boolean,
+        val statusCode: Int?,
+        val message: String?,
     )
 
 }

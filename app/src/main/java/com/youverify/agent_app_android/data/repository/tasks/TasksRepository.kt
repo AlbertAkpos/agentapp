@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.repository.tasks
 
 import com.youverify.agent_app_android.data.mapper.map
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.source.IAgentSource
 import com.youverify.agent_app_android.domain.repository.ITaskRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,5 +24,13 @@ class TasksRepository @Inject constructor (private val source: IAgentSource, pri
 
     override suspend fun getSubmissionMessages(): TasksDomain.MessagesResponse = withContext(dispatcher) {
        source.getSubmissionMessages().map()
+    }
+
+    override suspend fun submitTaskRejection(request: TasksDto.RejectTaskAnswers, taskId: String): TasksDomain.GenericResponse = withContext(dispatcher) {
+        source.submitTaskRejection(request, taskId).map()
+    }
+
+    override suspend fun updateTask(taskId: String, request: TasksDto.UpdateTaskRequest): TasksDomain.GenericResponse = withContext(dispatcher) {
+        source.updateTaskRequest(taskId, request).map()
     }
 }

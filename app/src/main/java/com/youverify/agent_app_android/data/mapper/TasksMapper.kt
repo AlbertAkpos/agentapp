@@ -65,3 +65,11 @@ fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
         data = data
     )
 }
+
+fun TasksDto.GenericResponse.map(): TasksDomain.GenericResponse {
+    return TasksDomain.GenericResponse(
+        success = success == true,
+        message = message,
+        statusCode = statusCode
+    )
+}
