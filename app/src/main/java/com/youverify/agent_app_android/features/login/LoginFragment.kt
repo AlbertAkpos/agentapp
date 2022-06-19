@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.api.TokenInterceptor
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponseData
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
@@ -158,6 +159,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             AgentSharePreference(requireContext()).setString("FIRST_NAME", loginResponse.agent.firstName)
             AgentSharePreference(requireContext()).setString("LAST_NAME", loginResponse.agent.lastName)
             AgentSharePreference(requireContext()).setString("STATE_OF_RESIDENCE", loginResponse.agent.stateOfResidence)
+            AgentSharePreference(requireContext()).setString("AGENT_STATUS", loginResponse.agent.agentStatus)
             AgentSharePreference(requireContext()).setBoolean(
                 "IS_TRAINED",
                 loginResponse.agent.isTrained
@@ -166,10 +168,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 "IS_VERIFIED",
                 loginResponse.agent.isVerified
             )
-            if (loginResponse.agent.preferredAreas.isNotEmpty()) {
+            val prefAreas = loginResponse.agent.preferredAreas
+            if (prefAreas.isEmpty()) {
+                AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", false)
+            }else{
                 AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
             }
 
+            TokenInterceptor().setToken(loginResponse.token)
             println("Response: $loginResponse")
         }
     }

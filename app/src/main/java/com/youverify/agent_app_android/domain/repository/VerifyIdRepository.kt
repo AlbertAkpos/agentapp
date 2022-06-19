@@ -6,5 +6,5 @@ import com.youverify.agent_app_android.data.model.verification.id.VerifyIDReques
 import kotlinx.coroutines.flow.Flow
 
 interface VerifyIdRepository {
-    fun verifyId(verifyIDRequest: VerifyIDRequest, token: String) : Flow<Result<Any>>
+    fun verifyId(verifyIDRequest: VerifyIDRequest) : Flow<Result<Any>>
 }

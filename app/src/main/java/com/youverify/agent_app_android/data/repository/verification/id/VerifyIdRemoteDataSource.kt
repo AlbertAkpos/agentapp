@@ -5,5 +5,5 @@ import com.youverify.agent_app_android.data.model.verification.areas.PrefAreaReq
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 
 interface VerifyIdRemoteDataSource {
-    suspend fun verifyId(verifyIDRequest: VerifyIDRequest, token: String): Result<*>
+    suspend fun verifyId(verifyIDRequest: VerifyIDRequest): Result<*>
 }

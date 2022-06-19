@@ -10,9 +10,9 @@ class PrefAreasRemoteDataSourceImpl @Inject constructor(
     private val agentService: AgentService,
 ) : PrefAreasRemoteDataSource {
 
-    override suspend fun saveAreas(prefAreaRequest: PrefAreaRequest, token: String): Result<*> {
+    override suspend fun saveAreas(prefAreaRequest: PrefAreaRequest): Result<*> {
         return try {
-            val res = agentService.saveAreas(prefAreaRequest, token)
+            val res = agentService.saveAreas(prefAreaRequest)
 
             when (res.isSuccessful) {
                 true -> {

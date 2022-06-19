@@ -37,11 +37,11 @@ class SelectAreasViewModel @Inject constructor(
     private val _prefAreasChannel = Channel<PrefAreasViewState>()
     val prefAreasChannel = _prefAreasChannel.receiveAsFlow()
 
-    fun saveAreas(prefAreaRequest: PrefAreaRequest, token: String){
+    fun saveAreas(prefAreaRequest: PrefAreaRequest){
         viewModelScope.launch{
             _prefAreasChannel.send(PrefAreasViewState.Loading(R.string.preferred_areas_saved))
 
-            prefAreasUseCase.invoke(prefAreaRequest, token).collect {
+            prefAreasUseCase.invoke(prefAreaRequest).collect {
                 when(it){
                     is Result.Success -> {
                         if (it.data is PrefAreasResponse){

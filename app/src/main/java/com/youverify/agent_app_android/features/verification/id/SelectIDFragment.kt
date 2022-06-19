@@ -36,7 +36,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     private lateinit var dobEditText: AutoCompleteTextView
     private lateinit var continueBtn: MaterialButton
     private lateinit var backBtn: ImageButton
-    var formatDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+    private var formatDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -141,6 +141,24 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         homeActivity.showNavBar()
     }
 
+    private fun validateInputs(){
+      //if a particular idType is selected,
+     // we need to verify that the exact test data is sent to the next screen.
+
+        //for bvn
+
+        //for nin
+
+        //for int'l passport
+
+        //for driver's licence
+
+        //for pvc
+    }
+
+    private fun passData(){
+
+    }
     override fun onResume() {
         super.onResume()
 

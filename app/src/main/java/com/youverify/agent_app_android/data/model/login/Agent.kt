@@ -35,7 +35,7 @@ data class Agent(
     @SerializedName("photo")
     val photo: Any,
     @SerializedName("preferredAreas")
-    val preferredAreas: List<Any>,
+    val preferredAreas: List<String>,
     @SerializedName("settings")
     val settings: Settings,
     @SerializedName("stateOfResidence")

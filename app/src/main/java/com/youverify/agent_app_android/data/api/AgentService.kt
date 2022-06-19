@@ -29,8 +29,8 @@ interface AgentService {
     suspend fun sendResetEmail(@Body email: Email) : Response<ResetPassResponse>
 
     @POST("agents/verify")
-    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest,  @Header("AUTHORIZATION") token: String): Response<VerifyIdResponse>
+    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest): Response<VerifyIdResponse>
 
     @PUT("agents/me/areas")
-    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest, @Header("AUTHORIZATION") token: String): Response<PrefAreasResponse>
+    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest): Response<PrefAreasResponse>
 }

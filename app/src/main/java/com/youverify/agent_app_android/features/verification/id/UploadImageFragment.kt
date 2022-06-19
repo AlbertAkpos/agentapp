@@ -105,7 +105,6 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
                         val myFile = File(uriString)
                         var displayName: String? = null
                         displayName = retrieveSelected(uriString, uri, displayName, myFile)
-//                        imagePath = File(displayName!!)
                         binding.uploadText.text = displayName
                     }
                 }
@@ -218,7 +217,7 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
     private fun uploadImage() {
 
         if(binding.uploadText.text == "Upload"){
-            Snackbar.make(requireView(), "No Photo Selected", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Please select a photo", Snackbar.LENGTH_SHORT).show()
         }else{
             val filePart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "files",
@@ -240,8 +239,7 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
                         }
                         is UploadViewState.Failure -> {
                             progressLoader.hide()
-                            Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
-                                .show()
+                            Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_LONG).show()
                         }
                         else -> {progressLoader.hide()}
                     }
@@ -264,10 +262,10 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
         val verificationDetails : VerifyIDRequest = args.verifyIdRequest
         verificationDetails.imageUrl = uploadResponse?.data?.get(0)?.location ?: ""
 
-        submitIdInfo(verifyIdRequestDummy, token)
+        submitIdInfo(verifyIdRequestDummy)
     }
 
-    private fun submitIdInfo(verificationDetails: VerifyIDRequest, token: String){
+    private fun submitIdInfo(verificationDetails: VerifyIDRequest){
         val verifyIdRequestDummy = VerifyIDRequest(   //Remove this after this endpoint has being rectified
             type = "NIN",
             reference = "11111111111",
@@ -277,7 +275,7 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
             imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
         )
 
-        uploadViewModel.verifyId(verifyIdRequestDummy, token)
+        uploadViewModel.verifyId(verifyIdRequestDummy)
 
         lifecycleScope.launchWhenCreated {
             uploadViewModel.verifyIdChannel.collect {
@@ -294,10 +292,8 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
                     }
                     is VerifyIdViewState.Failure -> {
                         progressLoader.hide()
-                        Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_LONG)
-                            .show()
+                        Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_LONG).show()
                         findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationFailedFragment)
-                        println(it.errorMessage)
                     }
                     else -> {progressLoader.hide()}
                 }

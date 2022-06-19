@@ -17,9 +17,9 @@ class VerifyIdRepositoryImpl @Inject constructor(
     private val verifyIdRemoteDataSource: VerifyIdRemoteDataSource)
     : VerifyIdRepository{
 
-    override fun verifyId(verifyIDRequest: VerifyIDRequest, token: String): Flow<Result<Any>> {
+    override fun verifyId(verifyIDRequest: VerifyIDRequest): Flow<Result<Any>> {
         return flow {
-            when (val res = verifyIdRemoteDataSource.verifyId(verifyIDRequest, token)) {
+            when (val res = verifyIdRemoteDataSource.verifyId(verifyIDRequest)) {
 
                 is Result.Success<*> -> {
                     if (res.data is VerifyIdResponse) {

@@ -13,9 +13,9 @@ class PrefAreasRepositoryImpl @Inject constructor(
     private val prefAreasRemoteDataSource: PrefAreasRemoteDataSource)
     : PrefAreasRepository{
 
-    override fun saveAreas(prefAreaRequest: PrefAreaRequest, token: String): Flow<Result<Any>> {
+    override fun saveAreas(prefAreaRequest: PrefAreaRequest): Flow<Result<Any>> {
         return flow {
-            when (val res = prefAreasRemoteDataSource.saveAreas(prefAreaRequest, token)) {
+            when (val res = prefAreasRemoteDataSource.saveAreas(prefAreaRequest)) {
 
                 is Result.Success<*> -> {
                     if (res.data is PrefAreasResponse) {

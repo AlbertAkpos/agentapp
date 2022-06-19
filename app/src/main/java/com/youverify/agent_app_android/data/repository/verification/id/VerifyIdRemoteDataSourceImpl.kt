@@ -10,9 +10,9 @@ class VerifyIdRemoteDataSourceImpl @Inject constructor(
     private val agentService: AgentService,
 ) : VerifyIdRemoteDataSource {
 
-    override suspend fun verifyId(verifyIDRequest: VerifyIDRequest, token: String): Result<*> {
+    override suspend fun verifyId(verifyIDRequest: VerifyIDRequest): Result<*> {
         return try {
-            val res = agentService.verifyId(verifyIDRequest, token)
+            val res = agentService.verifyId(verifyIDRequest)
 
             when (res.isSuccessful) {
                 true -> {

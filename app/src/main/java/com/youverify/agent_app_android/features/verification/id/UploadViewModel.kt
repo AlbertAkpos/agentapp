@@ -58,11 +58,11 @@ class UploadViewModel @Inject constructor(
 
 
     //function to send the user id details for verification
-    fun verifyId(verifyIDRequest: VerifyIDRequest, token: String) {
+    fun verifyId(verifyIDRequest: VerifyIDRequest) {
         viewModelScope.launch {
             _verifyIdChannel.send(VerifyIdViewState.Loading(R.string.verify))
 
-            verifyIdUseCase.invoke(verifyIDRequest, token).collect {
+            verifyIdUseCase.invoke(verifyIDRequest).collect {
                 when (it) {
                     is Result.Success -> {
                         if (it.data is VerifyIdResponse) {
