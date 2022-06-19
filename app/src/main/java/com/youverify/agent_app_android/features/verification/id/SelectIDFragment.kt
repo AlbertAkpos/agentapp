@@ -21,7 +21,6 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
 import com.youverify.agent_app_android.features.HomeActivity
-import com.youverify.agent_app_android.util.AgentSharePreference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -128,22 +127,11 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     }
 
     private fun validateInputs(): Boolean{
-      //if a particular idType is selected,
-     // we need to verify that the exact test data is sent to the next screen.
         val idType = idTypeLayout.editText?.text?.toString()?.trim()
         val dateOfBirth = dateOfBirth.editText?.text?.toString()?.trim()
         val reference = reference.editText?.text?.toString()?.trim()
 
         println("idType: $idType \n dob: $dateOfBirth \n ref: $reference" )
-
-        val verifyIdRequestDummy = VerifyIDRequest(
-            type = "NIN",
-            reference = "11111111111",
-            firstName = "Sarah",
-            lastName = "Doe",
-            dateOfBirth = "1988-04-04",
-            imageUrl = "https://i.pinimg.com/originals/93/8d/53/938d536057ba50567ff2c9964386b473.jpg"
-        )
 
         when(idType){
             "NIN" -> {
