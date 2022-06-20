@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +30,7 @@ class UploadViewModel @Inject constructor(
         SingleEvent(it)
     }.asLiveData()
 
-    fun uploadImage(uploadRequest: MultipartBody.Part?) {
+    fun uploadImage(uploadRequest: MultipartBody.Part?, file: File? = null) {
         viewModelScope.launch {
             _uploadChannel.send(UploadViewState.Loading(R.string.upload))
 
@@ -38,7 +39,7 @@ class UploadViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         if (it.data is UploadImageResponse) {
-                            _uploadChannel.send(UploadViewState.Success(R.string.upload, it.data))
+                            _uploadChannel.send(UploadViewState.Success(R.string.upload, it.data, file))
                         }
                     }
                     is Result.Failed -> {
@@ -46,7 +47,8 @@ class UploadViewModel @Inject constructor(
                             _uploadChannel.send(
                                 UploadViewState.Failure(
                                     R.string.upload,
-                                    it.errorMessage
+                                    it.errorMessage,
+                                    file
                                 )
                             )
                         }

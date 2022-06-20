@@ -45,7 +45,8 @@ class TaskViewModel @Inject constructor(
 
     val doesCandidateLiveAtAddress = MutableLiveData<SingleEvent<Boolean>>()
 
-    val uploadedImages = arrayListOf<MultipartBody.Part>()
+    val uploadedImages = arrayListOf<String>()
+
 
     fun updateImagesPicked(file: File) {
         val values = imagesPicked.value ?: arrayListOf<File>()
@@ -91,7 +92,7 @@ class TaskViewModel @Inject constructor(
 
 
         supervisScope.launch(coroutineExceptionHandler) {
-
+            startTaskState.postValue(SingleEvent(ResultState.Loading("Starting task...")))
             val startTaskResponse = async {
                 repository.startTask(taskId)
             }

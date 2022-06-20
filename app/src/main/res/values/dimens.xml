@@ -53,4 +53,5 @@
     <dimen name="sm">20dp</dimen>
     <dimen name="xsm">10dp</dimen>
     <dimen name="btnSize">60dp</dimen>
+    <dimen name="xxsm">5dp</dimen>
 </resources>

@@ -35,6 +35,7 @@ import com.youverify.agent_app_android.features.common.adapter.createColorsAdapt
 import com.youverify.agent_app_android.features.common.adapter.createImagesAdapter
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewModel
+import com.youverify.agent_app_android.features.verification.id.UploadViewState
 import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.SingleEvent
@@ -95,10 +96,6 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
     }
 
-    private val colorListAdapter = createColorsAdapter { color ->
-        // Maybe update the selected color on the view also
-        binding.buildingColorInput.setText(color.name)
-    }
 
     private val imageResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -127,9 +124,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
                     Timber.d("File gotten: ${file?.absolutePath}")
                     if (file != null) {
-                        viewModel.updateImagesPicked(file)
                         val requestBody = createMultipart(file)
-                        uploadViewModel.uploadImage(requestBody)
+                        uploadViewModel.uploadImage(requestBody, file)
                     }
                 }
             }
@@ -168,8 +164,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
-        buildingTypeInput.setOnClickListener { openSelectTypeBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
-            viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
+        buildingTypeInput.setOnClickListener {
+            openSelectTypeBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
+            }
+        }
+
+        buildingColorInput.setOnClickListener { showColorButtomSheet{
+            binding.buildingColorInput.setText(it.name)
+        }}
+
+        gateColorInput.setOnClickListener { showColorButtomSheet {
+            binding.gateColorInput.setText(it.name)
         } }
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
@@ -193,21 +199,40 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
 
-        whoConfirmedAdressInput.setOnClickListener { openSelectTypeBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
-            viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
-        } }
+        whoConfirmedAdressInput.setOnClickListener {
+            openSelectTypeBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
+            }
+        }
 
         buildHasGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(true)) }
-        buildDontHaveGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(false)) }
+        buildDontHaveGate.setOnClickListener {
+            viewModel.doesBuildingHaveGate.postValue(
+                SingleEvent(
+                    false
+                )
+            )
+        }
 
-        yesSubmitBtn.setOnClickListener { validateYesSubmission {
+        yesSubmitBtn.setOnClickListener {
+            validateYesSubmission {
+                //Submit
+            }
+        }
 
-        } }
+        candidateLiveHereBtn.setOnClickListener {
+            viewModel.doesCandidateLiveAtAddress.postValue(
+                SingleEvent(true)
+            )
+        }
+        candidateDontLiveHereBtn.setOnClickListener {
+            viewModel.doesCandidateLiveAtAddress.postValue(
+                SingleEvent(false)
+            )
+        }
 
-        candidateLiveHereBtn.setOnClickListener { viewModel.doesCandidateLiveAtAddress.postValue(
-            SingleEvent(true)
-        ) }
-        candidateDontLiveHereBtn.setOnClickListener { viewModel.doesCandidateLiveAtAddress.postValue(SingleEvent(false)) }
+        toolbar.setNavigationOnClickListener { navigateUp() }
+
     }
 
     private fun validateYesSubmission(callback: () -> Unit) {
@@ -217,7 +242,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         if (hasGate) {
             val gateColor = binding.gateColorInput.text?.toString()
             if (gateColor.isNullOrEmpty()) {
-                binding.gateColorLayout.error = "Pleae pick a gate color"
+                binding.gateColorLayout.error = "Please pick a gate color"
                 return
             }
         }
@@ -235,7 +260,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val nearestLandmark = binding.landmarkInput.text?.toString()
         val additionalInfo = binding.infoInput.text?.toString() ?: ""
         if (noOfImages < 1) {
-            context?.showDialog( title = "Incomplete form", message = "Please take pictures of the place")
+            context?.showDialog(
+                title = "Incomplete form",
+                message = "Please take pictures of the place"
+            )
             return
         }
 
@@ -348,7 +376,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         locationPermissionRequest.launch(permissions)
     }
 
-    private fun openSelectTypeBottomSheet(list: List<String>, callback: (selected: String) -> Unit) {
+    private fun openSelectTypeBottomSheet(
+        list: List<String>,
+        callback: (selected: String) -> Unit
+    ) {
         var dialog: MaterialDialog? = null
         val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
         val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater)
@@ -366,16 +397,19 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             }
         }
 
-        dialog = context?.inflateBottomSheet(binding.root)
+        dialog = context?.inflateBottomSheet(binding.root, true)
     }
 
-    private fun showColorButtomSheet() {
+    private fun showColorButtomSheet(callback: (color: TasksDomain.Color) -> Unit) {
         val binding = BottomSelectColorBinding.inflate(layoutInflater)
-        binding.colorList.adapter = colorListAdapter
-        colorListAdapter.currentList.clear()
-        colorListAdapter.submitList(viewModel.colors)
+        binding.colorList.adapter = createColorsAdapter {
+            callback(it)
+            colorDialog?.dismiss()
+        }.apply {
+            submitList(viewModel.colors)
+        }
 
-        colorDialog = context?.inflateBottomSheet(binding.root)
+        colorDialog = context?.inflateBottomSheet(binding.root, true)
 
     }
 
@@ -424,12 +458,71 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         viewModel.doesBuildingHaveGate.observe(viewLifecycleOwner) {
             val hasGate = it.getContentIfNotHandled() ?: return@observe
             binding.gateColorLayout.visibleIf(hasGate)
+            binding.hasGate.setColor(hasGate, R.color.colorDark, R.color.white)
+            binding.noGate.setColor(!hasGate, R.color.colorDark, R.color.white)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(hasGate = hasGate)
         }
 
         uploadViewModel.uploadState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
+            when (state) {
+                is UploadViewState.Loading -> {
+                    progressLoader.show("Uploading image...")
+                }
 
+                is UploadViewState.Failure -> {
+                    progressLoader.hide()
+                    context?.showDialog(
+                        "Upload error",
+                        state.errorMessage,
+                        positiveTitle = "Retry",
+                        negativeTitle = "Cancel"
+                    ) {
+                        val file = state.file ?: return@showDialog
+                        val multipart = createMultipart(state.file)
+                        uploadViewModel.uploadImage(multipart, file)
+                    }
+                }
+
+                is UploadViewState.Success -> {
+                    progressLoader.hide()
+                    val result = state.uploadResponse?.data?.firstOrNull()
+                    val file = state.file ?: return@observe
+                    Timber.d("Upload ==> ${result?.location}")
+                    viewModel.uploadedImages.add(result?.location.toString())
+                    viewModel.updateImagesPicked(file)
+                }
+            }
+        }
+
+        viewModel.startTaskState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when (state) {
+                is ResultState.Loading -> progressLoader.show("Starting task. Please wait...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(
+                        "Error",
+                        message = state.error,
+                        positiveTitle = "Retry",
+                        negativeTitle = "Cancel",
+                        negativeCallback = { /*navigateUp()*/ }) {
+                        viewModel.startTask(viewModel.currentTask?.id.toString())
+                    }
+                }
+
+                is ResultState.Success -> {
+                    progressLoader.hide()
+                }
+            }
+        }
+
+        viewModel.doesCandidateLiveAtAddress.observe(viewLifecycleOwner) {
+            val livesHere = it.getContentIfNotHandled() ?: return@observe
+            binding.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
+            binding.candidateLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
+            binding.whoConfirmedAddressLayout.visibleIf(livesHere)
+            binding.whoConfirmedAddress.visibleIf(livesHere)
         }
     }
 

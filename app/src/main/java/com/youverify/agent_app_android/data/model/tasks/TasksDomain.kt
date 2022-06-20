@@ -27,8 +27,8 @@ object TasksDomain {
         val businessRegNumber: String,
         val candidate: Candidate?
     ) {
-        val address: String get() = "$flatNumber, $street, $city, $state, $country"
-        val time get() = "$"
+        val address: String get() = "$buildingNumber, $street, $city, $state, $country"
+        val time get() = ""
     }
 
     data class Candidate(

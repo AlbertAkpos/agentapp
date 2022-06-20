@@ -200,7 +200,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingStart="@dimen/padding_12"
-        android:paddingBottom="@dimen/padding_24"
+        android:paddingBottom="@dimen/md"
         android:paddingEnd="@dimen/padding_12"
         android:layout_marginBottom="@dimen/margin_32"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -18,6 +18,7 @@ fun Context.showDialog(
     message: String,
     positiveTitle: String = "ok",
     negativeTitle: String? = "",
+    negativeCallback: (() -> Unit)? = null,
     positiveCallback: (() -> Unit)? = null
 ) {
 
@@ -31,6 +32,7 @@ fun Context.showDialog(
         }
 
         negativeButton(text = negativeTitle) {
+            negativeCallback?.invoke()
             dismiss()
         }
     }

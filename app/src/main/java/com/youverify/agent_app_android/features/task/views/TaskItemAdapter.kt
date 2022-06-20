@@ -8,6 +8,8 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.TaskItemBinding
 import com.youverify.agent_app_android.data.model.TaskItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TaskItemAdapter(
     private val clickListener: (TasksDomain.AgentTask) -> Unit)
@@ -39,7 +41,7 @@ class TaskItemAdapter(
 class TaskItemViewHolder(val binding : TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(taskItem: TasksDomain.AgentTask, clickListener: (TasksDomain.AgentTask) -> Unit){
-        binding.verificationTypeText.text = taskItem.verificationType
+        binding.verificationTypeText.text = taskItem.verificationType.capitalize(Locale.ENGLISH)
         binding.addressText.text = taskItem.address
         binding.timeText.text = taskItem.time
 

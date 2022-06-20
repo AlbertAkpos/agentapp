@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context=".features.task.views.TaskDetailsFragment">
 
     <Toolbar
@@ -43,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
             android:padding="@dimen/padding_24">
 
             <TextView
@@ -322,7 +324,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/proceedToCaptureDetailsBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/btnSize"
                 android:layout_marginTop="@dimen/margin_60"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/br_sonoma_regular"
@@ -670,7 +672,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:visibility="gone"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
                     android:hint="--Select--"
@@ -734,6 +735,7 @@
                         app:layout_constraintStart_toStartOf="parent">
 
                         <TextView
+                            android:id="@+id/hasGate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -761,6 +763,7 @@
 
 
                         <TextView
+                            android:id="@+id/noGate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -791,6 +794,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:inputType="none"
+                        android:focusable="false"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -839,6 +843,7 @@
                         app:layout_constraintStart_toStartOf="parent">
 
                         <TextView
+                            android:id="@+id/candidateLiveHere"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -866,6 +871,7 @@
 
 
                         <TextView
+                            android:id="@+id/candidateDontLiveHere"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -909,11 +915,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/whoConfirmedAddress"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/sm"
+                        android:visibility="gone"
                         android:fontFamily="@font/br_sonoma_regular"
-                        android:inputType="none"
                         android:text="Who confirmed the candidate lives here?"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
