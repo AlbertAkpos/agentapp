@@ -1,10 +1,13 @@
 package com.youverify.agent_app_android.data.source
 
 import com.youverify.agent_app_android.data.api.AgentService
+import com.youverify.agent_app_android.data.api.UploadService
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
+import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
-class AgentDataSource @Inject constructor (private val service: AgentService): IAgentSource {
+class AgentDataSource @Inject constructor (private val service: AgentService, private val uploadService: UploadService): IAgentSource {
     override suspend fun fetchAgentTasks(): TasksDto.AgentTasksResponse {
         return service.getAgentTasks()
     }
@@ -21,11 +24,15 @@ class AgentDataSource @Inject constructor (private val service: AgentService): I
         return service.getSubmissionMessages()
     }
 
-    override suspend fun submitTaskRejection(rejectRequest: TasksDto.RejectTaskAnswers, taskId: String): TasksDto.GenericResponse {
-        return service.submitTaskRejection(rejectRequest, taskId)
+    override suspend fun submitTask(submitRequest: TasksDto.SubmitTaskRequest, taskId: String): TasksDto.GenericResponse {
+        return service.submitTask(submitRequest, taskId)
     }
 
     override suspend fun updateTaskRequest(taskId: String, request: TasksDto.UpdateTaskRequest): TasksDto.GenericResponse {
         return service.updateTask(taskId, request)
+    }
+
+    override suspend fun doImageUpload(file: List<MultipartBody.Part>): UploadImageResponse {
+        return uploadService.uploadImage(file)
     }
 }

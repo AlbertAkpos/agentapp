@@ -118,7 +118,7 @@ object TasksDto {
         @SerializedName("data") val data: List<String>?
     )
 
-    data class RejectTaskAnswers(
+    data class SubmitTaskRequest(
         @SerializedName("message")
         val message: String
     )

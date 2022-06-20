@@ -13,6 +13,7 @@ import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import okhttp3.MultipartBody
 import java.io.File
 import javax.inject.Inject
 
@@ -43,6 +44,8 @@ class TaskViewModel @Inject constructor(
     val imagesPicked = MutableLiveData<ArrayList<File>>()
 
     val doesCandidateLiveAtAddress = MutableLiveData<SingleEvent<Boolean>>()
+
+    val uploadedImages = arrayListOf<MultipartBody.Part>()
 
     fun updateImagesPicked(file: File) {
         val values = imagesPicked.value ?: arrayListOf<File>()
@@ -101,34 +104,27 @@ class TaskViewModel @Inject constructor(
                 repository.getSubmissionMessages()
             }
 
-            kotlin.runCatching {
-                val startTask = startTaskResponse.await()
-                // Handle start task response
-                if (startTask.success) {
-                    startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
-                    taskAnswers = taskAnswers.copy(taskStarted = true)
-                } else {
-                    startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
-                }
+
+            val startTask = startTaskResponse.await()
+            // Handle start task response
+            if (startTask.success) {
+                startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
+                taskAnswers = taskAnswers.copy(taskStarted = true)
+            } else {
+                startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
             }
 
-            kotlin.runCatching {
-                // Handle rejectionMessages response
-                val rejectionData = rejectionMessagesResponse.await()
-                rejectionMessages.clear()
-                Log.d("TaskViewModel", "Rejection messages ==> ${rejectionData.data}")
-                rejectionMessages.addAll(rejectionData.data ?: emptyList())
+            // Handle rejectionMessages response
+            val rejectionData = rejectionMessagesResponse.await()
+            rejectionMessages.clear()
+            Log.d("TaskViewModel", "Rejection messages ==> ${rejectionData.data}")
+            rejectionMessages.addAll(rejectionData.data ?: emptyList())
 
-            }
+            // Handle submission reponse
+            submissionMessages.clear()
+            val submissionData = submissionMessagesResponse.await()
+            submissionMessages.addAll(submissionData.data ?: emptyList())
 
-
-
-            kotlin.runCatching {
-                // Handle submission reponse
-                submissionMessages.clear()
-                val submissionData = submissionMessagesResponse.await()
-                submissionMessages.addAll(submissionData.data ?: emptyList())
-            }
 
 
         }
@@ -137,7 +133,9 @@ class TaskViewModel @Inject constructor(
 
     val taskRejectionState = MutableLiveData<SingleEvent<ResultState<String>>>()
 
-    fun rejectTask(request: TasksDto.RejectTaskAnswers, taskId: String) {
+    val taskSubmissionState = MutableLiveData<SingleEvent<ResultState<String>>>()
+
+    fun rejectTask(request: TasksDto.SubmitTaskRequest, taskId: String) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
@@ -146,12 +144,34 @@ class TaskViewModel @Inject constructor(
 
         viewModelScope.launch(coroutineExceptionHandler) {
             taskRejectionState.postValue(SingleEvent(ResultState.Loading()))
-            val response = repository.submitTaskRejection(request, taskId)
+            val response = repository.submitTask(request, taskId)
             if (response.success) {
                 taskRejectionState.postValue(SingleEvent(ResultState.Success(response.message ?: "Task submitted successfully")))
             } else {
                 taskRejectionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
             }
+        }
+    }
+
+    fun submitTask(taskItem: TasksDomain.SubmitTask) {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+            val message = ErrorHelper.handleException(throwable)
+            taskSubmissionState.postValue(SingleEvent(ResultState.Error(message)))
+        }
+
+        viewModelScope.launch(coroutineExceptionHandler) {
+
+                val response = repository.updateTask(taskId = taskItem.taskId, taskItem.task)
+                if (response.success) {
+
+                    val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)
+                    if (response.success) {
+                        taskSubmissionState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
+                    } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
+
+                } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
+
         }
     }
 

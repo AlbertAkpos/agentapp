@@ -12,4 +12,8 @@ interface UploadService {
     @Multipart
     @POST("uploads/media")
     suspend fun uploadImage(@Part files: MultipartBody.Part) : Response<UploadImageResponse>
+
+    @Multipart
+    @POST("uploads/media")
+    suspend fun uploadImage(@Part files: List<MultipartBody.Part>) : UploadImageResponse
 }

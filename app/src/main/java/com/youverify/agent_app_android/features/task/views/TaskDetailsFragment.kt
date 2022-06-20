@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.common.api.ApiException
@@ -33,12 +34,14 @@ import com.youverify.agent_app_android.databinding.*
 import com.youverify.agent_app_android.features.common.adapter.createColorsAdapter
 import com.youverify.agent_app_android.features.common.adapter.createImagesAdapter
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.features.verification.id.UploadViewModel
 import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.extension.*
 import com.youverify.agent_app_android.util.helper.FileHelper
 import com.youverify.agent_app_android.util.helper.LocationHelper
+import com.youverify.agent_app_android.util.helper.createMultipart
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
@@ -68,6 +71,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
 
     private val viewModel by activityViewModels<TaskViewModel>()
+
+    private val uploadViewModel by viewModels<UploadViewModel>()
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -123,6 +128,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                     Timber.d("File gotten: ${file?.absolutePath}")
                     if (file != null) {
                         viewModel.updateImagesPicked(file)
+                        val requestBody = createMultipart(file)
+                        uploadViewModel.uploadImage(requestBody)
                     }
                 }
             }
@@ -222,7 +229,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
     }
 
-    private fun validateNoSubmition(callback: (rejectRequest: TasksDto.RejectTaskAnswers) -> Unit) {
+    private fun validateNoSubmition(callback: (submitRequest: TasksDto.SubmitTaskRequest) -> Unit) {
         val cantLocateAddressReason = binding.reasonInput.text?.toString()
         val noOfImages = viewModel.imagesPicked.value?.size ?: 0
         val nearestLandmark = binding.landmarkInput.text?.toString()
@@ -242,7 +249,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             return
         }
 
-        val rejectionAnswers = TasksDto.RejectTaskAnswers(
+        val rejectionAnswers = TasksDto.SubmitTaskRequest(
             message = cantLocateAddressReason
         )
 
@@ -418,6 +425,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             val hasGate = it.getContentIfNotHandled() ?: return@observe
             binding.gateColorLayout.visibleIf(hasGate)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(hasGate = hasGate)
+        }
+
+        uploadViewModel.uploadState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+
         }
     }
 

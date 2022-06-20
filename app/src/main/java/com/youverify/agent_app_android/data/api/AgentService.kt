@@ -38,8 +38,8 @@ interface AgentService {
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/submit")
     suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse
 
-    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/reject")
-    suspend fun submitTaskRejection(@Body request: TasksDto.RejectTaskAnswers, @Path("taskId") taskId: String): TasksDto.GenericResponse
+    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/submit")
+    suspend fun submitTask(@Body request: TasksDto.SubmitTaskRequest, @Path("taskId") taskId: String): TasksDto.GenericResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/report")
     suspend fun updateTask(@Path("taskId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
