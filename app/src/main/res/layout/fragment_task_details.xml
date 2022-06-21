@@ -271,7 +271,7 @@
                     app:cardCornerRadius="@dimen/height_70"
                     app:cardElevation="0dp"
                     app:strokeColor="@color/colorPrimary"
-                    app:strokeWidth="3dp"
+                    app:strokeWidth="5dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/no_btn"
                     app:layout_constraintEnd_toStartOf="@+id/no_btn"
                     app:layout_constraintStart_toStartOf="parent">
@@ -301,7 +301,7 @@
                     android:textStyle="normal"
                     app:cardCornerRadius="@dimen/height_70"
                     app:cardElevation="0dp"
-                    app:strokeWidth="3dp"
+                    app:strokeWidth="5dp"
                     app:strokeColor="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -610,7 +610,8 @@
                 android:id="@+id/canLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="vertical">
 
                 <TextView
@@ -633,7 +634,7 @@
                     android:layout_marginTop="@dimen/margin_10"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="--Select--"
+                    android:hint="Select building type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -674,7 +675,7 @@
                     android:layout_marginTop="@dimen/margin_10"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="--Select--"
+                    android:hint="Building color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -728,6 +729,8 @@
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
@@ -755,6 +758,8 @@
                         android:elevation="0dp"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
@@ -782,7 +787,7 @@
                     android:visibility="gone"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="--Select--"
+                    android:hint="Gate color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -836,6 +841,8 @@
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
@@ -863,6 +870,8 @@
                         android:elevation="0dp"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
@@ -920,6 +929,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/sm"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:text="Who confirmed the candidate lives here?"
                         android:textColor="@color/colorPrimaryDark"
@@ -969,6 +979,7 @@
                         tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
                     <RelativeLayout
+                        android:id="@+id/signBtn"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/xsm"
                         android:elevation="0dp"
@@ -976,14 +987,14 @@
                         android:orientation="horizontal"
                         android:background="@drawable/dotted_background"
                         android:layout_height="70dp">
+
                         <ImageView
                             android:id="@+id/signature"
-                            android:layout_width="60dp"
+                            android:layout_width="100dp"
                             android:layout_height="60dp"
-                            android:clickable="false"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/ic_signature"
-                            />
+                            android:clickable="false"
+                            android:src="@drawable/ic_signature" />
                     </RelativeLayout>
 
 
@@ -1001,8 +1012,10 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/xsm"
                         android:layout_height="wrap_content">
                         <ImageButton
+                            android:id="@+id/candidateImageUploadBtn"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:background="@drawable/dotted_background"
@@ -1068,6 +1081,7 @@
                         android:layout_width="100dp"
                         android:indeterminate="true"
                         android:layout_marginTop="@dimen/xsm"
+                        android:visibility="gone"
                         app:indicatorColor="@color/colorDark"
                         android:layout_height="4dp"/>
 

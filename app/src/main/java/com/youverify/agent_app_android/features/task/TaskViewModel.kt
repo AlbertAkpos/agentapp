@@ -105,16 +105,6 @@ class TaskViewModel @Inject constructor(
                 repository.getSubmissionMessages()
             }
 
-
-            val startTask = startTaskResponse.await()
-            // Handle start task response
-            if (startTask.success) {
-                startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
-                taskAnswers = taskAnswers.copy(taskStarted = true)
-            } else {
-                startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
-            }
-
             // Handle rejectionMessages response
             val rejectionData = rejectionMessagesResponse.await()
             rejectionMessages.clear()
@@ -125,6 +115,17 @@ class TaskViewModel @Inject constructor(
             submissionMessages.clear()
             val submissionData = submissionMessagesResponse.await()
             submissionMessages.addAll(submissionData.data ?: emptyList())
+
+            val startTask = startTaskResponse.await()
+            // Handle start task response
+            if (startTask.success) {
+                startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
+                taskAnswers = taskAnswers.copy(taskStarted = true)
+            } else {
+                startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
+            }
+
+
 
 
 

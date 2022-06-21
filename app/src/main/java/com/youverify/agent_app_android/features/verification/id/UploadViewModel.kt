@@ -1,10 +1,12 @@
 package com.youverify.agent_app_android.features.verification.id
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.domain.usecase.UploadUseCase
 import com.youverify.agent_app_android.util.SingleEvent
@@ -30,7 +32,7 @@ class UploadViewModel @Inject constructor(
         SingleEvent(it)
     }.asLiveData()
 
-    fun uploadImage(uploadRequest: MultipartBody.Part?, file: File? = null) {
+    fun uploadImage(uploadRequest: MultipartBody.Part?, file: File? = null, imageType: Int =  UploadViewState.Companion.UploadType.imageUpload) {
         viewModelScope.launch {
             _uploadChannel.send(UploadViewState.Loading(R.string.upload))
 
@@ -39,7 +41,7 @@ class UploadViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         if (it.data is UploadImageResponse) {
-                            _uploadChannel.send(UploadViewState.Success(R.string.upload, it.data, file))
+                            _uploadChannel.send(UploadViewState.Success(R.string.upload, it.data, file, imageType))
                         }
                     }
                     is Result.Failed -> {
@@ -48,7 +50,8 @@ class UploadViewModel @Inject constructor(
                                 UploadViewState.Failure(
                                     R.string.upload,
                                     it.errorMessage,
-                                    file
+                                    file,
+                                    imageType
                                 )
                             )
                         }

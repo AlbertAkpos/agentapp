@@ -33,6 +33,8 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="45dp"
         android:layout_marginTop="@dimen/md"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
         android:layout_marginBottom="15dp"
         android:text="Continue"/>
 

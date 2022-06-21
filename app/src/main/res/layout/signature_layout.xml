@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/md"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:background="@drawable/curved_bg_task2"
+        android:layout_height="350dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sm"
+        android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:cornerRadius="@dimen/sm"
+            android:text="Clear"
+            android:elevation="0dp"
+            app:elevation="0dp"
+            android:textAllCaps="false"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/red"
+            android:layout_marginEnd="@dimen/xxsm"
+            android:layout_height="@dimen/btnSize"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:cornerRadius="@dimen/sm"
+            android:text="Save"
+            android:stateListAnimator="@null"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:elevation="0dp"
+            app:elevation="0dp"
+            app:backgroundTint="@color/greyish_blue"
+            android:layout_height="@dimen/btnSize"/>
+    </LinearLayout>
+
+</LinearLayout>

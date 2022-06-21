@@ -50,7 +50,11 @@ object TasksDomain {
         val rejectionReason: String = "",
         val taskStarted: Boolean = false,
         val confirmedBy: String = "",
-        val hasGate: Boolean = false
+        val hasGate: Boolean = false,
+        val buildingColor: String = "",
+        val signatureLink: String = "",
+        val needsConfirmation: Boolean? = null,
+        val latLong: LatLong? = null
     )
 
     data class StartTaskResponse(

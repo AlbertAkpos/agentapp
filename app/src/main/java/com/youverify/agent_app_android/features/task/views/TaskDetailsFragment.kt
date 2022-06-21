@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -33,6 +34,7 @@ import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.databinding.*
 import com.youverify.agent_app_android.features.common.adapter.createColorsAdapter
 import com.youverify.agent_app_android.features.common.adapter.createImagesAdapter
+import com.youverify.agent_app_android.features.customview.PaintView
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewState
@@ -46,7 +48,6 @@ import com.youverify.agent_app_android.util.helper.createMultipart
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
-import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -165,13 +166,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
         buildingTypeInput.setOnClickListener {
-            openSelectTypeBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
+            showMessagesBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
+                buildingTypeInput.setText(selectedBuilding)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
             }
         }
 
-        buildingColorInput.setOnClickListener { showColorButtomSheet{
+        buildingColorInput.setOnClickListener { showColorButtomSheet {
             binding.buildingColorInput.setText(it.name)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingColor = it.name)
         }}
 
         gateColorInput.setOnClickListener { showColorButtomSheet {
@@ -191,6 +194,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         candidateNotImageUploadBtn.setOnClickListener { onPickImageClicked() }
 
+        candidateImageUploadBtn.setOnClickListener { onPickImageClicked() }
+
         binding.accessLocBtn.setOnClickListener {
             binding.layoutAccessLoc.endIconDrawable =
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_up2)
@@ -200,7 +205,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
 
         whoConfirmedAdressInput.setOnClickListener {
-            openSelectTypeBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
+            showMessagesBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
+                whoConfirmedAdressInput.setText(selected)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
             }
         }
@@ -215,8 +221,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         yesSubmitBtn.setOnClickListener {
-            validateYesSubmission {
-                //Submit
+            validateYesSubmission { taskItem ->
+                viewModel.submitTask(taskItem)
             }
         }
 
@@ -233,12 +239,24 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         toolbar.setNavigationOnClickListener { navigateUp() }
 
+        signBtn.setOnClickListener { showSignatureDialog() }
+
     }
 
-    private fun validateYesSubmission(callback: () -> Unit) {
+
+    private fun doTaskReset() {
+        viewModel.uploadedImages.clear()
+        viewModel.imagesPicked.value = arrayListOf<File>()
+    }
+
+    private fun validateYesSubmission(callback: (taskItem: TasksDomain.SubmitTask) -> Unit) {
         val typeOfBuilding = binding.buildingTypeInput.text?.toString()
         val buildingColor = binding.buildingColorInput.text?.toString()
         val hasGate = viewModel.taskAnswers.hasGate
+        val agentSignature = viewModel.taskAnswers.signatureLink
+        val confirmedBy = binding.whoConfirmedAdressInput.text?.toString() ?: ""
+        val needsConfirmation = viewModel.taskAnswers.needsConfirmation
+        val latLng = viewModel.taskAnswers.latLong
         if (hasGate) {
             val gateColor = binding.gateColorInput.text?.toString()
             if (gateColor.isNullOrEmpty()) {
@@ -246,19 +264,79 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 return
             }
         }
+
+        if (buildingColor.isNullOrEmpty()) {
+            binding.buildingColorLayout.error = "Please pick a building color"
+            return
+        }
+
+        if (agentSignature.isEmpty()) {
+            context?.showDialog(message = "Please sign")
+            return
+        }
+
+        if (needsConfirmation == null) {
+            context?.showDialog(message = "Please see question \"Does the candidate live here?\"")
+            return
+        }
+
+        if (typeOfBuilding.isNullOrEmpty()) {
+            binding.buildTypeLayout.error = "Please select a building type"
+            return
+        }
+
+        if (viewModel.uploadedImages.isEmpty()) {
+            context?.showDialog(message = "Please add images")
+            return
+        }
+
+        if (latLng == null) {
+            binding.yesGeoTaglayout.error = "Please geo tag your location to continue"
+            return
+        }
+
+        val photos = viewModel.uploadedImages.map {
+            val coordinates = TasksDto.Coordinates(lat = latLng.lat, long = latLng.long)
+            val location = TasksDto.Location(coordinates = coordinates, type = "GeoTag")
+            TasksDto.Photos(url = it, location = location)
+        }
+
+        val updateTaskRequest = TasksDto.UpdateTaskRequest(
+            gatePresent = hasGate,
+            buildingColour = buildingColor,
+            agentSignature = agentSignature,
+            confirmedBy = confirmedBy,
+            buildingType = typeOfBuilding,
+            photos = photos
+        )
+
+
+        val submitRequest = TasksDto.SubmitTaskRequest(confirmedBy)
+
+        val taskItem = TasksDomain.SubmitTask(
+            taskId = viewModel.currentTask?.id.toString(),
+            task = updateTaskRequest,
+            message = confirmedBy,
+            subitTaskRequest = submitRequest
+        )
+
+        callback(taskItem)
+
     }
 
     private fun onNoSubmissionButtionClicked() {
         validateNoSubmition { request ->
-            viewModel.rejectTask(request, viewModel.currentTask?.id.toString())
+            viewModel.submitTask(request)
         }
     }
 
-    private fun validateNoSubmition(callback: (submitRequest: TasksDto.SubmitTaskRequest) -> Unit) {
+    private fun validateNoSubmition(callback: (submitRequest: TasksDomain.SubmitTask) -> Unit) {
         val cantLocateAddressReason = binding.reasonInput.text?.toString()
         val noOfImages = viewModel.imagesPicked.value?.size ?: 0
         val nearestLandmark = binding.landmarkInput.text?.toString()
         val additionalInfo = binding.infoInput.text?.toString() ?: ""
+        val latLng = viewModel.taskAnswers.latLong
+
         if (noOfImages < 1) {
             context?.showDialog(
                 title = "Incomplete form",
@@ -277,11 +355,40 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             return
         }
 
-        val rejectionAnswers = TasksDto.SubmitTaskRequest(
-            message = cantLocateAddressReason
+        if (latLng == null) {
+            binding.noGeoTaglayout.error = "Please geo tag your location to continue"
+            return
+        }
+
+
+        val photos = viewModel.uploadedImages.map {
+            val coordinates = TasksDto.Coordinates(lat = latLng.lat, long = latLng.long)
+            val location = TasksDto.Location(coordinates = coordinates, type = "GeoTag")
+            TasksDto.Photos(url = it, location = location)
+        }
+
+        val updateTaskRequest = TasksDto.UpdateTaskRequest(
+            gatePresent = false,
+            buildingColour = "Nil",
+            agentSignature = "Nil",
+            confirmedBy = "Nil",
+            buildingType = "Nil",
+            photos = photos
         )
 
-        callback(rejectionAnswers)
+
+        val submitRequest = TasksDto.SubmitTaskRequest(cantLocateAddressReason)
+
+        val taskItem = TasksDomain.SubmitTask(
+            taskId = viewModel.currentTask?.id.toString(),
+            task = updateTaskRequest,
+            message = cantLocateAddressReason,
+            subitTaskRequest = submitRequest
+        )
+
+        callback(taskItem)
+
+
     }
 
     private fun getCurrentLocation() {
@@ -344,6 +451,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                     address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
                 )
 
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(latLong = latLng)
+
                 // Remove location callback on getting location
                 locationHelper.stopLocationUpdate()
 
@@ -376,28 +485,34 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         locationPermissionRequest.launch(permissions)
     }
 
-    private fun openSelectTypeBottomSheet(
-        list: List<String>,
-        callback: (selected: String) -> Unit
-    ) {
+    private fun showSignatureDialog() {
         var dialog: MaterialDialog? = null
-        val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
-        val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater)
-        for (item in list) {
-            binding.radioGroup.removeAllViews()
-            radioButton.radio.text = item
-            binding.radioGroup.addView(radioButton.root)
-        }
-        binding.radioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            val button = radioGroup?.findViewById<RadioButton>(i)
-            if (button?.isChecked == true) {
-                val selectedBuilding = button.text?.toString() ?: ""
-                dialog?.dismiss()
-                callback(selectedBuilding)
+        val binding = SignatureLayoutBinding.inflate(layoutInflater)
+        dialog = context?.inflateDialog(binding.root, cancelable = true)
+
+        val layoutParams = dialog?.window?.attributes
+        layoutParams?.height = 640
+        layoutParams?.width = 720
+        val paintView = PaintView(requireContext(), layoutParams)
+
+        binding.frameLayout.addView(paintView)
+        paintView.requestFocus()
+
+        binding.saveBtn.setOnClickListener {
+            dialog?.dismiss()
+            val signatureBitmap = ThumbnailUtils.extractThumbnail(paintView.cachebBitmap, 360, 256)
+            if (signatureBitmap != null) {
+                val file = fileHelper.writeToFile(signatureBitmap, "image")
+                Timber.d("File gotten: ${file?.absolutePath}")
+                if (file != null) {
+                    val requestBody = createMultipart(file)
+                    uploadViewModel.uploadImage(requestBody, file, UploadViewState.Companion.UploadType.signatureUpload)
+                }
             }
         }
 
-        dialog = context?.inflateBottomSheet(binding.root, true)
+
+        binding.clearBtn.setOnClickListener { paintView.clear() }
     }
 
     private fun showColorButtomSheet(callback: (color: TasksDomain.Color) -> Unit) {
@@ -434,6 +549,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 binding.canLocateAddressContainer.gone()
             }
             binding.cantLocateAddressContainer.visibleIf(!state)
+            // When state changes, do reset
+            doTaskReset()
+
         }
 
         viewModel.imagesPicked.observe(viewLifecycleOwner) {
@@ -480,17 +598,13 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                     ) {
                         val file = state.file ?: return@showDialog
                         val multipart = createMultipart(state.file)
-                        uploadViewModel.uploadImage(multipart, file)
+                        uploadViewModel.uploadImage(multipart, file, state.uploadType)
                     }
                 }
 
                 is UploadViewState.Success -> {
                     progressLoader.hide()
-                    val result = state.uploadResponse?.data?.firstOrNull()
-                    val file = state.file ?: return@observe
-                    Timber.d("Upload ==> ${result?.location}")
-                    viewModel.uploadedImages.add(result?.location.toString())
-                    viewModel.updateImagesPicked(file)
+                   processImageUpload(state)
                 }
             }
         }
@@ -519,10 +633,29 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         viewModel.doesCandidateLiveAtAddress.observe(viewLifecycleOwner) {
             val livesHere = it.getContentIfNotHandled() ?: return@observe
+            Timber.d("Lives here $livesHere")
             binding.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
-            binding.candidateLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
+            binding.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
             binding.whoConfirmedAddressLayout.visibleIf(livesHere)
             binding.whoConfirmedAddress.visibleIf(livesHere)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = livesHere)
+        }
+
+        viewModel.taskSubmissionState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when(state) {
+                is ResultState.Loading -> progressLoader.show("Submitting task...")
+
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+
+                is ResultState.Success -> {
+                    showMessage(state.data)
+                }
+
+            }
         }
     }
 
@@ -566,46 +699,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         imagesAdapter.notifyDataSetChanged()
     }
 
-    //implement this function
-    private fun configureUI() {
 
-
-        binding.yesBtn.setOnClickListener {
-
-
-            binding.selectReasonText.visibility = View.GONE
-            binding.reasonLayout.visibility = View.GONE
-            binding.imagesText.visibility = View.GONE
-            binding.getTagText.visibility = View.GONE
-            binding.landmarkText.visibility = View.GONE
-            binding.landmarkLayout.visibility = View.GONE
-            binding.infoText.visibility = View.GONE
-            binding.infoLayout.visibility = View.GONE
-        }
-
-        binding.noBtn.setOnClickListener {
-
-            binding.selectReasonText.visibility = View.VISIBLE
-            binding.reasonLayout.visibility = View.VISIBLE
-            binding.imagesText.visibility = View.VISIBLE
-            binding.getTagText.visibility = View.VISIBLE
-            binding.landmarkText.visibility = View.VISIBLE
-            binding.landmarkLayout.visibility = View.VISIBLE
-            binding.infoText.visibility = View.VISIBLE
-            binding.infoLayout.visibility = View.VISIBLE
-        }
-
-        binding.reasonInput.setOnClickListener {
-            showBottomBar()
-        }
-
-
-
-        binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
-
-    }
 
     private fun submit() {
         val dialogBuilder =
@@ -654,6 +748,24 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
+    }
+
+    private fun processImageUpload(state: UploadViewState.Success) {
+        val result = state.uploadResponse?.data?.firstOrNull()
+        val file = state.file ?: return
+        Timber.d("Upload ==> ${result?.location}")
+        when(state.uploadType) {
+            UploadViewState.Companion.UploadType.imageUpload -> {
+                viewModel.uploadedImages.add(result?.location.toString())
+                viewModel.updateImagesPicked(file)
+            }
+
+            UploadViewState.Companion.UploadType.signatureUpload -> {
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(signatureLink = result?.location.toString())
+                binding.signature.loadImage(file.absolutePath)
+            }
+
+        }
     }
 
     private fun showMessagesBottomSheet(reasons: List<String>, callback: (reason: String) -> Unit) {

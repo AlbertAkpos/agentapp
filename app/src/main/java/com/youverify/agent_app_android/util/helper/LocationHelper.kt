@@ -101,9 +101,21 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
         }
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
-            resultCallback?.invoke()
+
+            // Wait for some time (5 sec) to get better location updates
+            val timer = object: CountDownTimer(5000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    Timber.d("onFinish()")
+                    resultCallback?.invoke()
+                }
+            }
+            timer.start()
+
             Timber.d("Location result ==> $locationResult" )
         }
+
     }
 
     fun requestLocationUpdate(callback: (() -> Unit)? = null) {
