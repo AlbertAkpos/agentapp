@@ -2,6 +2,8 @@ package com.youverify.agent_app_android.data.model.tasks
 
 import androidx.annotation.ColorRes
 import com.google.gson.annotations.SerializedName
+import com.youverify.agent_app_android.util.helper.getDateInMilliSecond
+import com.youverify.agent_app_android.util.helper.getTimePassedSinceDate
 
 object TasksDomain {
 
@@ -25,10 +27,14 @@ object TasksDomain {
         val state: String,
         val businessName: String,
         val businessRegNumber: String,
-        val candidate: Candidate?
+        val candidate: Candidate?,
+        val lastModifiedAt: String
     ) {
         val address: String get() = "$buildingNumber, $street, $city, $state, $country"
-        val time get() = ""
+        val time get(): String {
+           val timeMillisecond =  getDateInMilliSecond(lastModifiedAt) ?: return ""
+           return getTimePassedSinceDate(timeMillisecond)
+        }
     }
 
     data class Candidate(

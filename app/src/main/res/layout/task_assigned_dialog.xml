@@ -86,81 +86,48 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/slide_right_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/curved_button_outlined_green"
-                        app:endIconDrawable="@drawable/ic_arrow_right"
-                        app:endIconMode="custom"
-                        app:endIconTint="@color/white"
-                        app:startIconDrawable="@drawable/ic_slide_right"
-                        app:startIconTint="@null"
-                        app:hintEnabled="false"
+
+
+                    <com.ncorti.slidetoact.SlideToActView
+                        android:id="@+id/slide_right_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:slider_height="60dp"
+                        android:clickable="false"
+                        android:max="100"
+                        app:outer_color="@color/colorDark"
+                        app:text="Slide right to start task"
+                        app:text_size="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/slide_right_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/curved_button_outlined_green"
-                            android:fontFamily="@font/br_sonoma_regular"
-                            android:inputType="none"
-                            android:paddingStart="48dp"
-                            android:paddingEnd="0dp"
-                            android:text="@string/slide_right_to_start_task"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:focusable="false"
-                            android:clickable="true"
-                            tools:ignore="KeyboardInaccessibleWidget,LabelFor,TextContrastCheck" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:progressDrawable="@android:color/transparent"
+                        android:thumb="@drawable/ic_slide_right" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/slide_left_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.ncorti.slidetoact.SlideToActView
+                        android:id="@+id/slide_left_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/curved_button_outlined_red"
+                        android:layout_marginEnd="24dp"
                         app:endIconDrawable="@drawable/ic_slide_left"
                         app:endIconMode="custom"
                         app:endIconTint="@null"
-                        app:startIconTint="@color/white"
-                        app:startIconDrawable="@drawable/ic_arrow_left"
                         app:hintEnabled="false"
+                        app:text_size="12sp"
+                        app:text="Slide left to close"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/slide_right_layout">
+                        app:layout_constraintTop_toBottomOf="@+id/slide_right_btn"
+                        app:outer_color="@color/taskRejectedColor"
+                        app:slider_height="60dp"
+                        app:slider_reversed="true"
+                        app:startIconDrawable="@drawable/ic_arrow_left"
+                        app:startIconTint="@color/white" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/slide_left_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/curved_button_outlined_red"
-                            android:fontFamily="@font/br_sonoma_regular"
-                            android:inputType="none"
-                            android:paddingStart="48dp"
-                            android:paddingEnd="0dp"
-                            android:text="@string/slide_left_to_start_task"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:focusable="false"
-                            android:clickable="true"
-                            tools:ignore="KeyboardInaccessibleWidget,LabelFor,TextContrastCheck" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

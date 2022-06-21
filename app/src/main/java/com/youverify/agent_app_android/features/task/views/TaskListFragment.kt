@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ncorti.slidetoact.SlideToActView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
@@ -109,26 +110,29 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         val view = layoutInflater.inflate(R.layout.task_assigned_dialog, null)
         view.findViewById<TextView>(R.id.address_text).text = taskItem.address
 
-        val slideRightButton = view.findViewById<AutoCompleteTextView>(R.id.slide_right_btn)
-        val slideLeftButton = view.findViewById<AutoCompleteTextView>(R.id.slide_left_btn)
+        val slideRightButton = view.findViewById<com.ncorti.slidetoact.SlideToActView>(R.id.slide_right_btn)
+        val slideLeftButton = view.findViewById<SlideToActView>(R.id.slide_left_btn)
         val closeButton = view.findViewById<ImageView>(R.id.close_btn)
 
         dialogBuilder.setView(view)
 
-        slideRightButton.setOnClickListener {
-            dialogBuilder.dismiss()
-            val taskBundle = TaskBundle(taskItem = taskItem).toJson()
-            val taskIntent = Intent(requireContext(), TaskActivity::class.java).apply {
-                putExtra(TaskActivity.START_DESTINATION_KEY, R.id.taskDetailsFragment2)
-                putExtra(TaskActivity.BUNDLE_KEY, taskBundle)
+        slideRightButton.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                dialogBuilder.dismiss()
+                val taskBundle = TaskBundle(taskItem = taskItem).toJson()
+                val taskIntent = Intent(requireContext(), TaskActivity::class.java).apply {
+                    putExtra(TaskActivity.START_DESTINATION_KEY, R.id.taskDetailsFragment2)
+                    putExtra(TaskActivity.BUNDLE_KEY, taskBundle)
+                }
+                startActivity(taskIntent)
             }
-            startActivity(taskIntent)
         }
 
-        slideLeftButton.setOnClickListener {
-            dialogBuilder.dismiss()
+        slideLeftButton.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                dialogBuilder.dismiss()
+            }
         }
-
         closeButton.setOnClickListener {
             dialogBuilder.dismiss()
         }

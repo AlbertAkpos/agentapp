@@ -18,6 +18,14 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
                 mobile = doc.candidate?.mobile,
                 photo = doc.candidate?.photo
             )
+
+            val verificationType = when {
+                doc.verificationType?.equals("INDIVIDUAL", true) == true -> "Live photo"
+                doc.verificationType?.equals("GUARANTOR", true) == true -> "Guarantor address verification"
+                doc.verificationType?.equals("BUSINESS", true) == true -> "Business address verification"
+                else -> "Live photo"
+            }
+
             val agentTasks = TasksDomain.AgentTask(
                 flatNumber = doc.address?.flatNumber ?: "",
                 buildingNumber = doc.address?.buildingNumber?.toString() ?: "",
@@ -30,9 +38,10 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
                 lga = doc.address?.lga ?: "",
                 status = doc.status,
                 street = doc.address?.street ?: "",
-                verificationType = doc.verificationType ?: "",
+                verificationType = verificationType ?: "",
                 candidate = candidate,
-                id = doc.id ?: ""
+                id = doc.id ?: "",
+                lastModifiedAt = doc.lastModifiedAt ?: ""
             )
             listAgentTasks.add(agentTasks)
         }

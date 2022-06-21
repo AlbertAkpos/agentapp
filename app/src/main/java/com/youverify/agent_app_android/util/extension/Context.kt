@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -12,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.afollestad.materialdialogs.customview.customView
+import java.util.*
 
 fun Context.showDialog(
     title: String = "Error",
@@ -68,3 +70,4 @@ fun Context.isPermissionsGranted(vararg permissions: String): Boolean {
     }
     return true
 }
+
