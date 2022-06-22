@@ -10,25 +10,22 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ncorti.slidetoact.SlideToActView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.ResultState
+import com.youverify.agent_app_android.data.model.signup.State
 import com.youverify.agent_app_android.databinding.FragmentTaskBinding
-import com.youverify.agent_app_android.data.model.TaskItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
-import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.databinding.BottomFilterLayoutBinding
+import com.youverify.agent_app_android.databinding.TaskAssignedDialogBinding
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.AgentTaskStatus
 import com.youverify.agent_app_android.util.ProgressLoader
-import com.youverify.agent_app_android.util.extension.showDialog
-import com.youverify.agent_app_android.util.extension.toJson
-import com.youverify.agent_app_android.util.extension.viewBindings
-import com.youverify.agent_app_android.util.extension.visibleIf
+import com.youverify.agent_app_android.util.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -72,9 +69,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         binding.taskRecyclerView.adapter = adapter
 
-        binding.filterBtn.setOnClickListener {
-            showBottomBar()
-        }
+        binding.filterBtn.setOnClickListener { viewModel.getStates() }
     }
 
     private fun setObservers() {
@@ -95,6 +90,21 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
             }
         }
+
+        viewModel.stateList.observe(viewLifecycleOwner) {
+            val state = it ?: return@observe
+            when(state) {
+                is ResultState.Loading -> progressLoader.show("Fetching filter params...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.toast(state.error)
+                }
+                is ResultState.Success -> {
+                    progressLoader.hide()
+                    showBottomBar(state.data)
+                }
+            }
+        }
     }
 
 
@@ -107,14 +117,15 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         val dialogBuilder =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
-        val view = layoutInflater.inflate(R.layout.task_assigned_dialog, null)
-        view.findViewById<TextView>(R.id.address_text).text = taskItem.address
+        val binding = TaskAssignedDialogBinding.inflate(layoutInflater)
+        binding.addressText.text = taskItem.address
+        binding.nameText.text = taskItem.candidate?.name
 
-        val slideRightButton = view.findViewById<com.ncorti.slidetoact.SlideToActView>(R.id.slide_right_btn)
-        val slideLeftButton = view.findViewById<SlideToActView>(R.id.slide_left_btn)
-        val closeButton = view.findViewById<ImageView>(R.id.close_btn)
+        val slideRightButton = binding.slideRightBtn
+        val slideLeftButton = binding.slideLeftBtn
+        val closeButton = binding.closeBtn
 
-        dialogBuilder.setView(view)
+        dialogBuilder.setView(binding.root)
 
         slideRightButton.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
@@ -142,26 +153,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun showBottomBar() {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.bottom_filter_layout)
+    private fun showBottomBar(state: List<State>) {
+        var dialog: MaterialDialog? = null
+        val binding = BottomFilterLayoutBinding.inflate(layoutInflater)
 
-        val applyButton = dialog.findViewById<Button>(R.id.button_apply)
-        val drawerHandle = dialog.findViewById<View>(R.id.drawer_handle)
 
-        applyButton.setOnClickListener {
-            dialog.dismiss()
-            Toast.makeText(requireContext(), "Dismissed dialog", Toast.LENGTH_SHORT).show()
+        binding.buttonApply.setOnClickListener {
+            dialog?.dismiss()
         }
 
-        dialog.show()
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.setGravity(Gravity.BOTTOM)
-        dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
+        dialog = context?.inflateBottomSheet(binding.root, cancelable = true)
+
+
     }
 }

@@ -19,7 +19,7 @@ fun createMultipart(file: File, mimetype: String = "image/png"): MultipartBody.P
 }
 
 fun getDateInMilliSecond(dateString: String): Long? {
-    val desiredFormat = SimpleDateFormat("d MMMM yyyy, hh:mm aa", Locale.getDefault())
+    val desiredFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     try {
         val date = desiredFormat.parse(dateString)
         return date.getTime()

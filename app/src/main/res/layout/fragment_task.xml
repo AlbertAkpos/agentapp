@@ -66,37 +66,25 @@
         app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:id="@+id/day_selector"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_40"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:paddingVertical="@dimen/xxsm"
+            android:textSize="16sp"
+            android:drawablePadding="@dimen/xxsm"
+            android:textColor="@color/white"
+            android:paddingHorizontal="@dimen/sm"
+            android:background="@drawable/curved_button"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
-            app:hintEnabled="false"
-            app:endIconDrawable="@drawable/ic_drop_down"
-            app:endIconMode="custom"
-            app:endIconTint="@color/white"
+            android:drawableEnd="@drawable/ic_drop_down"
+            android:drawableTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/curved_button"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:inputType="none"
-                android:padding="@dimen/padding_8"
-                android:text="@string/today"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                tools:ignore="LabelFor,TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
+            app:layout_constraintTop_toTopOf="parent"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,44 +95,33 @@
             android:background="@drawable/ic_compass_icon"
             android:backgroundTint="@color/colorTextPrimary"
             android:contentDescription="@string/previous"
-            app:layout_constraintEnd_toStartOf="@id/filter_layout"
+            app:layout_constraintEnd_toStartOf="@id/filterBtn"
             app:layout_constraintStart_toEndOf="@id/day_selector"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_compass_icon"
             tools:ignore="TouchTargetSizeCheck" />
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filter_layout"
+        <TextView
+            android:id="@+id/filterBtn"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_40"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/sm"
+            android:paddingVertical="@dimen/xxsm"
+            android:text="Filter"
+            android:drawablePadding="@dimen/xxsm"
+            android:textSize="16sp"
+            android:textColor="@color/white"
             android:layout_marginTop="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_16"
-            app:hintEnabled="false"
-            app:endIconDrawable="@drawable/ic_drop_down"
-            app:endIconMode="custom"
-            app:endIconTint="@color/white"
+            android:background="@drawable/curved_button_outlined"
+            android:drawableEnd="@drawable/ic_drop_down"
+            android:drawableTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <AutoCompleteTextView
-                android:id="@+id/filter_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/curved_button_outlined"
-                android:fontFamily="@font/br_sonoma_regular"
-                android:inputType="none"
-                android:padding="@dimen/padding_8"
-                android:text="@string/filter"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_16"
-                tools:ignore="LabelFor,TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <pl.droidsonroids.gif.GifImageView

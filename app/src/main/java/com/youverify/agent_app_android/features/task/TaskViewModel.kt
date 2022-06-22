@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.core.functional.ResultState
+import com.youverify.agent_app_android.data.model.signup.State
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.domain.repository.ITaskRepository
+import com.youverify.agent_app_android.domain.usecase.GetStatesUseCase
 import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val repository: ITaskRepository,
-    private val supervisScope: CoroutineScope
+    private val supervisScope: CoroutineScope,
+    private val getAllStatesUseCase: GetStatesUseCase
 ) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
@@ -174,6 +177,19 @@ class TaskViewModel @Inject constructor(
 
                 } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
 
+        }
+    }
+
+    val stateList = MutableLiveData<ResultState<List<State>>>()
+
+    fun getStates() {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            val messsage = ErrorHelper.handleException(throwable)
+            stateList.postValue(ResultState.Error(messsage))
+        }
+        viewModelScope.launch(exceptionHandler) {
+            val states = getAllStatesUseCase.execute() ?: emptyList()
+            stateList.postValue(ResultState.Success(states))
         }
     }
 

@@ -267,6 +267,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         if (buildingColor.isNullOrEmpty()) {
             binding.buildingColorLayout.error = "Please pick a building color"
+            binding.scrollView.smoothScrollTo(0, binding.buildingColorInput.bottom)
             return
         }
 
@@ -282,6 +283,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         if (typeOfBuilding.isNullOrEmpty()) {
             binding.buildTypeLayout.error = "Please select a building type"
+            binding.buildingTypeInput.requestFocus()
             return
         }
 
