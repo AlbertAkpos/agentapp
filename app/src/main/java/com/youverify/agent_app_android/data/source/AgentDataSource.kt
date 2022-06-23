@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.source
 
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.api.UploadService
+import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import okhttp3.MultipartBody
@@ -34,5 +35,9 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
 
     override suspend fun doImageUpload(file: List<MultipartBody.Part>): UploadImageResponse {
         return uploadService.uploadImage(file)
+    }
+
+    override suspend fun submitFcmToken(request: Dto.FcmToken): Dto.GenericResponse {
+        return service.submitFcmToken(request)
     }
 }

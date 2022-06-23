@@ -622,7 +622,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         message = state.error,
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
-                        negativeCallback = { /*navigateUp()*/ }) {
+                        negativeCallback = { navigateUp() }) {
                         viewModel.startTask(viewModel.currentTask?.id.toString())
                     }
                 }

@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.data.api
 
+import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponse
 import com.youverify.agent_app_android.data.model.resetpassword.Email
@@ -43,5 +44,8 @@ interface AgentService {
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/report")
     suspend fun updateTask(@Path("taskId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
+
+    @PUT("https://agent.dev.svc.youverify.co/agents/me/fcmtoken")
+    suspend fun submitFcmToken(@Body request: Dto.FcmToken): Dto.GenericResponse
 
 }
