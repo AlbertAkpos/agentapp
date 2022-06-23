@@ -7,6 +7,8 @@ import com.youverify.agent_app_android.data.model.resetpassword.ResetPassRespons
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreaRequest
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreasResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
 import retrofit2.Response
@@ -24,7 +26,10 @@ interface AgentService {
     suspend fun sendResetEmail(@Body email: Email): Response<ResetPassResponse>
 
     @POST("agents/verify")
-    suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
+    suspend fun verifyId(@Body verifyIDRequest: com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest): Response<UploadImageResponse>
+
+    @PUT("agents/me/areas")
+    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest):  Response<PrefAreasResponse>
 
     @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
     suspend fun getAgentTasks(): TasksDto.AgentTasksResponse

@@ -107,14 +107,15 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         responseData.observe(requireActivity()){
             if (!it.isNullOrEmpty()){
                 progressLoader.hide()
-                displayLgas(it)
+//                displayLgas(it)
+                displayLgas(it.slice(0..10) as ArrayList<String>)
             }
         }
     }
 
     private fun checkBoxChecked(lga: String){
         if(!prefAreas.contains(lga) && count < 3){
-            addChip(lga)
+//            addChip(lga)
             prefAreas.add(lga)
             count++
         }else if (prefAreas.contains(lga)){

@@ -36,6 +36,12 @@ interface DataModule {
     val StateLgaRepositoryImpl.stateLgaRepoImpl: StateLgaRepository
 
     @get:Binds
+    val PrefAreasRepositoryImpl.prefAreasRepoImpl: PrefAreasRepository
+
+    @get:Binds
+    val VerifyIdRepositoryImpl.verifyIdRepoImpl: VerifyIdRepository
+
+    @get:Binds
     val TasksRepository.taskRepository: ITaskRepository
 
     @get:Binds

@@ -42,6 +42,7 @@ class CheckBoxViewHolder(val binding: CheckboxDropdownBinding): RecyclerView.Vie
 
          binding.checkBox.setOnCheckedChangeListener { _, checked ->
              if(checked){
+                 println("lga = $lga, id: ${lga.hashCode()}")
                  checkListener(lga)
              }else{
                  uncheckListener(lga)
