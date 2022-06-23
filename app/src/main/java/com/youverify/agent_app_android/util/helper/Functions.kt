@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.util.helper
 
+import android.os.Build
 import android.text.format.DateUtils
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -32,3 +33,5 @@ fun getDateInMilliSecond(dateString: String): Long? {
 }
 
 fun getTimePassedSinceDate(date: Long) = DateUtils.getRelativeTimeSpanString( date, Date().time, DateUtils.MINUTE_IN_MILLIS).toString()
+
+fun isOreoPlus(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
