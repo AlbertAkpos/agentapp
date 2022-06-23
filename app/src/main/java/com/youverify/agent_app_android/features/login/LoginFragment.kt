@@ -175,7 +175,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
             }
 
-            TokenInterceptor().setToken(loginResponse.token)
             println("Response: $loginResponse")
         }
     }

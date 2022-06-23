@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.CheckBox
-import android.widget.Toast
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
@@ -25,9 +23,9 @@ import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.ProgressLoader
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.notify
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -39,8 +37,8 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
     private val selectAreaViewModel : SelectAreasViewModel by viewModels()
     private lateinit var homeActivity: HomeActivity
     private lateinit var chipGroup: ChipGroup
-    private lateinit var linearLayout: LinearLayoutCompat
-    private lateinit var autoCompText: AutoCompleteTextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CheckBoxAdapter
     private lateinit var state: String
     private var count: Int = 0
     private lateinit var prefAreas : ArrayList<String>
@@ -51,8 +49,7 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
     ): View{
         binding = FragmentSelectAreasBinding.inflate(layoutInflater)
         homeActivity = requireActivity() as HomeActivity
-        linearLayout = binding.dropDownInner
-//        autoCompText = binding.selectAreasEditText
+        recyclerView = binding.dropDownInner
         chipGroup = binding.chipGroup
 
         return binding.root
@@ -68,13 +65,11 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
 
     private fun configureUI(){
         binding.areasBtn.setOnClickListener {
-//            if(binding.dropDownLayout.visibility == View.VISIBLE){
-//                binding.dropDownLayout.visibility = View.GONE
-//                binding.areasBtn.setImageResource(R.drawable.ic_arrow_up2)
-//            }else{
-//                binding.dropDownLayout.visibility = View.VISIBLE
-//                binding.areasBtn.setImageResource(R.drawable.ic_arrow_down2)
-//            }
+          if(binding.dropDown.isVisible){
+              binding.dropDown.visibility = View.GONE
+          }else{
+              binding.dropDown.visibility = View.VISIBLE
+          }
         }
 
         binding.doneBtn.setOnClickListener {
@@ -88,8 +83,20 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         }
     }
 
-    private fun sendSelectedAreas(){
+    private fun initRecyclerView(){
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        adapter = CheckBoxAdapter(
+            {lga -> checkBoxChecked(lga) },
+            {lga -> checkBoxUnchecked(lga)}
+        )
+
+        recyclerView.adapter = adapter
+    }
+
+    private fun displayLgas(lgaList: ArrayList<String>) {
+        initRecyclerView()
+        adapter.setItems(lgaList)
     }
 
     private fun fetchAreas(){
@@ -100,48 +107,59 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         responseData.observe(requireActivity()){
             if (!it.isNullOrEmpty()){
                 progressLoader.hide()
-                val lparams = LinearLayoutCompat.LayoutParams(
-                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-                )
-//                val arrayAdapter = ArrayAdapter(requireContext(), R.layout.areas_drop_down_item, it)
-                for (lga in it){
-                    val checkBox = CheckBox(context)
-                    checkBox.layoutParams = lparams
-                    checkBox.text = lga
-                    linearLayout.addView(checkBox)
-                    addChip(lga)
-                }
+                displayLgas(it)
             }
         }
     }
 
+    private fun checkBoxChecked(lga: String){
+        if(!prefAreas.contains(lga) && count < 3){
+            addChip(lga)
+            prefAreas.add(lga)
+            count++
+        }else if (prefAreas.contains(lga)){
+            Snackbar.make(requireView(), "Already added $lga", Snackbar.LENGTH_SHORT).show()
+        }else{
+            Snackbar.make(requireView(), "Cannot select more than 3 areas", Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkBoxUnchecked(lga: String) {
+
+    }
+
     private fun saveAreas(){
-        val prefAreaRequest = PrefAreaRequest(
-            stateOfResidence = state,
-            preferredAreas = prefAreas
-        )
 
-        selectAreaViewModel.saveAreas(prefAreaRequest)
+        if(!prefAreas.isNullOrEmpty()){
+            val prefAreaRequest = PrefAreaRequest(
+                stateOfResidence = state,
+                preferredAreas = prefAreas
+            )
 
-        lifecycleScope.launchWhenCreated {
-            selectAreaViewModel.prefAreasChannel.collect{
-                when (it) {
-                    is PrefAreasViewState.Loading -> {
-                        progressLoader.show(message = "Saving...")
+            selectAreaViewModel.saveAreas(prefAreaRequest)
+
+            lifecycleScope.launchWhenCreated {
+                selectAreaViewModel.prefAreasChannel.collect{
+                    when (it) {
+                        is PrefAreasViewState.Loading -> {
+                            progressLoader.show(message = "Saving...")
+                        }
+                        is PrefAreasViewState.Success -> {
+                            progressLoader.hide()
+                            saveAreasSuccessful(it.prefAreasResponseData)
+                            AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
+                            findNavController().navigate(R.id.action_selectAreasFragment_to_saveAreasFragment)
+                        }
+                        is PrefAreasViewState.Failure -> {
+                            progressLoader.hide()
+                            Snackbar.make(requireView(), "Unauthorized", Snackbar.LENGTH_SHORT).show()
+                        }
+                        else -> {}
                     }
-                    is PrefAreasViewState.Success -> {
-                        progressLoader.hide()
-                        saveAreasSuccessful(it.prefAreasResponseData)
-                        AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
-                        findNavController().navigate(R.id.action_selectAreasFragment_to_saveAreasFragment)
-                    }
-                    is PrefAreasViewState.Failure -> {
-                        progressLoader.hide()
-                        Snackbar.make(requireView(), "Malformed/Invalid token", Snackbar.LENGTH_SHORT).show()
-                    }
-                    else -> {}
                 }
             }
+        }else{
+            Snackbar.make(requireView(), "Please select preffered areas", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -164,18 +182,10 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
 
         chip.setOnCloseIconClickListener {
             chipGroup.removeView(it)
+            prefAreas.remove(text)
+            count--
         }
 
-        chip.setOnClickListener {
-//            autoCompText.setText("")
-            if(count < 3){
-                prefAreas.add(chip.text.toString())
-                chipGroup.removeView(it)
-                count++
-            }else{
-                Snackbar.make(requireView(), "Cannot select more than 3 areas", Snackbar.LENGTH_SHORT).show()
-            }
-        }
         chipGroup.addView(chip)
     }
 

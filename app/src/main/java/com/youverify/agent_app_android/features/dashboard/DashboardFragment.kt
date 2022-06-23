@@ -57,12 +57,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
         isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
         prefAreasIsChosen = AgentSharePreference(requireContext()).getBoolean("PREF_AREAS", false)
-
-        println("From dashboard")
-        println("isTrained: $isTrained")
-        println("isVerified: $isVerified")
-        println("prefAreas chosen: $prefAreasIsChosen")
-
         return isTrained && isVerified && prefAreasIsChosen
     }
 
@@ -194,7 +188,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             activationText.visibility = View.GONE
         }
 
-        dialogBuilder.setCancelable(false)
+        dialogBuilder.setCancelable(true)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
