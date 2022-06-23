@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/taskFragment"
-        android:name="com.youverify.agent_app_android.features.task.TaskFragment"
+        android:name="com.youverify.agent_app_android.features.task.views.TaskListFragment"
         android:label="@string/task"
         tools:layout="@layout/fragment_task">
         <action
@@ -146,7 +146,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/taskDetailsFragment"
-        android:name="com.youverify.agent_app_android.features.task.TaskDetailsFragment"
+        android:name="com.youverify.agent_app_android.features.task.views.TaskDetailsFragment"
         android:label="fragment_task_details"
         tools:layout="@layout/fragment_task_details" >
         <action
@@ -155,7 +155,7 @@
     </fragment>
     <fragment
         android:id="@+id/accessBuildingFragment"
-        android:name="com.youverify.agent_app_android.features.task.AccessBuildingFragment"
+        android:name="com.youverify.agent_app_android.features.task.views.AccessBuildingFragment"
         android:label="fragment_access_building"
         tools:layout="@layout/fragment_access_building" >
         <action

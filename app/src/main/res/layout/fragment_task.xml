@@ -178,6 +178,7 @@
         app:layout_constraintTop_toBottomOf="@+id/gifImageView" />
 
     <TextView
+        android:id="@+id/noTasksMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
@@ -187,20 +188,24 @@
         android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/text_14"
         android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="@+id/task_recycler_view"
         app:layout_constraintEnd_toEndOf="@+id/label_no_task"
         app:layout_constraintStart_toStartOf="@+id/label_no_task"
-        app:layout_constraintTop_toBottomOf="@+id/label_no_task" />
+        app:layout_constraintTop_toBottomOf="@+id/label_no_task"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingStart="@dimen/padding_12"
-        android:paddingBottom="@dimen/padding_24"
+        android:paddingBottom="@dimen/md"
         android:paddingEnd="@dimen/padding_12"
         android:layout_marginBottom="@dimen/margin_32"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_dropped" />
 

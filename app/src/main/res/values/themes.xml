@@ -85,4 +85,10 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="minWidth">16973940dp</item>
     </style>
+
+<!--    Shapeable image view  -->
+    <style name="ShapeAppearanceOverlay.App.RoundedCorners" parent="Theme.Agent_app_android">
+        <item name="cornerSize">10%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 </resources>

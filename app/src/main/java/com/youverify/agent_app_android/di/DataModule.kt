@@ -1,11 +1,17 @@
 package com.youverify.agent_app_android.di
 
 import com.youverify.agent_app_android.data.repository.*
+import com.youverify.agent_app_android.data.repository.tasks.TasksRepository
+import com.youverify.agent_app_android.data.source.AgentDataSource
+import com.youverify.agent_app_android.data.source.IAgentSource
 import com.youverify.agent_app_android.domain.repository.*
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,8 +36,8 @@ interface DataModule {
     val StateLgaRepositoryImpl.stateLgaRepoImpl: StateLgaRepository
 
     @get:Binds
-    val PrefAreasRepositoryImpl.prefAreasRepoImpl: PrefAreasRepository
+    val TasksRepository.taskRepository: ITaskRepository
 
     @get:Binds
-    val VerifyIdRepositoryImpl.verifyIdRepoImpl: VerifyIdRepository
+    val AgentDataSource.agentDataSource: IAgentSource
 }

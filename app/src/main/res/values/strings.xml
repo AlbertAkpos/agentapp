@@ -88,7 +88,7 @@
     <string name="privacy_statement">Privacy Statement</string>
     <string name="sign_out">Sign out</string>
     <string name="today">Today</string>
-    <string name="enjoy_the_break">Enjoy the break John!</string>
+    <string name="enjoy_the_break">Looks like there is no task for you. \nEnjoy the break.</string>
     <string name="no_task">Looks like there is no task for you now</string>
     <string name="title_forgot_password">Forgot Password</string>
     <string name="text_reset_pass">Enter the email address associated with your account, and we\'ll send an email with instructions to reset your password</string>

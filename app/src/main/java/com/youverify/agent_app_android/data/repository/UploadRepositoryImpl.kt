@@ -21,6 +21,8 @@ class UploadRepositoryImpl @Inject constructor(
                 is Result.Success<*> -> {
                     if (res.data is UploadImageResponse) {
                         emit(Result.Success(res.data))
+                    } else if (res.data is UploadImageResponse) {
+                        emit(Result.Success(res.data))
                     }
                 }
                 is Result.Failed<*> -> {

@@ -30,6 +30,7 @@ class StateRepositoryImpl @Inject constructor(
             }
         }catch (ex: Exception){
             Log.i("Error: ", ex.message.toString())
+            stateList = emptyList()
         }
 
         return stateList
