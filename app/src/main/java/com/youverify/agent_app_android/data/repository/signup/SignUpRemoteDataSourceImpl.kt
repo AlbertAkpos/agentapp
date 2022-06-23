@@ -4,6 +4,7 @@ import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
+import com.youverify.agent_app_android.util.handleErrorMessage
 import javax.inject.Inject
 
 class SignUpRemoteDataSourceImpl @Inject constructor(
@@ -22,7 +23,8 @@ class SignUpRemoteDataSourceImpl @Inject constructor(
                     } ?: Result.Error(Failure.ServerError)
                 }
                 false ->{
-                    Result.Failed(res.errorBody())
+                    val errorMessage = handleErrorMessage(res.errorBody()!!)
+                    Result.Failed(errorMessage)
                 }
             }
 

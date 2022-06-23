@@ -109,6 +109,9 @@
             app:destination="@id/dashboardFragment"
             app:popUpTo="@id/verificationFailedFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="failureMessage"
+            app:argType="com.youverify.agent_app_android.data.model.verification.id.FailMessage" />
     </fragment>
     <fragment
         android:id="@+id/selectAreasFragment"

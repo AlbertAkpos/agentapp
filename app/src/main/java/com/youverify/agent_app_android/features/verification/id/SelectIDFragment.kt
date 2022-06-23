@@ -135,7 +135,6 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
 
         when(idType){
             "NIN" -> {
-                println("idType: $idType \n dob: $dateOfBirth \n ref: $reference" )
                 if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
                     verifyIdRequest.type = idType
                     verifyIdRequest.dateOfBirth = dateOfBirth

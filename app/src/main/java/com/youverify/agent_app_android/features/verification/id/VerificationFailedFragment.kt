@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentVerificationFailedBinding
 import com.youverify.agent_app_android.features.HomeActivity
 
 class VerificationFailedFragment : Fragment(R.layout.fragment_verification_failed) {
     private lateinit var binding : FragmentVerificationFailedBinding
+    private val args: VerificationFailedFragmentArgs by navArgs()
     private lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
@@ -25,9 +27,7 @@ class VerificationFailedFragment : Fragment(R.layout.fragment_verification_faile
             findNavController().navigate(R.id.action_verificationFailedFragment_to_dashboardFragment)
         }
 
-        binding.tryAgainBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_verificationFailedFragment_to_dashboardFragment)
-        }
+        binding.textFailed.text = args.failureMessage.error
 
         return binding.root
     }

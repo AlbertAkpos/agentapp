@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.model.verification.id.FailMessage
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentUploadImageBinding
@@ -273,13 +274,15 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
                     }
                     is VerifyIdViewState.Failure -> {
                         progressLoader.hide()
-                        Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_LONG).show()
-                        findNavController().navigate(R.id.action_uploadPassportFragment_to_verificationFailedFragment)
+//                        Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_LONG).show()
+                        val action = UploadImageFragmentDirections.actionUploadPassportFragmentToVerificationFailedFragment(
+                            FailMessage(it.errorMessage)
+                        )
+                        findNavController().navigate(action)
                     }
                     else -> {progressLoader.hide()}
                 }
             }
         }
     }
-
 }

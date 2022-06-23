@@ -10,7 +10,7 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.CheckboxDropdownBinding
 
 class CheckBoxAdapter(
-    private val checkListener: (String) -> Unit,
+    private val checkListener: (String) -> Boolean,
     private val uncheckListener: (String) -> Unit)
     : ListAdapter<String, CheckBoxViewHolder>(DiffUtilCalback()){
 
@@ -36,14 +36,15 @@ class CheckBoxAdapter(
 }
 
 class CheckBoxViewHolder(val binding: CheckboxDropdownBinding): RecyclerView.ViewHolder(binding.root){
-     fun bind(lga: String, checkListener: (String) -> Unit, uncheckListener: (String) -> Unit){
+     fun bind(lga: String, checkListener: (String) -> Boolean, uncheckListener: (String) -> Unit){
          binding.checkBox.text = lga
          binding.checkBox.id = lga.hashCode()
 
          binding.checkBox.setOnCheckedChangeListener { _, checked ->
              if(checked){
-                 println("lga = $lga, id: ${lga.hashCode()}")
-                 checkListener(lga)
+                 if(!checkListener(lga)){
+                     binding.checkBox.isChecked = false
+                 }
              }else{
                  uncheckListener(lga)
              }

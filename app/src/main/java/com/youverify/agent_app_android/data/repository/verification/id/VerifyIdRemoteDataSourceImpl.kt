@@ -3,7 +3,9 @@ package com.youverify.agent_app_android.data.repository.verification.id
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
+import com.youverify.agent_app_android.data.model.response.ErrorMessage
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import com.youverify.agent_app_android.util.handleErrorMessage
 import javax.inject.Inject
 
 class VerifyIdRemoteDataSourceImpl @Inject constructor(
@@ -21,7 +23,8 @@ class VerifyIdRemoteDataSourceImpl @Inject constructor(
                     } ?: Result.Error(Failure.ServerError)
                 }
                 false -> {
-                    Result.Failed(res.errorBody())
+                    val errorMessage = handleErrorMessage(res.errorBody()!!)
+                    Result.Failed(errorMessage)
                 }
             }
 

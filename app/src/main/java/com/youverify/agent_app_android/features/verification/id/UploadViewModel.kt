@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.data.model.response.ErrorMessage
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
@@ -41,43 +42,43 @@ class UploadViewModel @Inject constructor(
         imageType: Int = UploadViewState.Companion.UploadType.imageUpload
     ) {
         //function for uploading the user photo
-        fun uploadImage(uploadRequest: MultipartBody.Part?) {
-            viewModelScope.launch {
-                _uploadChannel.send(UploadViewState.Loading(R.string.upload))
+//        fun uploadImage(uploadRequest: MultipartBody.Part?) {
+        viewModelScope.launch {
+            _uploadChannel.send(UploadViewState.Loading(R.string.upload))
 
-                uploadUseCase.invoke(uploadRequest).collect {
+            uploadUseCase.invoke(uploadRequest).collect {
 
-                    when (it) {
-                        is Result.Success -> {
-                            if (it.data is UploadImageResponse) {
-                                _uploadChannel.send(
-                                    UploadViewState.Success(
-                                        R.string.upload,
-                                        it.data,
-                                        file,
-                                        imageType
-                                    )
+                when (it) {
+                    is Result.Success -> {
+                        if (it.data is UploadImageResponse) {
+                            _uploadChannel.send(
+                                UploadViewState.Success(
+                                    R.string.upload,
+                                    it.data,
+                                    file,
+                                    imageType
                                 )
-                            }
+                            )
                         }
-                        is Result.Failed -> {
-                            if (it.errorMessage is String) {
-                                _uploadChannel.send(
-                                    UploadViewState.Failure(
-                                        R.string.upload,
-                                        it.errorMessage,
-                                        file,
-                                        imageType
-                                    )
-                                )
-                            }
-                        }
-                        else -> {}
                     }
+                    is Result.Failed -> {
+                        if (it.errorMessage is String) {
+                            _uploadChannel.send(
+                                UploadViewState.Failure(
+                                    R.string.upload,
+                                    it.errorMessage,
+                                    file,
+                                    imageType
+                                )
+                            )
+                        }
+                    }
+                    else -> {}
                 }
             }
         }
     }
+
 
     //function to send the user id details for verification
     fun verifyId(verifyIDRequest: VerifyIDRequest) {
@@ -97,12 +98,14 @@ class UploadViewModel @Inject constructor(
                         }
                     }
                     is Result.Failed -> {
-                        _verifyIdChannel.send(
-                            VerifyIdViewState.Failure(
-                                R.string.verify,
-                                it.errorMessage.toString()
+                        if (it.errorMessage is ErrorMessage){
+                            _verifyIdChannel.send(
+                                VerifyIdViewState.Failure(
+                                    R.string.verify,
+                                    it.errorMessage.message
+                                )
                             )
-                        )
+                        }
                     }
                     else -> {}
                 }

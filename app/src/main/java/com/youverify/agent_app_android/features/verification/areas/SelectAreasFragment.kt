@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,8 +23,8 @@ import com.youverify.agent_app_android.databinding.FragmentSelectAreasBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.extension.visibleIf
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.notify
 import java.util.*
 import javax.inject.Inject
 
@@ -64,12 +65,10 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
     }
 
     private fun configureUI(){
+        binding.dropDown.visibleIf(!binding.dropDown.isVisible)
+
         binding.areasBtn.setOnClickListener {
-          if(binding.dropDown.isVisible){
-              binding.dropDown.visibility = View.GONE
-          }else{
-              binding.dropDown.visibility = View.VISIBLE
-          }
+            binding.dropDown.visibleIf(!binding.dropDown.isVisible)
         }
 
         binding.doneBtn.setOnClickListener {
@@ -83,19 +82,16 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         }
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView(lgaList: ArrayList<String>){
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = CheckBoxAdapter(
-            {lga -> checkBoxChecked(lga) },
-            {lga -> checkBoxUnchecked(lga)}
+            {item -> checkBoxChecked(item)},
+            {item -> uncheckBoxChecked(item)}
         )
 
+        recyclerView.setItemViewCacheSize(lgaList.size)
         recyclerView.adapter = adapter
-    }
-
-    private fun displayLgas(lgaList: ArrayList<String>) {
-        initRecyclerView()
         adapter.setItems(lgaList)
     }
 
@@ -107,26 +103,35 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         responseData.observe(requireActivity()){
             if (!it.isNullOrEmpty()){
                 progressLoader.hide()
-//                displayLgas(it)
-                displayLgas(it.slice(0..10) as ArrayList<String>)
+                initRecyclerView(it)
             }
         }
     }
 
-    private fun checkBoxChecked(lga: String){
-        if(!prefAreas.contains(lga) && count < 3){
-//            addChip(lga)
+    private fun checkBoxChecked(lga: String) : Boolean{
+        return if(!prefAreas.contains(lga) && prefAreas.size < 3){
+            addChip(lga)
             prefAreas.add(lga)
-            count++
+            true
         }else if (prefAreas.contains(lga)){
             Snackbar.make(requireView(), "Already added $lga", Snackbar.LENGTH_SHORT).show()
+            false
         }else{
             Snackbar.make(requireView(), "Cannot select more than 3 areas", Snackbar.LENGTH_SHORT).show()
+            false
         }
     }
 
-    private fun checkBoxUnchecked(lga: String) {
-
+    private fun uncheckBoxChecked(text: String) {
+        for (i in 0 until chipGroup.childCount){
+            val chip = chipGroup[i] as Chip
+            println(chip.text)
+            if (chip.text == text){
+                chipGroup.removeViewAt(i)
+                prefAreas.removeAt(i)
+                break
+            }
+        }
     }
 
     private fun saveAreas(){
@@ -153,7 +158,7 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
                         }
                         is PrefAreasViewState.Failure -> {
                             progressLoader.hide()
-                            Snackbar.make(requireView(), "Unauthorized", Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_SHORT).show()
                         }
                         else -> {}
                     }
@@ -172,19 +177,19 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
         val chip = Chip(requireContext())
         chip.text = text
         chip.textSize = 12F
-        chip.closeIconSize = 24F
+//        chip.closeIconSize = 24F
         chip.chipCornerRadius = 8F
-        chip.isCloseIconVisible = true
-        chip.iconStartPadding = 0F
+//        chip.isCloseIconVisible = true
+//        chip.iconStartPadding = 0F
         chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        chip.closeIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chip_close)
-        chip.closeIconTint = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryDark)
+//        chip.closeIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chip_close)
+//        chip.closeIconTint = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryDark)
         chip.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.viewBackgroundColor)
 
         chip.setOnCloseIconClickListener {
-            chipGroup.removeView(it)
-            prefAreas.remove(text)
-            count--
+//            chipGroup.removeView(it)
+//            prefAreas.remove(text)
+            uncheckBoxChecked(text)
         }
 
         chipGroup.addView(chip)
