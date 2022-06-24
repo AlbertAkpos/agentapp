@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.features.task.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.extension.toObject
 import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,7 +44,22 @@ class TaskActivity : BaseActivity() {
 
     override val navigationId: Int = R.navigation.task_nav
 
-    override fun getNavId(): Int = R.id.taskNavHost
+    override fun getNavHostId(): Int = R.id.taskNavHost
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val extras = intent.extras
+        if (extras != null) {
+            for (key in extras.keySet()) {
+                Timber.d("Key: $key value: ${extras.get(key)}")
+            }
+        }
+
+    }
 
     companion object {
         const val BUNDLE_KEY = "BUNDLE_KEY"

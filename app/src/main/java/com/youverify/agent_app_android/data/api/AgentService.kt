@@ -28,7 +28,7 @@ interface AgentService {
     suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
 
     @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
-    suspend fun getAgentTasks(): TasksDto.AgentTasksResponse
+    suspend fun getAgentTasks(@Query("state") state: String? = null, @Query("status") status: String? = null): TasksDto.AgentTasksResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/start")
     suspend fun startTask(@Path("taskId") taskId: String): TasksDto.StartTaskResponse
@@ -47,5 +47,8 @@ interface AgentService {
 
     @PUT("https://agent.dev.svc.youverify.co/agents/me/fcmtoken")
     suspend fun submitFcmToken(@Body request: Dto.FcmToken): Dto.GenericResponse
+
+    @GET("https://address-task.dev.svc.youverify.co/v1/messages/status")
+    suspend fun getTaskStatuses() : TasksDto.TaskStatusesResponse
 
 }

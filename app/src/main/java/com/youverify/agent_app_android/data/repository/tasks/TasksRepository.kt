@@ -12,8 +12,8 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class TasksRepository @Inject constructor (private val source: IAgentSource, private val dispatcher: CoroutineDispatcher): ITaskRepository {
-    override suspend fun fetchAgentTasks(): TasksDomain.AgentTasksResponse = withContext(dispatcher) {
-        source.fetchAgentTasks().map()
+    override suspend fun fetchAgentTasks(state: String?, status: String?): TasksDomain.AgentTasksResponse = withContext(dispatcher) {
+        source.fetchAgentTasks(state, status).map()
     }
 
     override suspend fun startTask(taskId: String): TasksDomain.StartTaskResponse = withContext(dispatcher) {
@@ -38,5 +38,9 @@ class TasksRepository @Inject constructor (private val source: IAgentSource, pri
 
     override suspend fun uploadImages(files: List<MultipartBody.Part>): UploadDomain.UploadResponse = withContext(dispatcher) {
         source.doImageUpload(files).map()
+    }
+
+    override suspend fun getTaskStatuses(): TasksDomain.TasksStatusesResponse = withContext(dispatcher) {
+        source.getTaskStatuses().map()
     }
 }

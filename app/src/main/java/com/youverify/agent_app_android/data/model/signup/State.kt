@@ -8,4 +8,8 @@ data class State(
     val alias: String,
     @SerializedName("name")
     val name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}

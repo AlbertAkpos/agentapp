@@ -142,4 +142,11 @@ object TasksDto {
         @SerializedName("agentSignature") val agentSignature: String,
         @SerializedName("photos") val photos: List<Photos>
     )
+
+    data class TaskStatusesResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode", alternate = ["status_code"]) val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("data") val data: List<String>?
+    )
 }

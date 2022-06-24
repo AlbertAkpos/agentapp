@@ -104,7 +104,7 @@
         <entry key="app/src/main/res/layout/areas_drop_down_item.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/bottom_candidate_confirm.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/bottom_candidate_not_confirmed.xml" value="0.23596014492753623" />
-        <entry key="app/src/main/res/layout/bottom_filter_layout.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/bottom_filter_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_incident_type.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/bottom_select_building.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_select_color.xml" value="0.25" />

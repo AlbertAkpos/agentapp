@@ -153,9 +153,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         app:boxStrokeColor="@color/colorTextPrimary"
-        app:endIconDrawable="@drawable/ic_arrow_right"
         app:hintEnabled="false"
-        app:endIconMode="custom"
         app:layout_constraintTop_toBottomOf="@+id/select_city_layout"
         app:layout_constraintStart_toStartOf="@+id/select_city_layout"
         app:layout_constraintEnd_toEndOf="@+id/select_city_layout">
@@ -182,7 +180,6 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_state_layout" />
 
@@ -194,10 +191,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         app:boxStrokeColor="@color/colorTextPrimary"
-        app:endIconDrawable="@drawable/ic_arrow_right"
         app:hintEnabled="false"
-        android:visibility="gone"
-        app:endIconMode="custom"
         app:layout_constraintTop_toBottomOf="@+id/_filter_status_text"
         app:layout_constraintStart_toStartOf="@+id/select_state_layout"
         app:layout_constraintEnd_toEndOf="@+id/select_state_layout">
@@ -225,6 +219,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_status_layout" />
 
@@ -239,6 +234,7 @@
         app:endIconDrawable="@drawable/ic_arrow_right"
         app:hintEnabled="false"
         app:endIconMode="custom"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/_filter_type_text"
         app:layout_constraintStart_toStartOf="@+id/select_status_layout"
         app:layout_constraintEnd_toEndOf="@+id/select_status_layout">

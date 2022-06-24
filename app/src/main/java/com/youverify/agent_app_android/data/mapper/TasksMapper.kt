@@ -82,3 +82,10 @@ fun TasksDto.GenericResponse.map(): TasksDomain.GenericResponse {
         statusCode = statusCode
     )
 }
+
+fun TasksDto.TaskStatusesResponse.map(): TasksDomain.TasksStatusesResponse {
+    return TasksDomain.TasksStatusesResponse(
+        sucess = success == true,
+        message, data
+    )
+}

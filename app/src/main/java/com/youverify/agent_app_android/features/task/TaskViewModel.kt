@@ -62,7 +62,7 @@ class TaskViewModel @Inject constructor(
         currentTask = taskItem
     }
 
-    fun fetchAgentTasks(status: String) {
+    fun fetchAgentTasks(state: String? = null, status: String? = null) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
@@ -70,7 +70,7 @@ class TaskViewModel @Inject constructor(
         }
         viewModelScope.launch(coroutineExceptionHandler) {
             tasksState.postValue(ResultState.Loading())
-            val response = repository.fetchAgentTasks()
+            val response = repository.fetchAgentTasks(state, status)
             if (response.success) {
                 tasksState.postValue(ResultState.Success(response.taskItems))
             } else {
@@ -180,16 +180,30 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    val stateList = MutableLiveData<ResultState<List<State>>>()
+    val filterParamsState = MutableLiveData<SingleEvent<ResultState<Pair<List<State>, TasksDomain.TasksStatusesResponse>>>>()
 
-    fun getStates() {
+
+    fun getFilterParams() {
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             val messsage = ErrorHelper.handleException(throwable)
-            stateList.postValue(ResultState.Error(messsage))
+            filterParamsState.postValue(SingleEvent(ResultState.Error(messsage)))
         }
         viewModelScope.launch(exceptionHandler) {
-            val states = getAllStatesUseCase.execute() ?: emptyList()
-            stateList.postValue(ResultState.Success(states))
+            filterParamsState.postValue(SingleEvent(ResultState.Loading()))
+            val stateDeferred = async {
+                getAllStatesUseCase.execute() ?: emptyList()
+            }
+
+            val statusesDefferred = async {
+                repository.getTaskStatuses()
+            }
+            val states = stateDeferred.await()
+            val statuses = statusesDefferred.await()
+
+            if (statuses.data != null) {
+                filterParamsState.postValue(SingleEvent(ResultState.Success(Pair(states, statuses))))
+            } else  filterParamsState.postValue(SingleEvent(ResultState.Error(statuses.message ?: "An error occurred. Please try again")))
+
         }
     }
 

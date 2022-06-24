@@ -166,7 +166,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
         buildingTypeInput.setOnClickListener {
-            showMessagesBottomSheet(viewModel.typesOfBuildings) { selectedBuilding ->
+            showMessagesBottomSheet( "Select building type", viewModel.typesOfBuildings) { selectedBuilding ->
                 buildingTypeInput.setText(selectedBuilding)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
             }
@@ -186,7 +186,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         yesGeoTaginput.setOnClickListener { getCurrentLocation() }
 
         reasonInput.setOnClickListener {
-            showMessagesBottomSheet(viewModel.rejectionMessages) {
+            showMessagesBottomSheet( "Select reason", viewModel.rejectionMessages) {
                 binding.reasonInput.setText(it)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
             }
@@ -205,7 +205,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
 
         whoConfirmedAdressInput.setOnClickListener {
-            showMessagesBottomSheet(viewModel.candidateAddressConfirmedBy) { selected ->
+            showMessagesBottomSheet("Who confirmed address",  viewModel.candidateAddressConfirmedBy) { selected ->
                 whoConfirmedAdressInput.setText(selected)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
             }
@@ -770,10 +770,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
     }
 
-    private fun showMessagesBottomSheet(reasons: List<String>, callback: (reason: String) -> Unit) {
+    private fun showMessagesBottomSheet(title: String, reasons: List<String>, callback: (reason: String) -> Unit) {
         Timber.d("Messsage ==> $reasons")
         var dialog: MaterialDialog? = null
         val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
+        binding.selectReasonText.text = title
         binding.radioGroup.removeAllViews()
         for (item in reasons) {
             val radioButton = RadioButtonLayoutBinding.inflate(layoutInflater, binding.root, false)

@@ -9,8 +9,8 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class AgentDataSource @Inject constructor (private val service: AgentService, private val uploadService: UploadService): IAgentSource {
-    override suspend fun fetchAgentTasks(): TasksDto.AgentTasksResponse {
-        return service.getAgentTasks()
+    override suspend fun fetchAgentTasks(state: String?, status: String?): TasksDto.AgentTasksResponse {
+        return service.getAgentTasks(state, status)
     }
 
     override suspend fun startTask(taskId: String): TasksDto.StartTaskResponse {
@@ -39,5 +39,9 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
 
     override suspend fun submitFcmToken(request: Dto.FcmToken): Dto.GenericResponse {
         return service.submitFcmToken(request)
+    }
+
+    override suspend fun getTaskStatuses(): TasksDto.TaskStatusesResponse {
+        return service.getTaskStatuses()
     }
 }

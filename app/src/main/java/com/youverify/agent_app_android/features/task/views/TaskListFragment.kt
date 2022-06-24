@@ -53,7 +53,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchAgentTasks(AgentTaskStatus.PENDING)
+        viewModel.fetchAgentTasks()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,8 +69,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         binding.taskRecyclerView.adapter = adapter
 
-        binding.filterBtn.setOnClickListener { viewModel.getStates() }
+        binding.filterBtn.setOnClickListener { viewModel.getFilterParams() }
     }
+
 
     private fun setObservers() {
         viewModel.tasksState.observe(viewLifecycleOwner) {
@@ -91,8 +92,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
             }
         }
 
-        viewModel.stateList.observe(viewLifecycleOwner) {
-            val state = it ?: return@observe
+        viewModel.filterParamsState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
             when(state) {
                 is ResultState.Loading -> progressLoader.show("Fetching filter params...")
                 is ResultState.Error -> {
@@ -101,7 +102,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
-                    showBottomBar(state.data)
+                    showBottomBar(state.data.first, state.data.second.data ?: emptyList()) { selectedState, status ->
+                        viewModel.fetchAgentTasks(selectedState, status)
+                    }
                 }
             }
         }
@@ -153,14 +156,22 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun showBottomBar(state: List<State>) {
+    private fun showBottomBar(state: List<State>, statuses: List<String>, callback: (state: String?, status: String?) -> Unit) {
         var dialog: MaterialDialog? = null
         val binding = BottomFilterLayoutBinding.inflate(layoutInflater)
 
+        binding.selectStateInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, state))
+
+        binding.selectStatusInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, statuses))
 
         binding.buttonApply.setOnClickListener {
+            val stateSeleted = binding.selectStateInput.text.toString()
+            val status = binding.selectStatusInput.text.toString()
             dialog?.dismiss()
+            callback(stateSeleted, status)
         }
+
+
 
         dialog = context?.inflateBottomSheet(binding.root, cancelable = true)
 
