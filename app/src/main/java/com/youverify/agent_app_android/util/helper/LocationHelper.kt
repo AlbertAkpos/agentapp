@@ -35,9 +35,9 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
    private val settinsClient by lazy { LocationServices.getSettingsClient(this) }
 
     private val currentLocationRequest by lazy {  CurrentLocationRequest.Builder().apply {
-        setDurationMillis(1000)
+        setDurationMillis(3000)
         setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-        setMaxUpdateAgeMillis(3 * 1000)
+        setMaxUpdateAgeMillis(0) //0 means return only freshly derived location
     }.build() }
 
     private val locationRequest = LocationRequest.create()
@@ -116,6 +116,14 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
             Timber.d("Location result ==> $locationResult" )
         }
 
+        fun resetCallback() {
+            resultCallback = null
+        }
+
+    }
+
+    fun resetLocationCallback() {
+        locationCallback.resetCallback()
     }
 
     fun requestLocationUpdate(callback: (() -> Unit)? = null) {

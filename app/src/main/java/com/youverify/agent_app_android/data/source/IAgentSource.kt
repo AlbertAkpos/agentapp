@@ -1,6 +1,7 @@
 package com.youverify.agent_app_android.data.source
 
 import com.youverify.agent_app_android.data.model.common.Dto
+import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import okhttp3.MultipartBody

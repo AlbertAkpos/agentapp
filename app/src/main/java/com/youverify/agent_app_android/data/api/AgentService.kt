@@ -42,8 +42,8 @@ interface AgentService {
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/submit")
     suspend fun submitTask(@Body request: TasksDto.SubmitTaskRequest, @Path("taskId") taskId: String): TasksDto.GenericResponse
 
-    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/report")
-    suspend fun updateTask(@Path("taskId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
+    @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{addressId}")
+    suspend fun updateTask(@Path("addressId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
 
     @PUT("https://agent.dev.svc.youverify.co/agents/me/fcmtoken")
     suspend fun submitFcmToken(@Body request: Dto.FcmToken): Dto.GenericResponse

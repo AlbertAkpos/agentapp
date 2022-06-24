@@ -56,6 +56,7 @@ private fun getColorList(): List<TasksDomain.Color> {
     return listOf(
         TasksDomain.Color(colorId = null, name = "No color"),
         TasksDomain.Color(colorId = R.color.white, name = "White"),
+        TasksDomain.Color(colorId = R.color.black, name = "Black"),
         TasksDomain.Color(colorId = R.color.yellow, name = "Yellow"),
         TasksDomain.Color(colorId = R.color.teal_green, name = "Teal green"),
         TasksDomain.Color(colorId = R.color.lemon_green, name = "Lemon green"),

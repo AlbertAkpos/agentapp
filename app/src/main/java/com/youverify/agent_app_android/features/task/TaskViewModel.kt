@@ -124,6 +124,7 @@ class TaskViewModel @Inject constructor(
             if (startTask.success) {
                 startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
+                //Put the task in local db
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
             }
@@ -166,7 +167,7 @@ class TaskViewModel @Inject constructor(
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
-
+                taskSubmissionState.postValue(SingleEvent(ResultState.Loading()))
                 val response = repository.updateTask(taskId = taskItem.taskId, taskItem.task)
                 if (response.success) {
 

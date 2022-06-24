@@ -77,6 +77,11 @@ object TasksDto {
         @SerializedName("type") val type: String?
     )
 
+    data class UpdateTaskLocation(
+        @SerializedName("lon") val long: Double?,
+        @SerializedName("lat") val lat: Double?
+    )
+
     data class Candidate(
         @SerializedName("lastName") val lastName: String?,
         @SerializedName("lastModifiedAt") val lastModifiedAt: String?,
@@ -134,13 +139,20 @@ object TasksDto {
         @SerializedName("location") val location: Location?
     )
 
+    data class UpdateTaskPhoto(
+        @SerializedName("url") val url: String?,
+        @SerializedName("location") val location: UpdateTaskLocation?
+    )
+
     data class UpdateTaskRequest(
         @SerializedName("gatePresent") val gatePresent: Boolean,
         @SerializedName("buildingColour") val buildingColour: String,
         @SerializedName("buildingType") val buildingType: String,
         @SerializedName("confirmedBy") val confirmedBy: String,
+        @SerializedName("gateColour") val gateColor: String,
         @SerializedName("agentSignature") val agentSignature: String,
-        @SerializedName("photos") val photos: List<Photos>
+        @SerializedName("photos") val photos: List<UpdateTaskPhoto>,
+        @SerializedName("location") val location: Coordinates
     )
 
     data class TaskStatusesResponse(
