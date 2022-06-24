@@ -7,5 +7,7 @@ data class LoginResponseData(
     @SerializedName("agent")
     val agent: Agent,
     @SerializedName("token")
-    val token: String
+    val token: String,
+    @SerializedName("refreshToken")
+    val refreshToken: String
 )

@@ -157,9 +157,8 @@
     <string-array name="idType">
         <item>BVN</item>
         <item>NIN</item>
-        <item>PVC</item>
-        <item>Driver\'s License</item>
-        <item>I\'ntl Passport</item>
+        <item>DRIVERS_LICENSE</item>
+        <item>INTERNATIONAL_PASSPORT</item>
     </string-array>
 
     <string name="change_password">Change password</string>

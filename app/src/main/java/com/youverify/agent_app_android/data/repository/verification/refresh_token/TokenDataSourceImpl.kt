@@ -1,19 +1,18 @@
-package com.youverify.agent_app_android.data.repository.verification.id
+package com.youverify.agent_app_android.data.repository.verification.refresh_token
 
 import com.youverify.agent_app_android.core.functional.Failure
-import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
-import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenRequest
 import com.youverify.agent_app_android.util.handleErrorMessage
+import com.youverify.agent_app_android.core.functional.Result
 import javax.inject.Inject
 
-class VerifyIdRemoteDataSourceImpl @Inject constructor(
-    private val agentService: AgentService,
-) : VerifyIdRemoteDataSource {
-
-    override suspend fun verifyId(verifyIDRequest: VerifyIDRequest): Result<*> {
+class TokenDataSourceImpl @Inject constructor(
+    private val agentService: AgentService
+) : TokenDataSource {
+    override suspend fun refreshToken(tokenRequest: TokenRequest): Result<*> {
         return try {
-            val res = agentService.verifyId(verifyIDRequest)
+            val res = agentService.refreshToken(tokenRequest)
 
             when (res.isSuccessful) {
                 true -> {
@@ -26,7 +25,6 @@ class VerifyIdRemoteDataSourceImpl @Inject constructor(
                     Result.Failed(errorMessage)
                 }
             }
-
         } catch (e: Throwable) {
             Result.Failed(e.message)
         }

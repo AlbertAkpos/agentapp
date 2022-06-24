@@ -21,6 +21,7 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.extension.visibleIf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,15 +76,9 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
 
         idTypeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (!idTypeLayout.editText?.text.isNullOrEmpty()) {
-                    dateOfBirth.visibility = View.VISIBLE
-                    reference.visibility = View.VISIBLE
-                } else {
-                    dateOfBirth.visibility = View.GONE
-                    reference.visibility = View.GONE
-                }
+                dateOfBirth.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
+                reference.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -136,6 +131,8 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         when(idType){
             "NIN" -> {
                 if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "Sarah"
+                    verifyIdRequest.lastName = "Doe"
                     verifyIdRequest.type = idType
                     verifyIdRequest.dateOfBirth = dateOfBirth
                     verifyIdRequest.reference = reference
@@ -144,19 +141,36 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
             }
 
             "BVN" -> {
-
+                if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
             }
 
-            "PVC" -> {
-
+            "DRIVERS_LICENSE" -> {
+                if(reference == "AAA00000AA00" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
             }
 
-            "Driver's License" -> {
-
-            }
-
-            "Int'l Passport" -> {
-
+            "INTERNATIONAL_PASSPORT" -> {
+                if(reference == "A11111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
             }
         }
 
@@ -171,9 +185,6 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
 //            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
 //            verifyIdRequest.firstName = firstName
 //            verifyIdRequest.lastName = lastName
-            verifyIdRequest.firstName = "Sarah"
-            verifyIdRequest.lastName = "Doe"
-
             println("From SelectID: $verifyIdRequest")
 
             val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)

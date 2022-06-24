@@ -98,7 +98,7 @@ class  SelectAreasFragment : Fragment(R.layout.fragment_select_areas) {
     private fun fetchAreas(){
         state = AgentSharePreference(requireContext()).getString("STATE_OF_RESIDENCE")
 
-        progressLoader.show(message = "Fetching areas...")
+        progressLoader.show(message = "Fetching areas, please wait...")
         val responseData = selectAreaViewModel.getStateLgas(state.lowercase(Locale.getDefault()))
         responseData.observe(requireActivity()){
             if (!it.isNullOrEmpty()){

@@ -38,6 +38,21 @@ object Permissions {
     const val WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE"
 }
 
+object SharedPrefKeys{
+    const val TOKEN = "TOKEN"
+    const val REFRESH_TOKEN = "REFRESH_TOKEN"
+    const val FIRST_NAME = "FIRST_NAME"
+    const val LAST_NAME = "LAST_NAME"
+    const val EMAIL = "EMAIL"
+    const val PHONE = "PHONE"
+    const val ADDRESS = "ADDRESS"
+    const val STATE_OF_RESIDENCE = "STATE_OF_RESIDENCE"
+    const val IS_TRAINED = "IS_TRAINED"
+    const val IS_VERIFIED = "IS_VERIFIED"
+    const val PREF_AREAS = "PREF_AREAS"
+    const val AGENT_STATUS = "AGENT_STATUS"
+}
+
 private fun getBuildingTyepes() =
     arrayListOf(
         "Townhouse",

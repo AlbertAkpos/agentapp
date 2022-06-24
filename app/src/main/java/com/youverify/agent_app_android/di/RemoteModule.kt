@@ -4,6 +4,8 @@ import com.youverify.agent_app_android.BuildConfig
 import com.youverify.agent_app_android.data.api.*
 import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSource
 import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.profile.ChangePassDataSource
+import com.youverify.agent_app_android.data.repository.profile.ChangePassDataSourceImpl
 import com.youverify.agent_app_android.data.repository.resetpassword.ResetPassRemoteDataSource
 import com.youverify.agent_app_android.data.repository.resetpassword.ResetPassDataSourceImpl
 import com.youverify.agent_app_android.data.repository.signup.*
@@ -17,6 +19,8 @@ import com.youverify.agent_app_android.data.repository.verification.areas.PrefAr
 import com.youverify.agent_app_android.data.repository.verification.areas.PrefAreasRemoteDataSourceImpl
 import com.youverify.agent_app_android.data.repository.verification.id.VerifyIdRemoteDataSource
 import com.youverify.agent_app_android.data.repository.verification.id.VerifyIdRemoteDataSourceImpl
+import com.youverify.agent_app_android.data.repository.verification.refresh_token.TokenDataSource
+import com.youverify.agent_app_android.data.repository.verification.refresh_token.TokenDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -57,6 +61,12 @@ interface RemoteModule {
 
     @get:Binds
     val VerifyIdRemoteDataSourceImpl.verifyIdRemoteImpl: VerifyIdRemoteDataSource
+
+    @get:Binds
+    val TokenDataSourceImpl.tokenRemoteImpl: TokenDataSource
+
+    @get:Binds
+    val ChangePassDataSourceImpl.changePassRemoteImpl: ChangePassDataSource
 
     companion object {
         @[Provides Singleton]

@@ -2,6 +2,8 @@ package com.youverify.agent_app_android.di
 
 import com.youverify.agent_app_android.data.repository.*
 import com.youverify.agent_app_android.data.repository.tasks.TasksRepository
+import com.youverify.agent_app_android.data.repository.verification.refresh_token.TokenDataSource
+import com.youverify.agent_app_android.data.repository.verification.refresh_token.TokenDataSourceImpl
 import com.youverify.agent_app_android.data.source.AgentDataSource
 import com.youverify.agent_app_android.data.source.IAgentSource
 import com.youverify.agent_app_android.domain.repository.*
@@ -46,4 +48,10 @@ interface DataModule {
 
     @get:Binds
     val AgentDataSource.agentDataSource: IAgentSource
+
+    @get:Binds
+    val TokenRepositoryImpl.tokenRepository: TokenRepository
+
+    @get:Binds
+    val ChangePassRepositoryImpl.changePassRepository: ChangePassRepository
 }

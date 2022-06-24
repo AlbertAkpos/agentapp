@@ -138,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:hint="@string/enter_bvn"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"
