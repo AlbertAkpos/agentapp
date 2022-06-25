@@ -15,6 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
+/**
+ * The [TaskDetailsFragment] in this Activty needs the [TaskBundle] passed to this
+ * Activity. Pass in the bundle in with [BUNDLE_KEY] as a json string
+ */
 @AndroidEntryPoint
 class TaskActivity : BaseActivity() {
 

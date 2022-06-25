@@ -10,20 +10,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
 import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.features.task.TaskViewModel
 
 
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private lateinit var binding: FragmentNotificationsBinding
-    private lateinit var notificationItemsAdapter: NotificationsAdapter
+    private  val notificationItemsAdapter: NotificationsAdapter by lazy { NotificationsAdapter() }
     private lateinit var homeActivity : HomeActivity
+
+    private val viewModel by viewModels<TaskViewModel>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -37,11 +40,29 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             activity?.onBackPressed()
         }
 
-        setNotificationItems()
         return binding.root
     }
 
-    private fun setNotificationItems() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        setObservers()
+    }
+
+    private fun setupUI() {
+        setupList()
+
+    }
+
+    private fun setObservers() {
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            val tasks = it ?: return@observe
+            // Set adapter
+            notificationItemsAdapter.setData(tasks)
+        }
+    }
+
+    private fun setupList() {
         //dummy data
         val notificationItems = arrayListOf(
                 NotificationItem(
@@ -74,12 +95,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                 )
             )
 
-        //create the adapter and the swipeGesture
-        // we want to use the swipeGesture abstract class we created to
-        // determine what will happen when we swipe left or right.
-        notificationItemsAdapter = NotificationsAdapter()
-        notificationItemsAdapter.setData(notificationItems)
-
         val swipeGesture = object : SwipeGesture(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
@@ -94,13 +109,22 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                 }
             }
+
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                if (viewHolder is NotificationsItemViewHolder) {
+                    // Disables swipe on other views except for offline tasks
+                   if (viewHolder.binding.offlineView.visibility != View.VISIBLE) return 0
+                }
+                return super.getSwipeDirs(recyclerView, viewHolder)
+            }
         }
 
         val touchHelper = ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.adapter = notificationItemsAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        homeActivity.removeNavBar()
     }
 
 

@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.data.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 
@@ -13,4 +14,10 @@ interface TaskDao {
 
     @Delete
     suspend fun deleteTask(vararg task: TaskEntity.TaskItem)
+
+    @Query("select * from task")
+    fun getOfflineTasks(): LiveData<List<TaskEntity.TaskItem>>
+
+    @Query("delete from task where taskId =:taskId")
+    suspend fun deleteTask(taskId: String)
 }

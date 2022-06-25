@@ -1,10 +1,10 @@
 package com.youverify.agent_app_android.features.task
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.youverify.agent_app_android.core.functional.ResultState
+import com.youverify.agent_app_android.data.mapper.notification
+import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.signup.State
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
@@ -49,6 +49,16 @@ class TaskViewModel @Inject constructor(
     val doesCandidateLiveAtAddress = MutableLiveData<SingleEvent<Boolean>>()
 
     val uploadedImages = arrayListOf<String>()
+
+    val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
+        addSource(repository.fetchOfflineTasks()) { updateNotifications(it) }
+    }
+
+    private fun updateNotifications(offlineTasks: List<TasksDomain.AgentTask>) {
+        val currentNotifications = notifications.value ?: arrayListOf()
+        currentNotifications.addAll(offlineTasks.map { it.notification() })
+        notifications.postValue(currentNotifications)
+    }
 
 
     fun updateImagesPicked(file: File) {
@@ -125,6 +135,8 @@ class TaskViewModel @Inject constructor(
                 startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
                 //Put the task in local db
+                currentTask?.let { repository.addTask(currentTask!!) }
+
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
             }
@@ -174,6 +186,7 @@ class TaskViewModel @Inject constructor(
                     val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)
                     if (response.success) {
                         taskSubmissionState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
+                        repository.deleteTask(taskItem.taskId)
                     } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
 
                 } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))

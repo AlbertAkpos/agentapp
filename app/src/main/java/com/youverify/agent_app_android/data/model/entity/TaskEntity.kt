@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+import com.youverify.agent_app_android.util.helper.getDateInMilliSecond
+import com.youverify.agent_app_android.util.helper.getTimePassedSinceDate
 
 object TaskEntity {
     @Entity(tableName = "task")
@@ -35,17 +38,23 @@ object TaskEntity {
         val businessName: String,
         @ColumnInfo(name = "businessRegNumber")
         val businessRegNumber: String,
-        @ColumnInfo(name = "candidate")
+        @SerializedName("candidate")
         @Embedded
         val candidate: Candidate?,
-        @ColumnInfo(name = "lastModifiedAt")
+        @ColumnInfo(name = "TaskItem.lastModifiedAt")
         val lastModifiedAt: String
-    )
+    ) {
+        val address: String get() = "$buildingNumber, $street, $city, $state, $country"
+        val time get(): String {
+            val timeMillisecond =  getDateInMilliSecond(lastModifiedAt) ?: return ""
+            return getTimePassedSinceDate(timeMillisecond)
+        }
+    }
 
     data class Candidate(
         @ColumnInfo(name = "lastName")
         val lastName: String?,
-        @ColumnInfo(name = "lastModifiedAt")
+        @ColumnInfo(name = "Candidate.lastModifiedAt")
         val lastModifiedAt: String?,
         @ColumnInfo(name = "mobile")
         val mobile: String?,

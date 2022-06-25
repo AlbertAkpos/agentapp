@@ -1,5 +1,8 @@
 package com.youverify.agent_app_android.data.mapper
 
+import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import okhttp3.internal.concurrent.Task
@@ -87,5 +90,16 @@ fun TasksDto.TaskStatusesResponse.map(): TasksDomain.TasksStatusesResponse {
     return TasksDomain.TasksStatusesResponse(
         sucess = success == true,
         message, data
+    )
+}
+
+fun TasksDomain.AgentTask.notification(): NotificationItem {
+    return NotificationItem(
+        image = R.drawable.ic_offline_task,
+        accessText = "Offline task",
+        addressText = address,
+        nameText = candidate?.name ?: "",
+        timeText = time,
+        taskItem = this
     )
 }
