@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.mapper
 
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
@@ -24,8 +25,14 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
 
             val verificationType = when {
                 doc.verificationType?.equals("INDIVIDUAL", true) == true -> "Live photo"
-                doc.verificationType?.equals("GUARANTOR", true) == true -> "Guarantor address verification"
-                doc.verificationType?.equals("BUSINESS", true) == true -> "Business address verification"
+                doc.verificationType?.equals(
+                    "GUARANTOR",
+                    true
+                ) == true -> "Guarantor address verification"
+                doc.verificationType?.equals(
+                    "BUSINESS",
+                    true
+                ) == true -> "Business address verification"
                 else -> "Live photo"
             }
 
@@ -101,5 +108,11 @@ fun TasksDomain.AgentTask.notification(): NotificationItem {
         nameText = candidate?.name ?: "",
         timeText = time,
         taskItem = this
+    )
+}
+
+fun TasksDto.SubmitTaskRequest.entity(): TaskEntity.SubmitTaskRequest {
+    return TaskEntity.SubmitTaskRequest(
+        message = message
     )
 }

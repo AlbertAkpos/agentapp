@@ -52,8 +52,11 @@ class NotificationsItemViewHolder(val binding: NotificationItemBinding) : Recycl
     private val addressText = binding.addressText
     private val timeText = binding.timeText
     private val offlineView = binding.offlineView
+    var notificationItem: NotificationItem? = null
+        private set
 
-    fun bind(notificationItem: NotificationItem){
+    fun bind(notificationItem: NotificationItem) {
+        this.notificationItem = notificationItem
 
         when(notificationItem.accessText){
             ACCESS_GRANTED -> {

@@ -8,5 +8,6 @@ data class NotificationItem (
     val nameText: String,
     val addressText: String,
     val timeText: String,
-    val taskItem: TasksDomain.AgentTask? = null
+    val taskItem: TasksDomain.AgentTask? = null,
+    val submitTask: TasksDomain.SubmitTask? = null
 )

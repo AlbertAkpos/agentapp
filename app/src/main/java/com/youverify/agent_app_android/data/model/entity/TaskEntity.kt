@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.util.helper.getDateInMilliSecond
 import com.youverify.agent_app_android.util.helper.getTimePassedSinceDate
 
@@ -14,59 +15,101 @@ object TaskEntity {
         @PrimaryKey
         @ColumnInfo(name = "taskId")
         val taskId: String,
-        @ColumnInfo(name = "flatNumber")
-        val flatNumber: String,
-        @ColumnInfo(name = "verificationType")
-        val verificationType: String,
-        @ColumnInfo(name = "status")
-        val status: String?,
-        @ColumnInfo(name = "lga")
-        val lga: String,
-        @ColumnInfo(name = "country")
-        val country: String,
-        @ColumnInfo(name = "buildingNumber")
-        val buildingNumber: String,
-        @ColumnInfo(name = "landmark")
-        val landmark: String,
-        @ColumnInfo(name = "street")
-        val street: String,
-        @ColumnInfo(name = "city")
-        val city: String,
-        @ColumnInfo(name = "state")
-        val state: String,
-        @ColumnInfo(name = "businessName")
-        val businessName: String,
-        @ColumnInfo(name = "businessRegNumber")
-        val businessRegNumber: String,
-        @SerializedName("candidate")
-        @Embedded
-        val candidate: Candidate?,
-        @ColumnInfo(name = "TaskItem.lastModifiedAt")
-        val lastModifiedAt: String
-    ) {
-        val address: String get() = "$buildingNumber, $street, $city, $state, $country"
-        val time get(): String {
-            val timeMillisecond =  getDateInMilliSecond(lastModifiedAt) ?: return ""
-            return getTimePassedSinceDate(timeMillisecond)
-        }
-    }
+        @ColumnInfo(name = "agentTask")
+        val agentTask: AgentTask,
+        @ColumnInfo(name = "submitTask")
+        val submitTask: SubmitTask? = null,
+    )
 
     data class Candidate(
-        @ColumnInfo(name = "lastName")
+        @SerializedName("lastName")
         val lastName: String?,
-        @ColumnInfo(name = "Candidate.lastModifiedAt")
+        @SerializedName("Candidate.lastModifiedAt")
         val lastModifiedAt: String?,
-        @ColumnInfo(name = "mobile")
+        @SerializedName("mobile")
         val mobile: String?,
-        @ColumnInfo(name = "businessId")
+        @SerializedName("businessId")
         val businessId: String?,
-        @ColumnInfo(name = "photo")
+        @SerializedName("photo")
         val photo: String?,
-        @ColumnInfo(name = "firstName")
+        @SerializedName("firstName")
         val firstName: String?,
-        @ColumnInfo(name = "createdAt")
+        @SerializedName("createdAt")
         val createdAt: String?,
-        @ColumnInfo(name = "id")
+        @SerializedName("id")
         val id: String?
     )
+
+    data class UpdateTaskRequest(
+        @SerializedName("gatePresent") val gatePresent: Boolean,
+        @SerializedName("buildingColour") val buildingColour: String,
+        @SerializedName("buildingType") val buildingType: String,
+        @SerializedName("confirmedBy") val confirmedBy: String,
+        @SerializedName("gateColour") val gateColor: String,
+        @SerializedName("agentSignature") val agentSignature: String,
+        @SerializedName("photos") val photos: List<UpdateTaskPhoto>,
+        @SerializedName("location") val location: Coordinates
+    )
+
+    data class UpdateTaskPhoto(
+        @SerializedName("url") val url: String?,
+        @SerializedName("location") val location: Coordinates?
+    )
+
+    data class Coordinates(
+        @SerializedName("lon") val long: Double?,
+        @SerializedName("lat") val lat: Double?
+    )
+
+    data class AgentTask(
+        val taskId: String,
+        @SerializedName("flatNumber")
+        val flatNumber: String,
+        @SerializedName("verificationType")
+        val verificationType: String,
+        @SerializedName("status")
+        val status: String?,
+        @SerializedName("lga")
+        val lga: String,
+        @SerializedName("country")
+        val country: String,
+        @SerializedName("buildingNumber")
+        val buildingNumber: String,
+        @SerializedName("landmark")
+        val landmark: String,
+        @SerializedName("street")
+        val street: String,
+        @SerializedName("city")
+        val city: String,
+        @SerializedName("state")
+        val state: String,
+        @SerializedName("businessName")
+        val businessName: String,
+        @SerializedName("businessRegNumber")
+        val businessRegNumber: String,
+        @SerializedName("candidate")
+        val candidate: Candidate?,
+        @SerializedName("TaskItem.lastModifiedAt")
+        val lastModifiedAt: String,
+    ) {
+        val address: String get() = "$buildingNumber, $street, $city, $state, $country"
+        val time
+            get(): String {
+                val timeMillisecond = getDateInMilliSecond(lastModifiedAt) ?: return ""
+                return getTimePassedSinceDate(timeMillisecond)
+            }
+    }
+
+    data class SubmitTask(
+        @SerializedName("taskId") val taskId: String,
+        @SerializedName("UpdateTaskRequest") val task: UpdateTaskRequest,
+        @SerializedName("message") val message: String,
+        @SerializedName("subitTaskRequest") val subitTaskRequest: SubmitTaskRequest
+    )
+
+    data class SubmitTaskRequest(
+        @SerializedName("message") val message: String
+    )
+
+
 }

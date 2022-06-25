@@ -99,13 +99,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
                 when(direction){
-                    ItemTouchHelper.LEFT -> {
+                    ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT -> {
                         notificationItemsAdapter.uploadItem(viewHolder.absoluteAdapterPosition)
-                        showuploadSuccessDialog()
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        notificationItemsAdapter.uploadItem(viewHolder.absoluteAdapterPosition)
-                        showuploadSuccessDialog()
+                        val notificationItem = (viewHolder as? NotificationsItemViewHolder)?.notificationItem
+                        notificationItem?.let { onItemSwiped(it) }
                     }
                 }
             }
@@ -125,6 +122,13 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         val touchHelper = ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.adapter = notificationItemsAdapter
+    }
+
+    private fun onItemSwiped(notificationItem: NotificationItem) {
+        val task = notificationItem.submitTask
+        if (task != null) {
+            viewModel.submitTask(task)
+        }
     }
 
 
