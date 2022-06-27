@@ -274,7 +274,6 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
                     }
                     is VerifyIdViewState.Failure -> {
                         progressLoader.hide()
-//                        Snackbar.make(requireView(), it.errorMessage, Snackbar.LENGTH_LONG).show()
                         val action = UploadImageFragmentDirections.actionUploadPassportFragmentToVerificationFailedFragment(
                             FailMessage(it.errorMessage)
                         )

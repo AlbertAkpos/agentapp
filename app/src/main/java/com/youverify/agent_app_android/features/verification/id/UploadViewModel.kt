@@ -36,13 +36,13 @@ class UploadViewModel @Inject constructor(
         SingleEvent(it)
     }.asLiveData()
 
+    //function for uploading the user photo
     fun uploadImage(
         uploadRequest: MultipartBody.Part?,
         file: File? = null,
         imageType: Int = UploadViewState.Companion.UploadType.imageUpload
     ) {
-        //function for uploading the user photo
-//        fun uploadImage(uploadRequest: MultipartBody.Part?) {
+
         viewModelScope.launch {
             _uploadChannel.send(UploadViewState.Loading(R.string.upload))
 

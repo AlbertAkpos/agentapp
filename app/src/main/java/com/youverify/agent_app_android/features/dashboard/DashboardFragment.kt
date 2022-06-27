@@ -19,13 +19,15 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.SharedPrefKeys
+import timber.log.Timber
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var homeActivity: HomeActivity
 
     private var isVerified: Boolean = false
-    private var  isTrained: Boolean = false
+    private var isTrained: Boolean = false
     private var prefAreasIsChosen: Boolean = false
 
     override fun onCreateView(
@@ -54,9 +56,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     //verify that user has finished onboarding
     private fun verificationDone(): Boolean {
-        isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
-        isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
-        prefAreasIsChosen = AgentSharePreference(requireContext()).getBoolean("PREF_AREAS", false)
+        isVerified = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_VERIFIED)
+        isTrained = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_TRAINED)
+        prefAreasIsChosen = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.PREF_AREAS, false)
         return isTrained && isVerified && prefAreasIsChosen
     }
 
@@ -71,7 +73,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
-            Log.e("DateRangeText", materialCalendarPicker.headerText)
+            Timber.e(materialCalendarPicker.headerText)
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { }
         materialCalendarPicker.addOnCancelListener { }
@@ -147,19 +149,19 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val activationText = view.findViewById<TextView>(R.id.activate_text)
         dialogBuilder.setView(view)
 
-        if(isTrained){
+        if (isTrained) {
             trainingCheck.isChecked = true
-            trainingCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            trainingCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         if (isVerified) {
             verifyIdCheck.isChecked = true
-            verifyIdCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            verifyIdCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         if (prefAreasIsChosen) {
             prefAreasCheck.isChecked = true
-            prefAreasCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            prefAreasCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         trainingCheck.setOnClickListener {
@@ -182,9 +184,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         }
 
-        if(isTrained && isVerified && prefAreasIsChosen){
+        if (isTrained && isVerified && prefAreasIsChosen) {
             activationText.visibility = View.VISIBLE
-        }else{
+        } else {
             activationText.visibility = View.GONE
         }
 
@@ -196,7 +198,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onResume() {
         super.onResume()
         homeActivity.showNavBar()
-        val agentStatus = AgentSharePreference(requireContext()).getString("AGENT_STATUS")
+        val agentStatus = AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_STATUS)
         if ((verificationDone() && agentStatus == "IN_ACTIVE") || !verificationDone()) {
             showCompleteOnboardingDialog()
         }

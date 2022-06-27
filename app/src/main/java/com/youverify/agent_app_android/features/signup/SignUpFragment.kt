@@ -416,7 +416,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun getStates() {
-        progressLoader.show("Fetching states...")
+        progressLoader.show("Please wait...")
         val responseLiveData = signUpViewModel.getStates()
         responseLiveData.observe(requireActivity()) {
             if (it != null) {

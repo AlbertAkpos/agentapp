@@ -1,7 +1,6 @@
 package com.youverify.agent_app_android.features.settings
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.databinding.FragmentSettingsBinding
 import com.youverify.agent_app_android.features.OnBoardingActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.SharedPrefKeys
 
-class SettingsFragment : Fragment(){
+class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
 
@@ -40,7 +40,8 @@ class SettingsFragment : Fragment(){
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes") { _, _ ->
-                    AgentSharePreference(requireContext()).clear("TOKEN")
+                    AgentSharePreference(requireContext()).clear(SharedPrefKeys.TOKEN)
+                    AgentSharePreference(requireContext()).clear(SharedPrefKeys.AGENT_STATUS)
                     startActivity(Intent(requireContext(), OnBoardingActivity::class.java))
                     activity?.finish()
                 }
