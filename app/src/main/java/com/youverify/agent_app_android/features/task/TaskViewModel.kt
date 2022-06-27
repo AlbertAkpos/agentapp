@@ -15,7 +15,6 @@ import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import okhttp3.MultipartBody
 import java.io.File
 import javax.inject.Inject
 
@@ -180,7 +179,10 @@ class TaskViewModel @Inject constructor(
 
         viewModelScope.launch(coroutineExceptionHandler) {
                 taskSubmissionState.postValue(SingleEvent(ResultState.Loading()))
-                val response = repository.updateTask(taskId = taskItem.taskId, taskItem.task)
+            // Update the task on local
+            currentTask?.let { repository.updateTask(taskItem, currentTask!!) }
+            // Update on remote
+            val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
                 if (response.success) {
 
                     val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)

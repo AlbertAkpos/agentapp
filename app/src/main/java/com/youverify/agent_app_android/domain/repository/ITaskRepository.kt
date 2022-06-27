@@ -17,7 +17,7 @@ interface ITaskRepository {
     suspend fun uploadImages(files: List<MultipartBody.Part>): UploadDomain.UploadResponse
     suspend fun getTaskStatuses() : TasksDomain.TasksStatusesResponse
     suspend fun addTask(vararg taskItem: TasksDomain.AgentTask)
-    suspend fun updateTask(vararg taskItem:  TasksDomain.AgentTask)
+    suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask)
     suspend fun deleteTask(vararg taskItem:  TasksDomain.AgentTask)
     suspend fun deleteTask(taskId: String)
     fun fetchOfflineTasks(): LiveData<List<TasksDomain.AgentTask>>

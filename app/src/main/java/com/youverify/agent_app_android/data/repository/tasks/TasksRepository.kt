@@ -2,7 +2,9 @@ package com.youverify.agent_app_android.data.repository.tasks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.youverify.agent_app_android.data.mapper.entity
 import com.youverify.agent_app_android.data.mapper.map
+import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.entity.entity
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
@@ -50,17 +52,17 @@ class TasksRepository @Inject constructor (private val source: IAgentSource, pri
     }
 
     override suspend fun addTask(vararg taskItem:  TasksDomain.AgentTask) = withContext(dispatcher) {
-        val items = taskItem.map { it.entity() }
+        val items = taskItem.map { it.entity(null) }
         localSource.addTask(*items.toTypedArray())
     }
 
-    override suspend fun updateTask(vararg taskItem:  TasksDomain.AgentTask) = withContext(dispatcher) {
-        val items = taskItem.map { it.entity() }
-        localSource.updateTask(*items.toTypedArray())
+    override suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask) = withContext(dispatcher) {
+        val entity = taskDomain.entity(taskItem)
+        localSource.updateTask(entity)
     }
 
     override suspend fun deleteTask(vararg taskItem:  TasksDomain.AgentTask) = withContext(dispatcher) {
-        val items = taskItem.map { it.entity() }
+        val items = taskItem.map { it.entity(null) }
         localSource.deleteTask(*items.toTypedArray())
     }
 

@@ -186,7 +186,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         yesGeoTaginput.setOnClickListener { getCurrentLocation() }
 
         reasonInput.setOnClickListener {
-            showMessagesBottomSheet( "Select reason", viewModel.rejectionMessages) {
+            showMessagesBottomSheet( "Select reason", viewModel.submissionMessages) {
                 binding.reasonInput.setText(it)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
             }
@@ -240,6 +240,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         toolbar.setNavigationOnClickListener { navigateUp() }
 
         signBtn.setOnClickListener { showSignatureDialog() }
+
+        signBtnTwo.setOnClickListener { showSignatureDialog() }
 
     }
 
@@ -320,7 +322,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         val taskItem = TasksDomain.SubmitTask(
             taskId = viewModel.currentTask?.id.toString(),
-            task = updateTaskRequest,
+            updateTaskRequest = updateTaskRequest,
             message = confirmedBy,
             subitTaskRequest = submitRequest
         )
@@ -341,6 +343,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val nearestLandmark = binding.landmarkInput.text?.toString()
         val additionalInfo = binding.infoInput.text?.toString() ?: ""
         val latLng = viewModel.taskAnswers.latLong
+        val agentSignature = viewModel.taskAnswers.signatureLink
 
         if (noOfImages < 1) {
             context?.showDialog(
@@ -365,6 +368,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             return
         }
 
+        if (agentSignature.isEmpty()) {
+            context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
+            return
+        }
+
 
         val photos = viewModel.uploadedImages.map {
             val coordinates = TasksDto.UpdateTaskLocation(lat = latLng.lat, long = latLng.long)
@@ -374,7 +382,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val updateTaskRequest = TasksDto.UpdateTaskRequest(
             gatePresent = false,
             buildingColour = "Nil",
-            agentSignature = "Nil",
+            agentSignature = agentSignature,
             confirmedBy = "Nil",
             buildingType = "Nil",
             gateColor = "Nill",
@@ -387,7 +395,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         val taskItem = TasksDomain.SubmitTask(
             taskId = viewModel.currentTask?.id.toString(),
-            task = updateTaskRequest,
+            updateTaskRequest = updateTaskRequest,
             message = cantLocateAddressReason,
             subitTaskRequest = submitRequest
         )
@@ -663,6 +671,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 }
 
                 is ResultState.Success -> {
+                    progressLoader.hide()
                     showMessage(state.data)
                 }
 
@@ -774,6 +783,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             UploadViewState.Companion.UploadType.signatureUpload -> {
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(signatureLink = result?.location.toString())
                 binding.signature.loadImage(file.absolutePath)
+                binding.signatureTwo.loadImage(file.absolutePath)
             }
 
         }

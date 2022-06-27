@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="transaction_successful.json"
+        app:lottie_fileName="transaction_succesful.json"
         android:layout_marginBottom="40dp"
         app:lottie_loop="true" />
     <TextView

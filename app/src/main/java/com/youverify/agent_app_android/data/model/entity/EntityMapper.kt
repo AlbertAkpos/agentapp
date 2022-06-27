@@ -1,11 +1,12 @@
 package com.youverify.agent_app_android.data.model.entity
 
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.mapper.entity
 import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 
-fun TasksDomain.AgentTask.entity(): TaskEntity.TaskItem {
+fun TasksDomain.AgentTask.entity(submitTask: TasksDomain.SubmitTask?): TaskEntity.TaskItem {
     val candidate = TaskEntity.Candidate(
         lastName = candidate?.lastName,
         businessId = candidate?.businessId,
@@ -37,7 +38,8 @@ fun TasksDomain.AgentTask.entity(): TaskEntity.TaskItem {
 
     return TaskEntity.TaskItem(
         taskId = id,
-        agentTask = agentTask
+        agentTask = agentTask,
+        submitTask = submitTask?.entity()
     )
 }
 
@@ -92,7 +94,7 @@ fun TaskEntity.SubmitTask.domain(): TasksDomain.SubmitTask {
         message = message,
         subitTaskRequest = subitTaskRequest.dto(),
         taskId = taskId,
-        task = task.dto(),
+        updateTaskRequest = updateTaskRequest.dto(),
     )
 }
 

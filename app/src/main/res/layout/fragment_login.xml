@@ -92,7 +92,7 @@
                     android:backgroundTint="@color/signUpBorderColor"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:hint="@string/email"
-                    tools:text="bolaji@gmail.com"
+                    android:text="jane@youverify.co"
                     android:inputType="textEmailAddress"
                     android:textColorHint="@color/colorTextPrimary" />
 
@@ -133,7 +133,7 @@
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textPassword"
                     android:hint="@string/password"
-                    tools:text="12345678"
+                    android:text="Qwert1234!"
                     android:textColorHint="@color/colorTextPrimary"/>
 
             </com.google.android.material.textfield.TextInputLayout>

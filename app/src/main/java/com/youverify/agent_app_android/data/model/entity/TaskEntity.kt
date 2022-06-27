@@ -102,7 +102,7 @@ object TaskEntity {
 
     data class SubmitTask(
         @SerializedName("taskId") val taskId: String,
-        @SerializedName("UpdateTaskRequest") val task: UpdateTaskRequest,
+        @SerializedName("UpdateTaskRequest") val updateTaskRequest: UpdateTaskRequest,
         @SerializedName("message") val message: String,
         @SerializedName("subitTaskRequest") val subitTaskRequest: SubmitTaskRequest
     )

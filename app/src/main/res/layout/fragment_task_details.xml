@@ -491,6 +491,37 @@
                     app:indicatorColor="@color/colorDark"
                     android:layout_height="4dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/sm"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:inputType="none"
+                    android:text="Signature"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_13"
+                    android:textStyle="bold"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
+
+                <RelativeLayout
+                    android:id="@+id/signBtnTwo"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/xsm"
+                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/dotted_background"
+                    android:layout_height="70dp">
+
+                    <ImageView
+                        android:id="@+id/signatureTwo"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:clickable="false"
+                        android:src="@drawable/ic_signature" />
+                </RelativeLayout>
+
 
                 <TextView
                     android:id="@+id/landmark_text"
@@ -612,7 +643,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"
+                tools:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
