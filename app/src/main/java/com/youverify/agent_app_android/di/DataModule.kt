@@ -6,6 +6,8 @@ import com.youverify.agent_app_android.data.repository.verification.refresh_toke
 import com.youverify.agent_app_android.data.repository.verification.refresh_token.TokenDataSourceImpl
 import com.youverify.agent_app_android.data.source.AgentDataSource
 import com.youverify.agent_app_android.data.source.IAgentSource
+import com.youverify.agent_app_android.data.source.ILocalSource
+import com.youverify.agent_app_android.data.source.LocalSource
 import com.youverify.agent_app_android.domain.repository.*
 import dagger.Binds
 import dagger.Module
@@ -54,4 +56,7 @@ interface DataModule {
 
     @get:Binds
     val ChangePassRepositoryImpl.changePassRepository: ChangePassRepository
+
+    @get:Binds
+    val LocalSource.localSource: ILocalSource
 }

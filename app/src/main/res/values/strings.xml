@@ -211,7 +211,7 @@
     <string name="closest_landmark">Closest landmark</string>
     <string name="enter_landmark">Enter landmark</string>
     <string name="additional_information">Additional information</string>
-    <string name="select_reason">Select reason</string>
+    <string name="select_reason">Select option</string>
     <string name="address_does_not_exist">Address does not exist</string>
     <string name="incorrect_address">Incorrect address</string>
 

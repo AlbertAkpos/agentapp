@@ -2,14 +2,15 @@ package com.youverify.agent_app_android.data.source
 
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.api.UploadService
+import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class AgentDataSource @Inject constructor (private val service: AgentService, private val uploadService: UploadService): IAgentSource {
-    override suspend fun fetchAgentTasks(): TasksDto.AgentTasksResponse {
-        return service.getAgentTasks()
+    override suspend fun fetchAgentTasks(state: String?, status: String?): TasksDto.AgentTasksResponse {
+        return service.getAgentTasks(state, status)
     }
 
     override suspend fun startTask(taskId: String): TasksDto.StartTaskResponse {
@@ -34,5 +35,13 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
 
     override suspend fun doImageUpload(file: List<MultipartBody.Part>): UploadImageResponse {
         return uploadService.uploadImage(file)
+    }
+
+    override suspend fun submitFcmToken(request: Dto.FcmToken): Dto.GenericResponse {
+        return service.submitFcmToken(request)
+    }
+
+    override suspend fun getTaskStatuses(): TasksDto.TaskStatusesResponse {
+        return service.getTaskStatuses()
     }
 }

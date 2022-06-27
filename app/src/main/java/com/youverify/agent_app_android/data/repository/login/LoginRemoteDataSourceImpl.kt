@@ -3,6 +3,7 @@ package com.youverify.agent_app_android.data.repository.login
 import com.youverify.agent_app_android.core.functional.Failure
 import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
+import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.util.handleErrorMessage
 import javax.inject.Inject
@@ -29,5 +30,9 @@ class LoginRemoteDataSourceImpl @Inject constructor(
         }catch (e: Throwable){
             Result.Failed(e.message)
         }
+    }
+
+    override suspend fun submitFcmToken(request: Dto.FcmToken): Dto.GenericResponse {
+        return agentService.submitFcmToken(request)
     }
 }

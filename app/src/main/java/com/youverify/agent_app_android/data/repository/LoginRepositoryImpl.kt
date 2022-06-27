@@ -1,6 +1,9 @@
 package com.youverify.agent_app_android.data.repository
 
 import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.data.model.common.Domain
+import com.youverify.agent_app_android.data.model.common.Dto
+import com.youverify.agent_app_android.data.model.common.map
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponse
 import com.youverify.agent_app_android.data.repository.login.LoginRemoteDataSource
@@ -30,5 +33,7 @@ class LoginRepositoryImpl @Inject constructor(
         }
     }
 
-
+    override suspend fun submitFcmToken(request: Dto.FcmToken): Domain.GenericResponse {
+        return loginRemoteDataSource.submitFcmToken(request).map()
+    }
 }

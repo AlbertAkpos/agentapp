@@ -1,13 +1,15 @@
 package com.youverify.agent_app_android.features.task
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.youverify.agent_app_android.core.functional.ResultState
+import com.youverify.agent_app_android.data.mapper.notification
+import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.signup.State
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.domain.repository.ITaskRepository
+import com.youverify.agent_app_android.domain.usecase.GetStatesUseCase
 import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val repository: ITaskRepository,
-    private val supervisScope: CoroutineScope
+    private val supervisScope: CoroutineScope,
+    private val getAllStatesUseCase: GetStatesUseCase
 ) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
@@ -47,6 +50,16 @@ class TaskViewModel @Inject constructor(
 
     val uploadedImages = arrayListOf<String>()
 
+    val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
+        addSource(repository.fetchOfflineTasks()) { updateNotifications(it) }
+    }
+
+    private fun updateNotifications(offlineTasks: List<TasksDomain.AgentTask>) {
+        val currentNotifications = notifications.value ?: arrayListOf()
+        currentNotifications.addAll(offlineTasks.map { it.notification() })
+        notifications.postValue(currentNotifications)
+    }
+
 
     fun updateImagesPicked(file: File) {
         val values = imagesPicked.value ?: arrayListOf<File>()
@@ -59,7 +72,7 @@ class TaskViewModel @Inject constructor(
         currentTask = taskItem
     }
 
-    fun fetchAgentTasks(status: String) {
+    fun fetchAgentTasks(state: String? = null, status: String? = null) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
@@ -67,7 +80,7 @@ class TaskViewModel @Inject constructor(
         }
         viewModelScope.launch(coroutineExceptionHandler) {
             tasksState.postValue(ResultState.Loading())
-            val response = repository.fetchAgentTasks()
+            val response = repository.fetchAgentTasks(state, status)
             if (response.success) {
                 tasksState.postValue(ResultState.Success(response.taskItems))
             } else {
@@ -121,6 +134,9 @@ class TaskViewModel @Inject constructor(
             if (startTask.success) {
                 startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
+                //Put the task in local db
+                currentTask?.let { repository.addTask(currentTask!!) }
+
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
             }
@@ -163,16 +179,44 @@ class TaskViewModel @Inject constructor(
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
-
+                taskSubmissionState.postValue(SingleEvent(ResultState.Loading()))
                 val response = repository.updateTask(taskId = taskItem.taskId, taskItem.task)
                 if (response.success) {
 
                     val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)
                     if (response.success) {
                         taskSubmissionState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
+                        repository.deleteTask(taskItem.taskId)
                     } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
 
                 } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
+
+        }
+    }
+
+    val filterParamsState = MutableLiveData<SingleEvent<ResultState<Pair<List<State>, TasksDomain.TasksStatusesResponse>>>>()
+
+
+    fun getFilterParams() {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            val messsage = ErrorHelper.handleException(throwable)
+            filterParamsState.postValue(SingleEvent(ResultState.Error(messsage)))
+        }
+        viewModelScope.launch(exceptionHandler) {
+            filterParamsState.postValue(SingleEvent(ResultState.Loading()))
+            val stateDeferred = async {
+                getAllStatesUseCase.execute() ?: emptyList()
+            }
+
+            val statusesDefferred = async {
+                repository.getTaskStatuses()
+            }
+            val states = stateDeferred.await()
+            val statuses = statusesDefferred.await()
+
+            if (statuses.data != null) {
+                filterParamsState.postValue(SingleEvent(ResultState.Success(Pair(states, statuses))))
+            } else  filterParamsState.postValue(SingleEvent(ResultState.Error(statuses.message ?: "An error occurred. Please try again")))
 
         }
     }

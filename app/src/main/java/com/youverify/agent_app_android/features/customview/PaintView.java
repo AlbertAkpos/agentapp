@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 public class PaintView extends View {
     private Paint paint;
     private Canvas cacheCanvas;
@@ -18,6 +21,8 @@ public class PaintView extends View {
     private final WindowManager.LayoutParams p;
 
     static final int BACKGROUND_COLOR = Color.WHITE;
+
+   public MutableLiveData<Boolean> somethingDrawn = new MutableLiveData<Boolean>(false);
 
 
     public Bitmap getCachebBitmap() {
@@ -49,6 +54,7 @@ public class PaintView extends View {
             paint.setColor(Color.BLACK);
             cacheCanvas.drawColor(Color.WHITE);
             invalidate();
+            somethingDrawn.postValue(false);
         }
     }
 
@@ -116,6 +122,8 @@ public class PaintView extends View {
         }
 
         invalidate();
+        somethingDrawn.postValue(true);
+
 
         return true;
     }

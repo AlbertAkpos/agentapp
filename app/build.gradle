@@ -11,7 +11,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.agent_app_android"
+        applicationId "com.youverify.agent_app_android"
         minSdk 24
         targetSdk 32
         versionCode 1
@@ -141,5 +141,11 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.7.0"
 
     implementation "com.ncorti:slidetoact:0.9.0"
+    // Firebase
+    implementation 'com.google.firebase:firebase-crashlytics:18.0.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-config:21.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
 
 }

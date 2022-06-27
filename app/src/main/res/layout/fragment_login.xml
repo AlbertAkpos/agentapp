@@ -92,7 +92,7 @@
                     android:backgroundTint="@color/signUpBorderColor"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:hint="@string/email"
-                    android:text="bolaji@gmail.com"
+                    tools:text="bolaji@gmail.com"
                     android:inputType="textEmailAddress"
                     android:textColorHint="@color/colorTextPrimary" />
 
@@ -133,7 +133,7 @@
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="textPassword"
                     android:hint="@string/password"
-                    android:text="12345678"
+                    tools:text="12345678"
                     android:textColorHint="@color/colorTextPrimary"/>
 
             </com.google.android.material.textfield.TextInputLayout>

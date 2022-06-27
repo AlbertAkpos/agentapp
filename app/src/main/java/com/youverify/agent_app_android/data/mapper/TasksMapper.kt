@@ -1,5 +1,9 @@
 package com.youverify.agent_app_android.data.mapper
 
+import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.entity.TaskEntity
+import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import okhttp3.internal.concurrent.Task
@@ -21,8 +25,14 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
 
             val verificationType = when {
                 doc.verificationType?.equals("INDIVIDUAL", true) == true -> "Live photo"
-                doc.verificationType?.equals("GUARANTOR", true) == true -> "Guarantor address verification"
-                doc.verificationType?.equals("BUSINESS", true) == true -> "Business address verification"
+                doc.verificationType?.equals(
+                    "GUARANTOR",
+                    true
+                ) == true -> "Guarantor address verification"
+                doc.verificationType?.equals(
+                    "BUSINESS",
+                    true
+                ) == true -> "Business address verification"
                 else -> "Live photo"
             }
 
@@ -80,5 +90,29 @@ fun TasksDto.GenericResponse.map(): TasksDomain.GenericResponse {
         success = success == true,
         message = message,
         statusCode = statusCode
+    )
+}
+
+fun TasksDto.TaskStatusesResponse.map(): TasksDomain.TasksStatusesResponse {
+    return TasksDomain.TasksStatusesResponse(
+        sucess = success == true,
+        message, data
+    )
+}
+
+fun TasksDomain.AgentTask.notification(): NotificationItem {
+    return NotificationItem(
+        image = R.drawable.ic_offline_task,
+        accessText = "Offline task",
+        addressText = address,
+        nameText = candidate?.name ?: "",
+        timeText = time,
+        taskItem = this
+    )
+}
+
+fun TasksDto.SubmitTaskRequest.entity(): TaskEntity.SubmitTaskRequest {
+    return TaskEntity.SubmitTaskRequest(
+        message = message
     )
 }

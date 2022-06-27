@@ -6,8 +6,18 @@
     android:padding="@dimen/md"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in the open area"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textSize="22sp"
+        />
+
     <FrameLayout
         android:id="@+id/frameLayout"
+        android:layout_marginTop="@dimen/xsm"
         android:layout_width="match_parent"
         android:background="@drawable/curved_bg_task2"
         android:layout_height="350dp"/>

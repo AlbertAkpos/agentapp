@@ -2,14 +2,13 @@ package com.youverify.agent_app_android.features.common
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.youverify.agent_app_android.R
 
 abstract class BaseActivity: AppCompatActivity() {
     protected val navController by lazy {   val navHostFragment =
-        supportFragmentManager.findFragmentById(getNavId()) as NavHostFragment
+        supportFragmentManager.findFragmentById(getNavHostId()) as NavHostFragment
         navHostFragment.navController }
 
-    abstract fun getNavId(): Int
+    abstract fun getNavHostId(): Int
 
     open fun setStartDestination() {
         val graphInflater = navController.navInflater

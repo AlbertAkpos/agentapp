@@ -96,4 +96,9 @@ object TasksDomain {
         val subitTaskRequest: TasksDto.SubmitTaskRequest
     )
 
+    data class TasksStatusesResponse(
+        val sucess: Boolean,
+        val message: String?,
+        val data: List<String>?
+    )
 }
