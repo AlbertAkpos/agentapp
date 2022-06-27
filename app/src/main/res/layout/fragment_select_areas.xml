@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/padding_24"
     android:paddingEnd="@dimen/padding_24"
+    android:animateLayoutChanges="true"
     tools:context=".features.verification.areas.SelectAreasFragment">
 
 

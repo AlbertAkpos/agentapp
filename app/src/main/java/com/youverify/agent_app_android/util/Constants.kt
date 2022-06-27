@@ -50,6 +50,7 @@ object SharedPrefKeys {
     const val IS_VERIFIED = "IS_VERIFIED"
     const val PREF_AREAS = "PREF_AREAS"
     const val AGENT_STATUS = "AGENT_STATUS"
+    const val AGENT_ID = "AGENT_ID"
     const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
 }
 

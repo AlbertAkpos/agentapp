@@ -1,13 +1,9 @@
 package com.youverify.agent_app_android.data.repository
 
 import com.youverify.agent_app_android.core.functional.Result
-import com.youverify.agent_app_android.data.model.verification.areas.PrefAreaRequest
-import com.youverify.agent_app_android.data.model.verification.areas.PrefAreasResponse
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
-import com.youverify.agent_app_android.data.repository.verification.areas.PrefAreasRemoteDataSource
 import com.youverify.agent_app_android.data.repository.verification.id.VerifyIdRemoteDataSource
-import com.youverify.agent_app_android.domain.repository.PrefAreasRepository
 import com.youverify.agent_app_android.domain.repository.VerifyIdRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

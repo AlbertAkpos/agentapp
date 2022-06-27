@@ -16,6 +16,7 @@ import com.youverify.agent_app_android.data.model.verification.refresh_token.Tok
 import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -31,7 +32,7 @@ interface AgentService {
     suspend fun sendResetEmail(@Body email: Email): Response<ResetPassResponse>
 
     @POST("agents/verify")
-    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
+    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest): Response<VerifyIdResponse>
 
     @PUT("agents/me/areas")
     suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest):  Response<PrefAreasResponse>

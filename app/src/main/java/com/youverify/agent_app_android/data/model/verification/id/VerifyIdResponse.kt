@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VerifyIdResponse(
     @SerializedName("data")
-    val `data`: VerifyIdResponseData,
+    val data: VerifyIdResponseData,
     @SerializedName("statusCode")
     val statusCode: Int,
     @SerializedName("success")

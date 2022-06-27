@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.api.TokenInterceptor
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponseData
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
@@ -193,6 +194,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 SharedPrefKeys.IS_VERIFIED,
                 loginResponse.agent.isVerified
             )
+
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.AGENT_ID,
+                loginResponse.agent.id
+            )
             val prefAreas = loginResponse.agent.preferredAreas
             if (prefAreas.isEmpty()) {
                 AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, false)
@@ -200,6 +206,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, true)
             }
 
+//            TokenInterceptor(AgentSharePreference(requireContext())).setToken(loginResponse.refreshToken)
             println("Response: $loginResponse")
         }
     }
