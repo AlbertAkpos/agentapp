@@ -35,15 +35,20 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
    private val settinsClient by lazy { LocationServices.getSettingsClient(this) }
 
     private val currentLocationRequest by lazy {  CurrentLocationRequest.Builder().apply {
-        setDurationMillis(3000)
+        setDurationMillis( MIN_UPDATE)
         setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-        setMaxUpdateAgeMillis(0) //0 means return only freshly derived location
+        setMaxUpdateAgeMillis(MAX_UPDATE)
     }.build() }
 
     private val locationRequest = LocationRequest.create()
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-        .setFastestInterval(1000) // Every 1sec for location resource sharing
-        .setInterval(3 * 1000) // Get Location every 3 seconds
+        .setFastestInterval(MIN_UPDATE) // Every 1sec for location resource sharing
+        .setInterval(MAX_UPDATE) // Get Location every 3 seconds
+
+    private val lastLocationRequest by lazy { LastLocationRequest.Builder().apply {
+        setGranularity(Granularity.GRANULARITY_FINE)
+        setMaxUpdateAgeMillis(MAX_UPDATE)
+    }.build() }
 
     private val locationSettingsRequest by lazy {  LocationSettingsRequest.Builder()
         .addLocationRequest(locationRequest)
@@ -54,7 +59,7 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
     fun getCurrentLocation(callback: (latLng: TasksDomain.LatLong?, address: String?) -> Unit) {
 
         // Set a timer that waits for 5 seconds to get location update
-        val timer = object: CountDownTimer(5000, 1000) {
+        val timer = object: CountDownTimer(10 * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
 
             override fun onFinish() {
@@ -64,7 +69,7 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
         }
         timer.start()
 
-        fusedLocationProviderClient.getCurrentLocation( currentLocationRequest, null).addOnSuccessListener { location ->
+        fusedLocationProviderClient.getLastLocation(lastLocationRequest).addOnSuccessListener { location ->
 
             Timber.d("Location gotten: $location")
             if (location != null) {
@@ -103,7 +108,7 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
             super.onLocationResult(locationResult)
 
             // Wait for some time (5 sec) to get better location updates
-            val timer = object: CountDownTimer(5000, 1000) {
+            val timer = object: CountDownTimer(10 * 1000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
@@ -141,5 +146,7 @@ class LocationHelper @Inject constructor(@ApplicationContext private val context
 
     companion object {
         const val NOT_FOUND = "Location not found"
+        private const val MAX_UPDATE = 20_000L
+        private const val MIN_UPDATE = 10_000L
     }
 }

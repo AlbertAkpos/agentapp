@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "770195149182",
+    "project_id": "android-agent-mobile-app-v2",
+    "storage_bucket": "android-agent-mobile-app-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770195149182:android:3f5ea4896451868fb4232f",
+        "android_client_info": {
+          "package_name": "com.youverify.agent_app_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770195149182-nt8rtjfbfqjvdtf70sqkfgu18dre6o7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2TmjPsH7_cpTK1dfew4YvColLvTYu_3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770195149182-nt8rtjfbfqjvdtf70sqkfgu18dre6o7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

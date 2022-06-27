@@ -18,8 +18,9 @@ import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
 import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private lateinit var binding: FragmentNotificationsBinding

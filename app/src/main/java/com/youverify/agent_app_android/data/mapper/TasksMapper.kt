@@ -3,10 +3,8 @@ package com.youverify.agent_app_android.data.mapper
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
-import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
-import okhttp3.internal.concurrent.Task
 
 fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
     val listAgentTasks = arrayListOf<TasksDomain.AgentTask>()
@@ -116,3 +114,57 @@ fun TasksDto.SubmitTaskRequest.entity(): TaskEntity.SubmitTaskRequest {
         message = message
     )
 }
+
+fun TasksDomain.SubmitTask.entity(): TaskEntity.SubmitTask {
+    return TaskEntity.SubmitTask(
+        updateTaskRequest = updateTaskRequest.entity(),
+        taskId = taskId,
+        message = message,
+        subitTaskRequest = subitTaskRequest.entity()
+    )
+}
+
+
+
+
+fun TasksDto.UpdateTaskRequest.entity(): TaskEntity.UpdateTaskRequest {
+    return TaskEntity.UpdateTaskRequest(
+        agentSignature = agentSignature,
+        buildingColour = buildingColour,
+        buildingType = buildingType,
+        confirmedBy = confirmedBy,
+        gateColor = gateColor,
+        gatePresent = gatePresent,
+        location = location.entity(),
+        photos = photos.map { it.entity() }
+    )
+}
+
+fun TasksDto.Coordinates.entity(): TaskEntity.Coordinates {
+    return TaskEntity.Coordinates(
+        long, lat
+    )
+}
+
+fun TasksDto.UpdateTaskPhoto.entity(): TaskEntity.UpdateTaskPhoto {
+    return TaskEntity.UpdateTaskPhoto(
+        location = TaskEntity.Coordinates(location?.long, location?.lat),
+        url = url
+    )
+}
+
+
+fun TasksDomain.Candidate.entity(): TaskEntity.Candidate {
+    return TaskEntity.Candidate(
+        lastName = lastName,
+        firstName = firstName,
+        businessId = businessId,
+        createdAt = createdAt,
+        id = id,
+        lastModifiedAt = lastModifiedAt,
+        mobile = mobile,
+        photo = photo
+    )
+}
+
+

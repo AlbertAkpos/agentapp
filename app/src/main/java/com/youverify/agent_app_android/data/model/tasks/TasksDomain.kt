@@ -91,7 +91,7 @@ object TasksDomain {
 
     data class SubmitTask(
         val taskId: String,
-        val task: TasksDto.UpdateTaskRequest,
+        val updateTaskRequest: TasksDto.UpdateTaskRequest,
         val message: String,
         val subitTaskRequest: TasksDto.SubmitTaskRequest
     )
