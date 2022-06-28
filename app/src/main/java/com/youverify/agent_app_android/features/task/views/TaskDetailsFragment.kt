@@ -192,6 +192,12 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             }
         }
 
+        binding.cantFindCandidateInput.setOnClickListener {
+            showMessagesBottomSheet("Select reason", viewModel.submissionMessages) {
+                binding.cantFindCandidateInput.setText(it, false)
+            }
+        }
+
         candidateNotImageUploadBtn.setOnClickListener { onPickImageClicked() }
 
         candidateImageUploadBtn.setOnClickListener { onPickImageClicked() }
@@ -259,15 +265,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val confirmedBy = binding.whoConfirmedAdressInput.text?.toString() ?: ""
         val needsConfirmation = viewModel.taskAnswers.needsConfirmation
         val latLng = viewModel.taskAnswers.latLong
-        val gateColor = binding.gateColorInput.text?.toString()
-        val message =  if (binding.canLocateAddressContainer.visibility != View.VISIBLE) "Could not confirm that candidate lives there"
-        else "Candidate lives there"
+        var gateColor = "Nil"
+        val whyCantLocateAddress = binding.cantFindCandidateInput.text.toString()
+        var message = "Candidate lives there"
         if (hasGate) {
+            gateColor = binding.gateColorInput.text?.toString() ?: ""
             if (gateColor.isNullOrEmpty()) {
                 binding.gateColorLayout.error = "Please pick a gate color"
                 return
             }
-        }
+        } else gateColor = "Nil"
 
         if (buildingColor.isNullOrEmpty()) {
             binding.buildingColorLayout.error = "Please pick a building color"
@@ -283,6 +290,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         if (needsConfirmation == null) {
             context?.showDialog( title = "Incomplete form", message = "Please see question \"Does the candidate live here?\"")
             return
+        }
+
+        if (needsConfirmation) {
+            message = whyCantLocateAddress
+            if (message.isEmpty()) {
+                binding.cantFindCandidateLayout.error = "Please select an option"
+                binding.scrollView.smoothScrollTo(0, (binding.cantFindCandidateLayout.bottom - 10))
+            }
         }
 
         if (typeOfBuilding.isNullOrEmpty()) {
@@ -655,9 +670,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             Timber.d("Lives here $livesHere")
             binding.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
             binding.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
-            binding.whoConfirmedAddressLayout.visibleIf(livesHere)
-            binding.whoConfirmedAddress.visibleIf(livesHere)
-            viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = livesHere)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = !livesHere)
+            binding.cantFindCandidateLayout.visibleIf(!livesHere)
+            binding.cantFindCandidateLabel.visibleIf(!livesHere)
+
+            val livesHereText = if (livesHere) "Who confirmed that the candidate lives here?" else "Who confirmed that the candidate does'nt live here?"
+            binding.whoConfirmedAddress.text = livesHereText
+
+            // Clear input when there is a change
+            binding.cantFindCandidateInput.setText("")
         }
 
         viewModel.taskSubmissionState.observe(viewLifecycleOwner) {
