@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:orientation="vertical"
     tools:context=".features.task.views.TaskDetailsFragment">
 
     <Toolbar
@@ -44,8 +44,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:animateLayoutChanges="true"
+            android:orientation="vertical"
             android:padding="@dimen/padding_24">
 
             <TextView
@@ -115,15 +115,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_4"
+                android:drawablePadding="@dimen/margin_10"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:textColor="@color/createNewPassTextColor"
                 android:textSize="@dimen/text_13"
-                android:drawablePadding="@dimen/margin_10"
                 android:textStyle="normal"
+                app:drawableStartCompat="@drawable/ic_person"
                 app:layout_constraintStart_toEndOf="@+id/person_icon"
                 app:layout_constraintTop_toBottomOf="@id/divider2"
-                tools:text="Thomas Opeyemi"
-                app:drawableStartCompat="@drawable/ic_person" />
+                tools:text="Thomas Opeyemi" />
 
             <TextView
                 android:id="@+id/candidate_address"
@@ -173,9 +173,9 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="@dimen/margin_4"
                 android:contentDescription="@string/candidate_information"
-                tools:src="@drawable/candidate_photo"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+                app:layout_constraintTop_toBottomOf="@+id/divider3"
+                tools:src="@drawable/candidate_photo" />
 
             <TextView
                 android:id="@+id/label_description"
@@ -271,19 +271,19 @@
                     android:textStyle="normal"
                     app:cardCornerRadius="@dimen/height_70"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/colorPrimary"
-                    app:strokeWidth="5dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/no_btn"
                     app:layout_constraintEnd_toStartOf="@+id/no_btn"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="5dp">
 
                     <TextView
                         android:id="@+id/yesCanLocateAddress"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:clickable="false"
                         android:background="@color/white"
+                        android:clickable="false"
+                        android:gravity="center"
                         android:text="Yes" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -302,12 +302,12 @@
                     android:textStyle="normal"
                     app:cardCornerRadius="@dimen/height_70"
                     app:cardElevation="0dp"
-                    app:strokeWidth="5dp"
-                    app:strokeColor="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/yes_btn"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="5dp">
 
 
                     <TextView
@@ -346,8 +346,8 @@
                 android:id="@+id/cantLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/select_reason_text"
@@ -412,16 +412,16 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/xsm"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/xsm">
+
                     <ImageButton
                         android:id="@+id/candidateNotImageUploadBtn"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/dotted_background"
-                        android:src="@drawable/ic_add"
-                        />
+                        android:src="@drawable/ic_add" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/noImageList"
@@ -433,7 +433,6 @@
                         tools:listitem="@layout/image_item" />
 
                 </LinearLayout>
-
 
 
                 <TextView
@@ -470,10 +469,10 @@
                         android:id="@+id/noGeoTaginput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:hint="@string/my_location"
                         android:inputType="none"
-                        android:focusable="false"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -485,11 +484,11 @@
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progressIndicationNo"
                     android:layout_width="100dp"
-                    android:visibility="gone"
-                    android:indeterminate="true"
+                    android:layout_height="4dp"
                     android:layout_marginTop="@dimen/xsm"
-                    app:indicatorColor="@color/colorDark"
-                    android:layout_height="4dp"/>
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/colorDark" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -506,12 +505,12 @@
                 <RelativeLayout
                     android:id="@+id/signBtnTwo"
                     android:layout_width="match_parent"
+                    android:layout_height="70dp"
                     android:layout_marginTop="@dimen/xsm"
-                    android:elevation="0dp"
-                    app:cardElevation="0dp"
-                    android:orientation="horizontal"
                     android:background="@drawable/dotted_background"
-                    android:layout_height="70dp">
+                    android:elevation="0dp"
+                    android:orientation="horizontal"
+                    app:cardElevation="0dp">
 
                     <ImageView
                         android:id="@+id/signatureTwo"
@@ -619,32 +618,31 @@
                     android:layout_marginTop="@dimen/md"
                     android:layout_marginBottom="@dimen/margin_48"
                     android:backgroundTint="@color/colorPrimary"
+                    android:elevation="0dp"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:text="@string/submit"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+                    app:elevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_layout"
-                    tools:ignore="TextContrastCheck"
-                    app:elevation="0dp"
-                    android:elevation="0dp"
-                     />
+                    tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
 
 
-<!--            Can locate address flow -->
+            <!--            Can locate address flow -->
 
             <LinearLayout
                 android:id="@+id/canLocateAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:visibility="gone"
-                tools:visibility="gone"
-                android:orientation="vertical">
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -655,8 +653,7 @@
                     android:textSize="@dimen/text_13"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/choice_layout"
-                     />
+                    app:layout_constraintTop_toBottomOf="@+id/choice_layout" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/buildTypeLayout"
@@ -664,9 +661,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:hint="Select building type"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="Select building type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -676,9 +673,9 @@
                         android:id="@+id/buildingTypeInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:inputType="none"
-                        android:focusable="false"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -696,8 +693,7 @@
                     android:textSize="@dimen/text_13"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/choice_layout"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/choice_layout" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/buildingColorLayout"
@@ -705,9 +701,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:hint="Building color"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="Building color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -727,19 +723,19 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <TextView
-                        android:background="@drawable/curved_corners_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginTop="@dimen/sm"
-                        android:fontFamily="@font/br_sonoma_regular"
-                        android:inputType="none"
-                        android:padding="@dimen/padding_16"
-                        android:text="Does the building have a gate?"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/text_13"
-                        android:textStyle="bold"
-                        tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/sm"
+                    android:background="@drawable/curved_corners_bg"
+                    android:fontFamily="@font/br_sonoma_regular"
+                    android:inputType="none"
+                    android:padding="@dimen/padding_16"
+                    android:text="Does the building have a gate?"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_13"
+                    android:textStyle="bold"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -755,19 +751,19 @@
                         android:id="@+id/buildHasGate"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
+                        android:layout_marginStart="@dimen/md"
                         android:layout_marginEnd="@dimen/margin_40"
                         android:background="@drawable/round_button"
-                        android:layout_marginStart="@dimen/md"
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
-                        app:strokeColor="@color/colorPrimary"
-                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
                         app:cardElevation="0dp"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp">
 
                         <TextView
                             android:id="@+id/hasGate"
@@ -780,23 +776,22 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/buildDontHaveGate"
-                        android:layout_alignParentEnd="true"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/margin_40"
-                        android:background="@drawable/round_button"
                         android:layout_marginEnd="@dimen/md"
+                        android:background="@drawable/round_button"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
-                        app:strokeColor="@color/colorPrimary"
-                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
                         app:cardElevation="0dp"
-                       >
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp">
 
 
                         <TextView
@@ -816,10 +811,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:hint="Gate color"
                     android:visibility="gone"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="Gate color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -829,9 +824,9 @@
                         android:id="@+id/gateColorInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:inputType="none"
-                        android:focusable="false"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
@@ -840,10 +835,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:background="@drawable/curved_corners_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/sm"
+                    android:background="@drawable/curved_corners_bg"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
                     android:padding="@dimen/padding_16"
@@ -867,19 +862,19 @@
                         android:id="@+id/candidateLiveHereBtn"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
+                        android:layout_marginStart="@dimen/md"
                         android:layout_marginEnd="@dimen/margin_40"
                         android:background="@drawable/round_button"
-                        android:layout_marginStart="@dimen/md"
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
-                        app:strokeColor="@color/colorPrimary"
-                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
                         app:cardElevation="0dp"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp">
 
                         <TextView
                             android:id="@+id/candidateLiveHere"
@@ -892,23 +887,22 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/candidateDontLiveHereBtn"
-                        android:layout_alignParentEnd="true"
                         android:layout_width="@dimen/height_70"
                         android:layout_height="@dimen/height_70"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/margin_40"
-                        android:background="@drawable/round_button"
                         android:layout_marginEnd="@dimen/md"
+                        android:background="@drawable/round_button"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:textAllCaps="false"
-                        app:strokeColor="@color/colorPrimary"
-                        app:strokeWidth="5dp"
                         android:textColor="@color/colorTextPrimary"
                         android:textStyle="normal"
                         app:cardCornerRadius="@dimen/height_70"
                         app:cardElevation="0dp"
-                        >
+                        app:strokeColor="@color/colorPrimary"
+                        app:strokeWidth="5dp">
 
 
                         <TextView
@@ -922,16 +916,28 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/cantFindCandidateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_32"
+                    android:text="Candidate doesn't live here reason"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_13"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/choice_layout" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/cantFindCandidateLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:hint="--Select--"
                     android:visibility="gone"
                     app:boxStrokeColor="@color/colorTextPrimary"
                     app:endIconDrawable="@drawable/ic_arrow_down"
-                    android:hint="--Select--"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/info_text"
                     app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -950,24 +956,24 @@
                         tools:ignore="LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <LinearLayout
                     android:id="@+id/yesConfirmedTheCandidateLives"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/whoConfirmedAddress"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/sm"
-                        android:visibility="gone"
-                        tools:visibility="visible"
                         android:fontFamily="@font/br_sonoma_regular"
                         android:text="Who confirmed the candidate lives here?"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
-                        android:textStyle="bold"
-                        tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
+                        tools:ignore="KeyboardInaccessibleWidget,LabelFor"
+                        tools:visibility="visible" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/whoConfirmedAddressLayout"
@@ -975,10 +981,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:visibility="gone"
+                        android:hint="--Select--"
                         app:boxStrokeColor="@color/colorTextPrimary"
                         app:endIconDrawable="@drawable/ic_arrow_down"
-                        android:hint="--Select--"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/info_text"
                         app:layout_constraintTop_toBottomOf="@+id/info_text"
@@ -988,11 +993,11 @@
                             android:id="@+id/whoConfirmedAdressInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:focusable="false"
                             android:fontFamily="@font/br_sonoma_regular"
                             android:inputType="none"
                             android:paddingStart="@dimen/margin_16"
                             android:paddingEnd="@dimen/margin_16"
-                            android:focusable="false"
                             android:textColor="@color/colorTextPrimary"
                             android:textSize="@dimen/text_14"
                             tools:ignore="LabelFor" />
@@ -1007,18 +1012,17 @@
                         android:text="Signature"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
-                        android:textStyle="bold"
                         tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
                     <RelativeLayout
                         android:id="@+id/signBtn"
                         android:layout_width="match_parent"
+                        android:layout_height="70dp"
                         android:layout_marginTop="@dimen/xsm"
-                        android:elevation="0dp"
-                        app:cardElevation="0dp"
-                        android:orientation="horizontal"
                         android:background="@drawable/dotted_background"
-                        android:layout_height="70dp">
+                        android:elevation="0dp"
+                        android:orientation="horizontal"
+                        app:cardElevation="0dp">
 
                         <ImageView
                             android:id="@+id/signature"
@@ -1039,20 +1043,19 @@
                         android:text="Images"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
-                        android:textStyle="bold"
                         tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/xsm"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/xsm">
+
                         <ImageButton
                             android:id="@+id/candidateImageUploadBtn"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:background="@drawable/dotted_background"
-                            android:src="@drawable/ic_add"
-                            />
+                            android:src="@drawable/ic_add" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/yesImageList"
@@ -1064,6 +1067,7 @@
                             tools:listitem="@layout/image_item" />
 
                     </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1111,11 +1115,11 @@
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progressIndicationYes"
                         android:layout_width="100dp"
-                        android:indeterminate="true"
+                        android:layout_height="4dp"
                         android:layout_marginTop="@dimen/xsm"
+                        android:indeterminate="true"
                         android:visibility="gone"
-                        app:indicatorColor="@color/colorDark"
-                        android:layout_height="4dp"/>
+                        app:indicatorColor="@color/colorDark" />
 
 
                     <TextView
@@ -1125,7 +1129,6 @@
                         android:text="@string/closest_landmark"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
-                        android:textStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/geo_tag_layout"
                         tools:visibility="visible" />
@@ -1169,7 +1172,6 @@
                         android:text="@string/additional_information"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
-                        android:textStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/landmark_layout"
                         tools:visibility="visible" />
@@ -1208,26 +1210,16 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/yesSubmitBtn"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/sm"
                         android:layout_height="@dimen/btnSize"
+                        android:layout_marginTop="@dimen/sm"
                         android:text="@string/submit"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
 
-
-
-
-
-
-
-
-
             </LinearLayout>
-
 
 
         </LinearLayout>
