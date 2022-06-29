@@ -36,6 +36,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var emailLayout: TextInputLayout
     private lateinit var passLayout: TextInputLayout
 
+    @Inject lateinit var preference: AgentSharePreference
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -169,6 +171,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             if (loginResponse.agent.preferredAreas.isNotEmpty()) {
                 AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
             }
+
+            preference.agentId = loginResponse.agent.id
 
             println("Response: $loginResponse")
         }

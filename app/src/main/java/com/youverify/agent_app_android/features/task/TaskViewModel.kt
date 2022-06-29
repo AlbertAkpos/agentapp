@@ -29,6 +29,8 @@ class TaskViewModel @Inject constructor(
     var currentTask: TasksDomain.AgentTask ? = null
         private set
 
+    private  val taskId by lazy { repository.fetchAgentId() }
+
     val tasksState = MutableLiveData<ResultState<ArrayList<TasksDomain.AgentTask>>>()
 
     val canYouLocateTheAddressState = MutableLiveData<SingleEvent<Boolean>>()
@@ -50,7 +52,7 @@ class TaskViewModel @Inject constructor(
     val uploadedImages = arrayListOf<String>()
 
     val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
-        addSource(repository.fetchOfflineTasks()) { updateNotifications(it) }
+        addSource(repository.fetchOfflineTasks(taskId)) { updateNotifications(it) }
     }
 
     private fun updateNotifications(offlineTasks: List<TasksDomain.AgentTask>) {
@@ -134,7 +136,7 @@ class TaskViewModel @Inject constructor(
                 startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
                 //Put the task in local db
-                currentTask?.let { repository.addTask(currentTask!!) }
+                currentTask?.let { repository.addTask(currentTask!!, taskId) }
 
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
@@ -180,7 +182,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch(coroutineExceptionHandler) {
                 taskSubmissionState.postValue(SingleEvent(ResultState.Loading()))
             // Update the task on local
-            currentTask?.let { repository.updateTask(taskItem, currentTask!!) }
+            currentTask?.let { repository.updateTask(taskItem, currentTask!!, taskId) }
             // Update on remote
             val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
                 if (response.success) {

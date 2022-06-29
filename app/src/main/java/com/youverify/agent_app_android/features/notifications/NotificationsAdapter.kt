@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.features.notifications
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ private const val ACCESS_GRANTED = "Address access granted"
 private const val TASK_REJECTED = "Task rejected"
 private const val OFFLINE_TASK = "Offline task"
 private const val ACCESS_EXPIRED = "Access time expired"
-
+@SuppressLint("NotifyDataSetChanged")
 class NotificationsAdapter
     : RecyclerView.Adapter<NotificationsItemViewHolder>(){
 
@@ -42,6 +43,7 @@ class NotificationsAdapter
 
     fun setData(notifications: ArrayList<NotificationItem>){
        notificationItems = notifications
+        notifyDataSetChanged()
     }
 }
 

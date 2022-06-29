@@ -8,5 +8,5 @@ interface ILocalSource {
     suspend fun updateTask(vararg taskItem: TaskEntity.TaskItem)
     suspend fun deleteTask(vararg taskItem: TaskEntity.TaskItem)
     suspend fun deleteTask(taskId: String)
-    fun fetchOfflineTasks(): LiveData<List<TaskEntity.TaskItem>>
+    fun fetchOfflineTasks(agentId: String): LiveData<List<TaskEntity.TaskItem>>
 }

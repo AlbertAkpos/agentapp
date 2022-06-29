@@ -18,8 +18,8 @@ class LocalSource @Inject constructor (private val taskDao: TaskDao): ILocalSour
         taskDao.deleteTask(*taskItem)
     }
 
-    override fun fetchOfflineTasks(): LiveData<List<TaskEntity.TaskItem>> {
-       return taskDao.getOfflineTasks()
+    override fun fetchOfflineTasks(agentId: String): LiveData<List<TaskEntity.TaskItem>> {
+       return taskDao.getOfflineTasks(agentId)
     }
 
     override suspend fun deleteTask(taskId: String) {

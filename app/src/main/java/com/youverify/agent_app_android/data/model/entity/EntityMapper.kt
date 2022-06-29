@@ -6,7 +6,7 @@ import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 
-fun TasksDomain.AgentTask.entity(submitTask: TasksDomain.SubmitTask?): TaskEntity.TaskItem {
+fun TasksDomain.AgentTask.entity(submitTask: TasksDomain.SubmitTask?, agentId: String): TaskEntity.TaskItem {
     val candidate = TaskEntity.Candidate(
         lastName = candidate?.lastName,
         businessId = candidate?.businessId,
@@ -39,7 +39,8 @@ fun TasksDomain.AgentTask.entity(submitTask: TasksDomain.SubmitTask?): TaskEntit
     return TaskEntity.TaskItem(
         taskId = id,
         agentTask = agentTask,
-        submitTask = submitTask?.entity()
+        submitTask = submitTask?.entity(),
+        agentId = agentId
     )
 }
 
