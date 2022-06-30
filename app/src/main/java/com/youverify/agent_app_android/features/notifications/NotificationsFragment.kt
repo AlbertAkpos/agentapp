@@ -128,7 +128,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private fun onItemSwiped(notificationItem: NotificationItem) {
         val task = notificationItem.submitTask
         if (task != null) {
-            viewModel.submitTask(task)
+            viewModel.updateAndSubmitTask(task)
         }
     }
 

@@ -111,6 +111,8 @@
         <entry key="app/src/main/res/layout/bottom_select_period_layout.xml" value="0.25956315852767986" />
         <entry key="app/src/main/res/layout/bottom_select_reason.xml" value="0.25" />
         <entry key="app/src/main/res/layout/building_types_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/can_access_building_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/cant_access_building_layout.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/choice_drop_down.xml" value="0.23541666666666666" />
         <entry key="app/src/main/res/layout/complete_onboarding_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/custom_toast.xml" value="0.2947916666666667" />

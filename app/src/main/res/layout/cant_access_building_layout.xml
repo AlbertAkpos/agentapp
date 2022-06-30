@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/sm"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="The business has been notified. You can proceed with other tasks while you wait for an update on this task." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/notifyBusinessBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btnSize"
+        android:layout_marginTop="@dimen/sm"
+        android:text="Notify Business"
+        android:textAllCaps="false"
+        android:elevation="0dp"
+        app:elevation="0dp"
+        android:stateListAnimator="@null"
+        tools:visibility="visible"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/continueBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btnSize"
+        android:layout_marginTop="@dimen/sm"
+        android:elevation="0dp"
+        app:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:backgroundTint="@color/greyish_blue"
+        android:text="Continue to task page"
+        android:textAllCaps="false"
+        android:textColor="@color/colorDark"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</LinearLayout>

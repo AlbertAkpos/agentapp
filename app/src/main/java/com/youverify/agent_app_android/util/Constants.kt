@@ -3,6 +3,7 @@ package com.youverify.agent_app_android.util
 import android.Manifest
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.util.Constants.NO_ONE
 
 object Constants {
     const val TAG = "cameraX"
@@ -14,7 +15,10 @@ object Constants {
     const val REQUIRED_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
     val buildTypes = getBuildingTyepes()
     val colors = getColorList()
-    val whoConfirmedCandidateAddressList = candidateAddressConfirmebBy()
+    val whoConfirmedCandidateAddressList = positiveWhoConfirmedCandidateLivesHere()
+    val whoConfirmedCandidateAddressNegative = negativeWhoConfirmedCandidateLiveHere()
+    val cantLocateAddressReasons = cantLocateAddressReasons()
+    const val NO_ONE = "No one"
 }
 
 
@@ -79,14 +83,13 @@ private fun getColorList(): List<TasksDomain.Color> {
     )
 }
 
-private fun candidateAddressConfirmebBy(): List<String> = arrayListOf(
-    "Family members",
-    "Gate keeper",
-    "Neighbour",
-    "Passer's by",
-    "Near-by-retailer",
-    "Landlord/Landlady",
-    "Security personnel",
-    "Maid",
-    "Self"
+private fun positiveWhoConfirmedCandidateLivesHere(): List<String> = arrayListOf(
+    "Family Members", "Gatekeeper", "Neighbor", "Passer-by", "Near-by-Retailer", "Maid"," Landlord/Landlady", "Security Personnel", "Self"
+
 )
+
+private fun negativeWhoConfirmedCandidateLiveHere(): List<String> = arrayListOf(
+    "Gatekeeper", "Nearby Retailer", "Landlord", "Security Personnel", "Neighbor", NO_ONE
+)
+
+private fun cantLocateAddressReasons() = arrayListOf("Address does not exist", "Incorrect address")
