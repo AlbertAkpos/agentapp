@@ -19,6 +19,8 @@ object TaskEntity {
         val agentTask: AgentTask,
         @ColumnInfo(name = "submitTask")
         val submitTask: SubmitTask? = null,
+        @ColumnInfo(name = "agentId")
+        val agentId: String
     )
 
     data class Candidate(

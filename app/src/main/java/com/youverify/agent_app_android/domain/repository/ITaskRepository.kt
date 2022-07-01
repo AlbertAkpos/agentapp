@@ -16,10 +16,11 @@ interface ITaskRepository {
     suspend fun updateTask(taskId: String, request: TasksDto.UpdateTaskRequest): TasksDomain.GenericResponse
     suspend fun uploadImages(files: List<MultipartBody.Part>): UploadDomain.UploadResponse
     suspend fun getTaskStatuses() : TasksDomain.TasksStatusesResponse
-    suspend fun addTask(vararg taskItem: TasksDomain.AgentTask)
-    suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask)
-    suspend fun deleteTask(vararg taskItem:  TasksDomain.AgentTask)
+    suspend fun addTask(taskItem: TasksDomain.AgentTask, agentId: String)
+    suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String)
+    suspend fun deleteTask(taskItem:  TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskId: String)
-    fun fetchOfflineTasks(): LiveData<List<TasksDomain.AgentTask>>
+    fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>>
+    fun fetchAgentId(): String
 
 }

@@ -13,12 +13,19 @@ import com.youverify.agent_app_android.data.model.verification.upload.UploadDoma
 import com.youverify.agent_app_android.data.source.IAgentSource
 import com.youverify.agent_app_android.data.source.ILocalSource
 import com.youverify.agent_app_android.domain.repository.ITaskRepository
+import com.youverify.agent_app_android.util.AgentSharePreference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import timber.log.Timber
 import javax.inject.Inject
 
-class TasksRepository @Inject constructor (private val source: IAgentSource, private val dispatcher: CoroutineDispatcher, private val localSource: ILocalSource): ITaskRepository {
+class TasksRepository @Inject constructor(
+    private val source: IAgentSource,
+    private val dispatcher: CoroutineDispatcher,
+    private val localSource: ILocalSource,
+    private val preference: AgentSharePreference
+) : ITaskRepository {
     override suspend fun fetchAgentTasks(state: String?, status: String?): TasksDomain.AgentTasksResponse = withContext(dispatcher) {
         source.fetchAgentTasks(state, status).map()
     }
@@ -51,26 +58,32 @@ class TasksRepository @Inject constructor (private val source: IAgentSource, pri
         source.getTaskStatuses().map()
     }
 
-    override suspend fun addTask(vararg taskItem:  TasksDomain.AgentTask) = withContext(dispatcher) {
-        val items = taskItem.map { it.entity(null) }
-        localSource.addTask(*items.toTypedArray())
+    override suspend fun addTask(taskItem:  TasksDomain.AgentTask, agentId: String) = withContext(dispatcher) {
+        val items = taskItem.entity(null, agentId)
+        localSource.addTask(items)
     }
 
-    override suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask) = withContext(dispatcher) {
-        val entity = taskDomain.entity(taskItem)
+    override suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String) = withContext(dispatcher) {
+        val entity = taskDomain.entity(taskItem, agentId)
+        Timber.d("Undating task with id: ${entity.taskId}")
         localSource.updateTask(entity)
     }
 
-    override suspend fun deleteTask(vararg taskItem:  TasksDomain.AgentTask) = withContext(dispatcher) {
-        val items = taskItem.map { it.entity(null) }
-        localSource.deleteTask(*items.toTypedArray())
+    override suspend fun deleteTask(taskItem:  TasksDomain.AgentTask, agentId: String) = withContext(dispatcher) {
+        val items = taskItem.entity(null, agentId)
+        localSource.deleteTask(items)
     }
 
     override suspend fun deleteTask(taskId: String) {
+        Timber.d("Delete task after successful submission. Task id: $taskId")
         localSource.deleteTask(taskId)
     }
 
-    override fun fetchOfflineTasks(): LiveData<List<TasksDomain.AgentTask>> {
-        return localSource.fetchOfflineTasks().map { it.map { item -> item.domain() } }
+    override fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>> {
+        return localSource.fetchOfflineTasks(agentId).map { it.map { item -> item.domain() } }
+    }
+
+    override fun fetchAgentId(): String {
+        return preference.agentId
     }
 }

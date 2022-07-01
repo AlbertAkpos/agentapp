@@ -15,8 +15,8 @@ interface TaskDao {
     @Delete
     suspend fun deleteTask(vararg task: TaskEntity.TaskItem)
 
-    @Query("select * from task")
-    fun getOfflineTasks(): LiveData<List<TaskEntity.TaskItem>>
+    @Query("select * from task where agentId=:agentId")
+    fun getOfflineTasks(agentId: String): LiveData<List<TaskEntity.TaskItem>>
 
     @Query("delete from task where taskId =:taskId")
     suspend fun deleteTask(taskId: String)

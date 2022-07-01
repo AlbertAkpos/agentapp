@@ -38,6 +38,7 @@ import com.youverify.agent_app_android.features.customview.PaintView
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewState
+import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.Permissions
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.SingleEvent
@@ -152,7 +153,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private fun setupUI() = with(binding) {
         noImageList.adapter = imagesAdapter
-        yesImageList.adapter = imagesAdapter
+        canAccessBuildingContainer.yesImageList.adapter = imagesAdapter
     }
 
     private fun setupClicks() = with(binding) {
@@ -165,42 +166,37 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
-        buildingTypeInput.setOnClickListener {
+        canAccessBuildingContainer.buildingTypeInput.setOnClickListener {
             showMessagesBottomSheet( "Select building type", viewModel.typesOfBuildings) { selectedBuilding ->
-                buildingTypeInput.setText(selectedBuilding)
+                canAccessBuildingContainer.buildingTypeInput.setText(selectedBuilding)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
             }
         }
 
-        buildingColorInput.setOnClickListener { showColorButtomSheet {
-            binding.buildingColorInput.setText(it.name)
+        canAccessBuildingContainer.buildingColorInput.setOnClickListener { showColorButtomSheet {
+            binding.canAccessBuildingContainer.buildingColorInput.setText(it.name)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingColor = it.name)
         }}
 
-        gateColorInput.setOnClickListener { showColorButtomSheet {
-            binding.gateColorInput.setText(it.name)
+        canAccessBuildingContainer.gateColorInput.setOnClickListener { showColorButtomSheet {
+            binding.canAccessBuildingContainer.gateColorInput.setText(it.name)
         } }
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
 
-        yesGeoTaginput.setOnClickListener { getCurrentLocation() }
+        canAccessBuildingContainer.yesGeoTaginput.setOnClickListener { getCurrentLocation() }
 
-        reasonInput.setOnClickListener {
-            showMessagesBottomSheet( "Select reason", viewModel.submissionMessages) {
-                binding.reasonInput.setText(it)
+        cantLocateAddressReasonInput.setOnClickListener {
+            showMessagesBottomSheet( "Select reason", viewModel.cantLocateAddressReasons) {
+                binding.cantLocateAddressReasonInput.setText(it)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
             }
         }
 
-        binding.cantFindCandidateInput.setOnClickListener {
-            showMessagesBottomSheet("Select reason", viewModel.submissionMessages) {
-                binding.cantFindCandidateInput.setText(it, false)
-            }
-        }
 
         candidateNotImageUploadBtn.setOnClickListener { onPickImageClicked() }
 
-        candidateImageUploadBtn.setOnClickListener { onPickImageClicked() }
+        canAccessBuildingContainer.candidateImageUploadBtn.setOnClickListener { onPickImageClicked() }
 
         binding.accessLocBtn.setOnClickListener {
             binding.layoutAccessLoc.endIconDrawable =
@@ -210,15 +206,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
 
-        whoConfirmedAdressInput.setOnClickListener {
+        canAccessBuildingContainer.whoConfirmedAdressInput.setOnClickListener {
             showMessagesBottomSheet("Who confirmed address",  viewModel.candidateAddressConfirmedBy) { selected ->
-                whoConfirmedAdressInput.setText(selected)
+                canAccessBuildingContainer.whoConfirmedAdressInput.setText(selected)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
             }
         }
 
-        buildHasGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(true)) }
-        buildDontHaveGate.setOnClickListener {
+        canAccessBuildingContainer.buildHasGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(true)) }
+        canAccessBuildingContainer.buildDontHaveGate.setOnClickListener {
             viewModel.doesBuildingHaveGate.postValue(
                 SingleEvent(
                     false
@@ -226,18 +222,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             )
         }
 
-        yesSubmitBtn.setOnClickListener {
+        canAccessBuildingContainer.yesSubmitBtn.setOnClickListener {
             validateYesSubmission { taskItem ->
-                viewModel.submitTask(taskItem)
+                viewModel.updateAndSubmitTask(taskItem)
             }
         }
 
-        candidateLiveHereBtn.setOnClickListener {
+        canAccessBuildingContainer.candidateLiveHereBtn.setOnClickListener {
             viewModel.doesCandidateLiveAtAddress.postValue(
                 SingleEvent(true)
             )
         }
-        candidateDontLiveHereBtn.setOnClickListener {
+        canAccessBuildingContainer.candidateDontLiveHereBtn.setOnClickListener {
             viewModel.doesCandidateLiveAtAddress.postValue(
                 SingleEvent(false)
             )
@@ -245,9 +241,17 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         toolbar.setNavigationOnClickListener { navigateUp() }
 
-        signBtn.setOnClickListener { showSignatureDialog() }
+        canAccessBuildingContainer.signBtn.setOnClickListener { showSignatureDialog() }
 
         signBtnTwo.setOnClickListener { showSignatureDialog() }
+
+        yesCanAccessBuildingBtn.setOnClickListener { viewModel.canAccessBuildingState.postValue(SingleEvent(true)) }
+
+        noCantAccessBuildingBtn.setOnClickListener { viewModel.canAccessBuildingState.postValue(
+            SingleEvent(false)
+        ) }
+
+        cantAccessBuildingContainer.notifyBusinessBtn.setOnClickListener { onNotifyBusinessClicked() }
 
     }
 
@@ -257,28 +261,31 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         viewModel.imagesPicked.value = arrayListOf<File>()
     }
 
+    private fun onNotifyBusinessClicked() {
+            viewModel.submitTask(TasksDto.SubmitTaskRequest(message = "Address not accessible"), viewModel.currentTask?.id.toString())
+    }
+
     private fun validateYesSubmission(callback: (taskItem: TasksDomain.SubmitTask) -> Unit) {
-        val typeOfBuilding = binding.buildingTypeInput.text?.toString()
-        val buildingColor = binding.buildingColorInput.text?.toString()
+        val typeOfBuilding = binding.canAccessBuildingContainer.buildingTypeInput.text?.toString()
+        val buildingColor = binding.canAccessBuildingContainer.buildingColorInput.text?.toString()
         val hasGate = viewModel.taskAnswers.hasGate
         val agentSignature = viewModel.taskAnswers.signatureLink
-        val confirmedBy = binding.whoConfirmedAdressInput.text?.toString() ?: ""
+        val confirmedBy = binding.canAccessBuildingContainer.whoConfirmedAdressInput.text?.toString() ?: ""
         val needsConfirmation = viewModel.taskAnswers.needsConfirmation
         val latLng = viewModel.taskAnswers.latLong
         var gateColor = "Nil"
-        val whyCantLocateAddress = binding.cantFindCandidateInput.text.toString()
         var message = "Candidate lives there"
         if (hasGate) {
-            gateColor = binding.gateColorInput.text?.toString() ?: ""
+            gateColor = binding.canAccessBuildingContainer.gateColorInput.text?.toString() ?: ""
             if (gateColor.isNullOrEmpty()) {
-                binding.gateColorLayout.error = "Please pick a gate color"
+                binding.canAccessBuildingContainer.gateColorLayout.error = "Please pick a gate color"
                 return
             }
         } else gateColor = "Nil"
 
         if (buildingColor.isNullOrEmpty()) {
-            binding.buildingColorLayout.error = "Please pick a building color"
-            binding.scrollView.smoothScrollTo(0, binding.buildingColorInput.bottom)
+            binding.canAccessBuildingContainer.buildingColorLayout.error = "Please pick a building color"
+            binding.scrollView.smoothScrollTo(0, binding.canAccessBuildingContainer.buildingColorInput.bottom)
             return
         }
 
@@ -292,17 +299,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             return
         }
 
-        if (needsConfirmation) {
-            message = whyCantLocateAddress
-            if (message.isEmpty()) {
-                binding.cantFindCandidateLayout.error = "Please select an option"
-                binding.scrollView.smoothScrollTo(0, (binding.cantFindCandidateLayout.bottom - 10))
-            }
-        }
-
         if (typeOfBuilding.isNullOrEmpty()) {
-            binding.buildTypeLayout.error = "Please select a building type"
-            binding.buildingTypeInput.requestFocus()
+            binding.canAccessBuildingContainer.buildTypeLayout.error = "Please select a building type"
+            binding.canAccessBuildingContainer.buildingTypeInput.requestFocus()
             return
         }
 
@@ -312,8 +311,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         if (latLng == null) {
-            binding.yesGeoTaglayout.error = "Please geo tag your location to continue"
+            binding.canAccessBuildingContainer.yesGeoTaglayout.error = "Please geo tag your location to continue"
             return
+        }
+
+        if (needsConfirmation) {
+           message =  if (confirmedBy == Constants.NO_ONE) {
+                "Candidate does not live there"
+            } else {
+                "Could not confirm that the candidate lives there"
+            }
         }
 
         val photos = viewModel.uploadedImages.map {
@@ -348,12 +355,12 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
     private fun onNoSubmissionButtionClicked() {
         validateNoSubmition { request ->
-            viewModel.submitTask(request)
+            viewModel.updateAndSubmitTask(request)
         }
     }
 
     private fun validateNoSubmition(callback: (submitRequest: TasksDomain.SubmitTask) -> Unit) {
-        val cantLocateAddressReason = binding.reasonInput.text?.toString()
+        val cantLocateAddressReason = binding.cantLocateAddressReasonInput.text?.toString()
         val noOfImages = viewModel.imagesPicked.value?.size ?: 0
         val nearestLandmark = binding.landmarkInput.text?.toString()
         val additionalInfo = binding.infoInput.text?.toString() ?: ""
@@ -466,14 +473,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private fun getLocation() {
         Timber.d("getLocation()")
         binding.progressIndicationNo.visibleIf(true)
-        binding.progressIndicationYes.visibleIf(true)
+        binding.canAccessBuildingContainer.progressIndicationYes.visibleIf(true)
 
         locationHelper.requestLocationUpdate {
 
             locationHelper.getCurrentLocation { latLng, address ->
 
                 Timber.d("Current location: $latLng $address")
-                binding.yesGeoTaginput.setText(
+                binding.canAccessBuildingContainer.yesGeoTaginput.setText(
                     address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
                 )
                 binding.noGeoTaginput.setText(
@@ -488,7 +495,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
                 //Hide Loaders
                 binding.progressIndicationNo.gone()
-                binding.progressIndicationYes.gone()
+                binding.canAccessBuildingContainer.progressIndicationYes.gone()
             }
         }
     }
@@ -609,9 +616,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         viewModel.doesBuildingHaveGate.observe(viewLifecycleOwner) {
             val hasGate = it.getContentIfNotHandled() ?: return@observe
-            binding.gateColorLayout.visibleIf(hasGate)
-            binding.hasGate.setColor(hasGate, R.color.colorDark, R.color.white)
-            binding.noGate.setColor(!hasGate, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.gateColorLayout.visibleIf(hasGate)
+            binding.canAccessBuildingContainer.hasGate.setColor(hasGate, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.noGate.setColor(!hasGate, R.color.colorDark, R.color.white)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(hasGate = hasGate)
         }
 
@@ -654,7 +661,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         message = state.error,
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
-                        negativeCallback = { /*navigateUp()*/ }) {
+                        negativeCallback = { navigateUp() }) {
                         viewModel.startTask(viewModel.currentTask?.id.toString())
                     }
                 }
@@ -668,20 +675,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         viewModel.doesCandidateLiveAtAddress.observe(viewLifecycleOwner) {
             val livesHere = it.getContentIfNotHandled() ?: return@observe
             Timber.d("Lives here $livesHere")
-            binding.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
-            binding.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = !livesHere)
-            binding.cantFindCandidateLayout.visibleIf(!livesHere)
-            binding.cantFindCandidateLabel.visibleIf(!livesHere)
 
             val livesHereText = if (livesHere) "Who confirmed that the candidate lives here?" else "Who confirmed that the candidate does'nt live here?"
-            binding.whoConfirmedAddress.text = livesHereText
+            binding.canAccessBuildingContainer.whoConfirmedAddress.text = livesHereText
 
-            // Clear input when there is a change
-            binding.cantFindCandidateInput.setText("")
         }
 
-        viewModel.taskSubmissionState.observe(viewLifecycleOwner) {
+        viewModel.updateAndSubmitTaskState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
             when(state) {
                 is ResultState.Loading -> progressLoader.show("Submitting task...")
@@ -696,6 +699,34 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                     showMessage(state.data)
                 }
 
+            }
+        }
+
+        viewModel.canAccessBuildingState.observe(viewLifecycleOwner) {
+            val canAccessBuilding = it.getContentIfNotHandled() ?: return@observe
+            binding.yesCanAccessBuildingText.setColor(canAccessBuilding, R.color.colorDark, R.color.white)
+            binding.noCantAccessBuidlingText.setColor(!canAccessBuilding, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.root.visibleIf(canAccessBuilding)
+            binding.cantAccessBuildingContainer.root.visibleIf(!canAccessBuilding)
+
+            binding.scrollView.scrollTo(
+               0,
+                binding.canAccessBuildingContainer.buildTypeLayout.bottom + 100
+            )
+        }
+
+        viewModel.submitTaskState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when(state) {
+                is ResultState.Loading -> progressLoader.show("Loading...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+                is ResultState.Success -> {
+                    progressLoader.hide()
+                    showMessage(state.data)
+                }
             }
         }
     }
@@ -769,14 +800,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         choice1.setOnClickListener {
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.reasonInput.setText(choice1.text.toString())
+                binding.cantLocateAddressReasonInput.setText(choice1.text.toString())
                 dialog.dismiss()
             }, 500)
         }
 
         choice2.setOnClickListener {
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.reasonInput.setText(choice2.text.toString())
+                binding.cantLocateAddressReasonInput.setText(choice2.text.toString())
                 dialog.dismiss()
             }, 500)
         }
@@ -803,7 +834,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
             UploadViewState.Companion.UploadType.signatureUpload -> {
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(signatureLink = result?.location.toString())
-                binding.signature.loadImage(file.absolutePath)
+                binding.canAccessBuildingContainer.signature.loadImage(file.absolutePath)
                 binding.signatureTwo.loadImage(file.absolutePath)
             }
 

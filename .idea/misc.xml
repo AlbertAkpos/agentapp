@@ -114,6 +114,9 @@
         <entry key="app/src/main/res/layout/bottom_select_color.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_select_period_layout.xml" value="0.25956315852767986" />
         <entry key="app/src/main/res/layout/bottom_select_reason.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/building_types_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/can_access_building_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/cant_access_building_layout.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/change_pass_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/checkbox_dropdown.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/chekbox_dropdown.xml" value="0.25" />

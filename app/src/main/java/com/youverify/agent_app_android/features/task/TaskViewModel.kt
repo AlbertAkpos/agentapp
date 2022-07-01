@@ -29,6 +29,8 @@ class TaskViewModel @Inject constructor(
     var currentTask: TasksDomain.AgentTask ? = null
         private set
 
+    private  val taskId by lazy { repository.fetchAgentId() }
+
     val tasksState = MutableLiveData<ResultState<ArrayList<TasksDomain.AgentTask>>>()
 
     val canYouLocateTheAddressState = MutableLiveData<SingleEvent<Boolean>>()
@@ -39,9 +41,9 @@ class TaskViewModel @Inject constructor(
 
     val colors = Constants.colors
 
-    val candidateAddressConfirmedBy = Constants.whoConfirmedCandidateAddressList
-
     var taskAnswers = TasksDomain.TaskAnswers()
+
+    val candidateAddressConfirmedBy get() =  if (taskAnswers.needsConfirmation == true) Constants.whoConfirmedCandidateAddressNegative else Constants.whoConfirmedCandidateAddressList
 
     val imagesPicked = MutableLiveData<ArrayList<File>>()
 
@@ -49,8 +51,10 @@ class TaskViewModel @Inject constructor(
 
     val uploadedImages = arrayListOf<String>()
 
+    val canAccessBuildingState = MutableLiveData<SingleEvent<Boolean>>()
+
     val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
-        addSource(repository.fetchOfflineTasks()) { updateNotifications(it) }
+        addSource(repository.fetchOfflineTasks(taskId)) { updateNotifications(it) }
     }
 
     private fun updateNotifications(offlineTasks: List<TasksDomain.AgentTask>) {
@@ -91,6 +95,8 @@ class TaskViewModel @Inject constructor(
     val startTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
     val rejectionMessages = arrayListOf<String>()
     val submissionMessages = arrayListOf<String>()
+
+    val cantLocateAddressReasons = Constants.cantLocateAddressReasons
 
     /**
      * startTasks calls several endpoints
@@ -134,7 +140,7 @@ class TaskViewModel @Inject constructor(
                 startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
                 //Put the task in local db
-                currentTask?.let { repository.addTask(currentTask!!) }
+                currentTask?.let { repository.addTask(currentTask!!, taskId) }
 
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
@@ -150,7 +156,7 @@ class TaskViewModel @Inject constructor(
 
     val taskRejectionState = MutableLiveData<SingleEvent<ResultState<String>>>()
 
-    val taskSubmissionState = MutableLiveData<SingleEvent<ResultState<String>>>()
+    val updateAndSubmitTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
 
     fun rejectTask(request: TasksDto.SubmitTaskRequest, taskId: String) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -170,30 +176,49 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun submitTask(taskItem: TasksDomain.SubmitTask) {
+    fun updateAndSubmitTask(taskItem: TasksDomain.SubmitTask) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
-            taskSubmissionState.postValue(SingleEvent(ResultState.Error(message)))
+            updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(message)))
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
-                taskSubmissionState.postValue(SingleEvent(ResultState.Loading()))
+                updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Loading()))
             // Update the task on local
-            currentTask?.let { repository.updateTask(taskItem, currentTask!!) }
+            currentTask?.let { repository.updateTask(taskItem, currentTask!!, taskId) }
             // Update on remote
             val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
                 if (response.success) {
 
                     val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)
                     if (response.success) {
-                        taskSubmissionState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
+                        updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
                         repository.deleteTask(taskItem.taskId)
-                    } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
+                    } else updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
 
-                } else taskSubmissionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
+                } else updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
 
         }
+    }
+
+    val submitTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
+
+    fun submitTask(submitRequest: TasksDto.SubmitTaskRequest, taskId: String) {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+            val message = ErrorHelper.handleException(throwable)
+            submitTaskState.postValue(SingleEvent(ResultState.Error(message)))
+        }
+
+        viewModelScope.launch(coroutineExceptionHandler) {
+            submitTaskState.postValue(SingleEvent(ResultState.Loading()))
+            val response = repository.submitTask(submitRequest, taskId)
+            if (response.success) {
+                submitTaskState.postValue(SingleEvent(ResultState.Success(response.message ?: "Successfully notified the business")))
+            } else submitTaskState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
+        }
+
     }
 
     val filterParamsState = MutableLiveData<SingleEvent<ResultState<Pair<List<State>, TasksDomain.TasksStatusesResponse>>>>()

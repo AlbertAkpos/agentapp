@@ -1,6 +1,8 @@
 package com.youverify.agent_app_android.features.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -35,6 +37,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var emailLayout: TextInputLayout
     private lateinit var passLayout: TextInputLayout
+
+    @Inject lateinit var preference: AgentSharePreference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -206,7 +210,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, true)
             }
 
-//            TokenInterceptor(AgentSharePreference(requireContext())).setToken(loginResponse.refreshToken)
+            preference.agentId = loginResponse.agent.id
+
             println("Response: $loginResponse")
         }
     }
