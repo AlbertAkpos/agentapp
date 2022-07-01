@@ -212,6 +212,7 @@ class TaskViewModel @Inject constructor(
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
+            submitTaskState.postValue(SingleEvent(ResultState.Loading()))
             val response = repository.submitTask(submitRequest, taskId)
             if (response.success) {
                 submitTaskState.postValue(SingleEvent(ResultState.Success(response.message ?: "Successfully notified the business")))

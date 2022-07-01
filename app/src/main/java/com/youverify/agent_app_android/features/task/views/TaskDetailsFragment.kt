@@ -710,8 +710,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.cantAccessBuildingContainer.root.visibleIf(!canAccessBuilding)
 
             binding.scrollView.scrollTo(
-                binding.cantAccessBuildingContainer.root.bottom,
-                binding.cantAccessBuildingContainer.root.bottom + 20
+               0,
+                binding.cantAccessBuildingContainer.notifyBusinessBtn.bottom + 100
             )
         }
 
