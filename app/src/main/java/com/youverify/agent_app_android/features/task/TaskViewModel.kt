@@ -43,7 +43,7 @@ class TaskViewModel @Inject constructor(
 
     var taskAnswers = TasksDomain.TaskAnswers()
 
-    val candidateAddressConfirmedBy = if (taskAnswers.needsConfirmation == true) Constants.whoConfirmedCandidateAddressNegative else Constants.whoConfirmedCandidateAddressList
+    val candidateAddressConfirmedBy get() =  if (taskAnswers.needsConfirmation == true) Constants.whoConfirmedCandidateAddressNegative else Constants.whoConfirmedCandidateAddressList
 
     val imagesPicked = MutableLiveData<ArrayList<File>>()
 

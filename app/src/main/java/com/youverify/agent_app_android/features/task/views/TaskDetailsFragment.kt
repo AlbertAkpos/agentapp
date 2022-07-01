@@ -661,7 +661,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         message = state.error,
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
-                        negativeCallback = { /*navigateUp()*/ }) {
+                        negativeCallback = { navigateUp() }) {
                         viewModel.startTask(viewModel.currentTask?.id.toString())
                     }
                 }
@@ -711,7 +711,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
             binding.scrollView.scrollTo(
                0,
-                binding.cantAccessBuildingContainer.notifyBusinessBtn.bottom + 100
+                binding.canAccessBuildingContainer.buildTypeLayout.bottom + 100
             )
         }
 
