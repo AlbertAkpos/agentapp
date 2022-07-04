@@ -61,6 +61,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
      * 2. Fetch and set response reason endpoint
      */
 
+    /**
+     * change message when cant locate adddress =: business has been notified
+     * Reset edittext eror
+     * Make error messages ordered
+     * show focus on edittecxt that has eeror
+     *
+     */
+
     @Inject
     lateinit var locationHelper: LocationHelper
 
@@ -154,12 +162,25 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private fun setupUI() = with(binding) {
         noImageList.adapter = imagesAdapter
         canAccessBuildingContainer.yesImageList.adapter = imagesAdapter
+        reasonLayout.autoClearError()
+        canAccessBuildingContainer.buildTypeLayout.autoClearError()
+        canAccessBuildingContainer.buildingColorLayout.autoClearError()
+        canAccessBuildingContainer.gateColorLayout.autoClearError()
+        noGeoTaglayout.autoClearError()
+        canAccessBuildingContainer.yesGeoTaglayout.autoClearError()
+        reasonLayout.autoClearError()
+        canAccessBuildingContainer.whoConfirmedAddressLayout.autoClearError()
+
     }
 
     private fun setupClicks() = with(binding) {
         proceedToCaptureDetailsBtn.setOnClickListener {
             canLocateAddressContainer.show()
             it.gone()
+            Timber.d("Scroll view focus")
+            scrollView.post {
+                scrollView.smoothScrollTo(0, choiceBuildingAccessayout.y.toInt() + 40)
+            }
         }
 
         yesBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(true)) }
@@ -275,43 +296,56 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val latLng = viewModel.taskAnswers.latLong
         var gateColor = "Nil"
         var message = "Candidate lives there"
+
+        if (typeOfBuilding.isNullOrEmpty()) {
+            binding.canAccessBuildingContainer.buildTypeLayout.error = "Please select a building type"
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.buildTypeLayout.y.toInt() + 500)
+            return
+        }
+
+        if (buildingColor.isNullOrEmpty()) {
+            binding.canAccessBuildingContainer.buildingColorLayout.error = "Please pick a building color"
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.buildingColorLayout.y.toInt() + 500)
+            return
+        }
+
         if (hasGate) {
             gateColor = binding.canAccessBuildingContainer.gateColorInput.text?.toString() ?: ""
             if (gateColor.isNullOrEmpty()) {
                 binding.canAccessBuildingContainer.gateColorLayout.error = "Please pick a gate color"
+                binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.gateColorLayout.y.toInt() + 500)
+
                 return
             }
         } else gateColor = "Nil"
-
-        if (buildingColor.isNullOrEmpty()) {
-            binding.canAccessBuildingContainer.buildingColorLayout.error = "Please pick a building color"
-            binding.scrollView.smoothScrollTo(0, binding.canAccessBuildingContainer.buildingColorInput.bottom)
-            return
-        }
-
-        if (agentSignature.isEmpty()) {
-            context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
-            return
-        }
 
         if (needsConfirmation == null) {
             context?.showDialog( title = "Incomplete form", message = "Please see question \"Does the candidate live here?\"")
             return
         }
 
-        if (typeOfBuilding.isNullOrEmpty()) {
-            binding.canAccessBuildingContainer.buildTypeLayout.error = "Please select a building type"
-            binding.canAccessBuildingContainer.buildingTypeInput.requestFocus()
+        if (confirmedBy.isNullOrEmpty()) {
+            binding.canAccessBuildingContainer.whoConfirmedAddressLayout.error = "Please select who confirmed address"
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.whoConfirmedAddressLayout.y.toInt()+ 500)
+            return
+        }
+
+
+        if (agentSignature.isEmpty()) {
+            context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.signBtn.y.toInt() + 500)
             return
         }
 
         if (viewModel.uploadedImages.isEmpty()) {
             context?.showDialog(title = "Incomplete form", message = "Please add images")
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.candidateImageUploadBtn.y.toInt() + 500)
             return
         }
 
         if (latLng == null) {
             binding.canAccessBuildingContainer.yesGeoTaglayout.error = "Please geo tag your location to continue"
+            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.yesGeoTaglayout.y.toInt() + 500)
             return
         }
 
@@ -661,7 +695,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         message = state.error,
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
-                        negativeCallback = { navigateUp() }) {
+                        negativeCallback = { /*navigateUp()*/ }) {
                         viewModel.startTask(viewModel.currentTask?.id.toString())
                     }
                 }
@@ -711,7 +745,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
             binding.scrollView.scrollTo(
                0,
-                binding.canAccessBuildingContainer.buildTypeLayout.bottom + 100
+                binding.scrollView.bottom + 500
             )
         }
 
@@ -725,7 +759,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
-                    showMessage(state.data)
+                    showMessage("The business have been notified")
                 }
             }
         }

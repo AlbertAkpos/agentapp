@@ -1,6 +1,7 @@
 package com.youverify.agent_app_android.util.extension
 
 import android.view.View
+import android.widget.ScrollView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 
@@ -21,4 +22,8 @@ fun View.show() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.scrollTo(scrollView: ScrollView) {
+    scrollView.scrollTo(0, this.y.toInt())
 }
