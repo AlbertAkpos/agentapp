@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/color_circle.xml" value="0.1315" />
         <entry key="app/src/main/res/drawable/curved_appbar.xml" value="0.299" />
         <entry key="app/src/main/res/drawable/curved_appbar_dark.xml" value="0.183" />
+        <entry key="app/src/main/res/drawable/curved_appbar_inactive.xml" value="0.153" />
         <entry key="app/src/main/res/drawable/curved_bg.xml" value="0.2895" />
         <entry key="app/src/main/res/drawable/curved_bg_performance.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/curved_bg_stats.xml" value="0.1" />

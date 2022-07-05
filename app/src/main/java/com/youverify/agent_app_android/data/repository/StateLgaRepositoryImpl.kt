@@ -27,8 +27,6 @@ class StateLgaRepositoryImpl @Inject constructor(
 
             if (body != null){
                 stateLgaList = body.data
-            }else{
-
             }
         }catch (ex: Exception){
             Log.i("Error: ", ex.message.toString())

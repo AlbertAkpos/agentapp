@@ -5,6 +5,7 @@ import com.youverify.agent_app_android.core.functional.Result
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.login.LoginRequest
+import com.youverify.agent_app_android.util.handleErrorMessage
 import javax.inject.Inject
 
 class LoginRemoteDataSourceImpl @Inject constructor(
@@ -22,7 +23,8 @@ class LoginRemoteDataSourceImpl @Inject constructor(
                     } ?: Result.Error(Failure.ServerError)
                 }
                 false ->{
-                    Result.Failed(res.errorBody())
+                    val errorMessage = handleErrorMessage(res.errorBody()!!)
+                    Result.Failed(errorMessage)
                 }
             }
         }catch (e: Throwable){

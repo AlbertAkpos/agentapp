@@ -18,10 +18,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp">
-
+            android:paddingTop="@dimen/padding_16"
+            android:paddingStart="@dimen/padding_24"
+            android:paddingEnd="@dimen/padding_24">
 
                 <ImageView
                     android:id="@+id/email_img"
@@ -74,70 +73,146 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_verify_email"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_24">
 
 
-                <CheckBox
-                    android:id="@+id/check_complete_training"
-                    android:layout_width="0dp"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/training_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:button="@drawable/check_selector_bg"
-                    android:fontFamily="@font/br_sonoma_regular"
-                    android:paddingHorizontal="20dp"
-                    android:scaleX="0.9"
-                    android:scaleY="0.9"
-                    android:text="@string/complete_training"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
-                    android:textColor="@color/colorTextPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:elevation="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <CheckBox
+                            android:id="@+id/check_complete_training"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/check_selector_bg"
+                            android:fontFamily="@font/br_sonoma_regular"
+                            android:paddingHorizontal="20dp"
+                            android:scaleX="0.9"
+                            android:scaleY="0.9"
+                            android:text="@string/complete_training"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            android:textColor="@color/colorTextPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
 
-                <CheckBox
-                    android:id="@+id/check_verify_identity"
-                    android:layout_width="0dp"
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/verify_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:button="@drawable/check_selector_bg"
-                    android:fontFamily="@font/br_sonoma_regular"
-                    android:paddingHorizontal="20dp"
-                    android:scaleX="0.9"
-                    android:scaleY="0.9"
-                    android:text="@string/verify_identity"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
-                    android:textColor="@color/colorTextPrimary"
-                    app:layout_constraintEnd_toEndOf="@+id/check_complete_training"
-                    app:layout_constraintStart_toStartOf="@+id/check_complete_training"
-                    app:layout_constraintTop_toBottomOf="@+id/check_complete_training" />
+                    android:elevation="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    app:layout_constraintTop_toBottomOf="@+id/training_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <CheckBox
+                            android:id="@+id/check_verify_identity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/check_selector_bg"
+                            android:fontFamily="@font/br_sonoma_regular"
+                            android:paddingHorizontal="20dp"
+                            android:scaleX="0.9"
+                            android:scaleY="0.9"
+                            android:text="@string/verify_identity"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            android:textColor="@color/colorTextPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"  />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
 
-                <CheckBox
-                    android:id="@+id/check_select_areas"
-                    android:layout_width="0dp"
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/areas_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="24dp"
-                    android:button="@drawable/check_selector_bg"
-                    android:clickable="true"
-                    android:elevation="5dp"
-                    android:focusable="true"
+                    android:elevation="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    app:layout_constraintBottom_toTopOf="@+id/activate_text"
+                    app:layout_constraintTop_toBottomOf="@+id/verify_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <CheckBox
+                            android:id="@+id/check_select_areas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/check_selector_bg"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="@font/br_sonoma_regular"
+                            android:paddingHorizontal="20dp"
+                            android:scaleX="0.9"
+                            android:scaleY="0.9"
+                            android:text="@string/select_preffered_areas"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:id="@+id/activate_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="@dimen/margin_24"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:paddingHorizontal="20dp"
-                    android:scaleX="0.9"
-                    android:scaleY="0.9"
-                    android:text="@string/select_preffered_areas"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@string/activation_text"
+                    android:textAlignment="center"
+                    android:visibility="gone"
                     android:textColor="@color/colorTextPrimary"
-                    android:textSize="16sp"
+                    android:textSize="13sp"
                     android:textStyle="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/check_verify_identity"
-                    app:layout_constraintStart_toStartOf="@+id/check_verify_identity"
-                    app:layout_constraintTop_toBottomOf="@+id/check_verify_identity" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/areas_card" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

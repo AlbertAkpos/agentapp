@@ -36,6 +36,12 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
             sharedPreferences.edit().putString(TOKEN_KEY, value).apply()
         }
 
+    var agentVisiblityStatus: String
+        get() = sharedPreferences.getString(SharedPrefKeys.AGENT_VISIBLITY_STATE, AgentStatus.ONINE) ?: AgentStatus.ONINE
+        set(value) {
+            sharedPreferences.edit().putString(SharedPrefKeys.AGENT_VISIBLITY_STATE, value).apply()
+        }
+
     fun setBoolean(key: String, value: Boolean) {
         sharedPreferences.edit {
             putBoolean(key, value)

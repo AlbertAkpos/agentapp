@@ -2,38 +2,48 @@ package com.youverify.agent_app_android.features.dashboard
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
+import com.youverify.agent_app_android.util.AgentStatus
+import com.youverify.agent_app_android.util.SharedPrefKeys
+import com.youverify.agent_app_android.util.extension.setColor
+import com.youverify.agent_app_android.util.extension.toast
+import com.youverify.agent_app_android.util.helper.isLollipopPlus
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var homeActivity: HomeActivity
 
     private var isVerified: Boolean = false
-    private var  isTrained: Boolean = false
+    private var isTrained: Boolean = false
     private var prefAreasIsChosen: Boolean = false
+
+    private val viewModel by activityViewModels<DashboardViewModel>()
+
+    @Inject
+    lateinit var sharePreference: AgentSharePreference
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,31 +64,74 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         //if select period button is clicked, slide the bottom bar from beneath
         binding.selectPeriodBtn.setOnClickListener {
             showBottomBar()
-//            setupRangePickerDialog()
-        }
-
-        if (!verificationNotDone()) {
-//            showCompleteOnboardingDialog()
-
         }
 
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        setObservers()
+    }
+
+    private fun setupUI() = with(binding) {
+        agentVisibilitySwitch.setOnClickListener {
+            val currentStatus = binding.agentVisibilitySwitch.tag as? String
+            Timber.d("Tag ==> $currentStatus")
+            currentStatus?.let {
+                    val status = if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
+                    viewModel.updateAgentStatus(status)
+            }
+
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.agentVisibiltyStatus.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            Timber.d("Status ==> $state")
+            updateStatus(state)
+        }
+
+        viewModel.updateAgentStatusState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            binding.agentVisibilitySwitch.isEnabled = state !is ResultState.Loading
+            when(state) {
+                is ResultState.Error -> {
+                    context?.toast(state.error)
+                   viewModel.updateAgentVisibility(sharePreference.agentVisiblityStatus)
+                }
+            }
+        }
+    }
+
+    private fun updateStatus(state: String) {
+        val check = state == AgentStatus.ONINE
+        binding.agentVisibilitySwitch.isChecked = check
+        binding.agentVisibilitySwitch.tag = state
+        val showText = if (check) "On duty" else "Off duty"
+        binding.agentVisibilitySwitch.text = showText
+
+        binding.toolBar.setColor(check, R.color.colorPrimaryDark, R.color.off_duty)
+
+        if (isLollipopPlus()) {
+            val window = activity?.window
+            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            val color = if (check) R.color.colorPrimaryDark else R.color.off_duty
+            window?.statusBarColor = ContextCompat.getColor(requireContext(), color)
+        }
+
+        val curvedBackground = if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        binding.toolbarDropped.setBackgroundResource(curvedBackground)
+    }
+
     //verify that user has finished onboarding
-    private fun verificationNotDone(): Boolean {
-        val sharedPreferences: SharedPreferences =
-            requireActivity().getSharedPreferences( "pkgName", Context.MODE_PRIVATE)
-
-        isVerified = AgentSharePreference(requireContext()).getBoolean("IS_VERIFIED")
-        isTrained = AgentSharePreference(requireContext()).getBoolean("IS_TRAINED")
-        prefAreasIsChosen = sharedPreferences.getBoolean("PREF_AREAS", false)
-
-        println("From dashboard")
-        println("isTrained: $isTrained")
-        println("isVerified: $isVerified")
-        println("prefAreas chosen: $prefAreasIsChosen")
-
+    private fun verificationDone(): Boolean {
+        isVerified = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_VERIFIED)
+        isTrained = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_TRAINED)
+        prefAreasIsChosen =
+            AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.PREF_AREAS, false)
         return isTrained && isVerified && prefAreasIsChosen
     }
 
@@ -93,7 +146,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
-            Log.e("DateRangeText", materialCalendarPicker.headerText)
+            Timber.e(materialCalendarPicker.headerText)
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { }
         materialCalendarPicker.addOnCancelListener { }
@@ -166,21 +219,22 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val trainingCheck = view.findViewById<CheckBox>(R.id.check_complete_training)
         val verifyIdCheck = view.findViewById<CheckBox>(R.id.check_verify_identity)
         val prefAreasCheck = view.findViewById<CheckBox>(R.id.check_select_areas)
+        val activationText = view.findViewById<TextView>(R.id.activate_text)
         dialogBuilder.setView(view)
 
-        if(isTrained){
+        if (isTrained) {
             trainingCheck.isChecked = true
-            trainingCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            trainingCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         if (isVerified) {
             verifyIdCheck.isChecked = true
-            verifyIdCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            verifyIdCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         if (prefAreasIsChosen) {
             prefAreasCheck.isChecked = true
-            prefAreasCheck.setTextColor(ContextCompat.getColor(requireContext() ,R.color.black))
+            prefAreasCheck.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         trainingCheck.setOnClickListener {
@@ -203,7 +257,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         }
 
-        dialogBuilder.setCancelable(false)
+        if (isTrained && isVerified && prefAreasIsChosen) {
+            activationText.visibility = View.VISIBLE
+        } else {
+            activationText.visibility = View.GONE
+        }
+
+        dialogBuilder.setCancelable(true)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
@@ -211,5 +271,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onResume() {
         super.onResume()
         homeActivity.showNavBar()
+        val agentStatus =
+            AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_STATUS)
+        if ((verificationDone() && agentStatus == "IN_ACTIVE") || !verificationDone()) {
+            showCompleteOnboardingDialog()
+        }
     }
 }

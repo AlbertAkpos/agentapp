@@ -15,12 +15,13 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
-import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.databinding.FragmentSelectIdBinding
 import com.youverify.agent_app_android.features.HomeActivity
-import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.extension.visibleIf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,10 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     private lateinit var dobEditText: AutoCompleteTextView
     private lateinit var continueBtn: MaterialButton
     private lateinit var backBtn: ImageButton
-    var formatDate = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+    private var formatDate = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val verifyIdRequest: VerifyIDRequest by lazy {
+        VerifyIDRequest("", "", null, null, null, "")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,21 +67,18 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     }
 
     private fun configureUI() {
+        dateOfBirth.visibility = View.GONE
+        reference.visibility = View.GONE
+
         idTypeEditText.setOnClickListener {
             idTypeEditText.showDropDown()
         }
 
         idTypeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (!idTypeLayout.editText?.text.isNullOrEmpty()) {
-                    dateOfBirth.visibility = View.VISIBLE
-                    reference.visibility = View.VISIBLE
-                } else {
-                    dateOfBirth.visibility = View.GONE
-                    reference.visibility = View.GONE
-                }
+                dateOfBirth.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
+                reference.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -107,25 +108,7 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         }
 
         continueBtn.setOnClickListener {
-            val firstName = AgentSharePreference(requireContext()).getString("FIRST_NAME")
-            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
-            val id = idTypeLayout.editText?.text.toString()
-            val dateOfBirth = dateOfBirth.editText?.text?.trim().toString()
-            val reference = reference.editText?.text?.trim().toString()
-
-            val verifyIdRequest = VerifyIDRequest(
-                firstName = firstName,
-                lastName = lastName,
-                idType = id,
-                dateOfBirth = dateOfBirth,
-                reference = reference,
-                imageUrl = ""
-            )
-
-            println("From SelectID: $verifyIdRequest")
-
-            val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)
-            findNavController().navigate(action)
+            passData()
         }
 
         backBtn.setOnClickListener {
@@ -138,6 +121,79 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
         homeActivity.showNavBar()
     }
 
+    private fun validateInputs(): Boolean{
+        val idType = idTypeLayout.editText?.text?.toString()?.trim()
+        val dateOfBirth = dateOfBirth.editText?.text?.toString()?.trim()
+        val reference = reference.editText?.text?.toString()?.trim()
+
+        println("idType: $idType \n dob: $dateOfBirth \n ref: $reference" )
+
+        when(idType){
+            "NIN" -> {
+                if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "Sarah"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
+            }
+
+            "BVN" -> {
+                if(reference == "11111111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
+            }
+
+            "DRIVERS_LICENSE" -> {
+                if(reference == "AAA00000AA00" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
+            }
+
+            "INTERNATIONAL_PASSPORT" -> {
+                if(reference == "A11111111" && dateOfBirth == "1988-04-04"){
+                    verifyIdRequest.firstName = "John"
+                    verifyIdRequest.lastName = "Doe"
+                    verifyIdRequest.type = idType
+                    verifyIdRequest.dateOfBirth = dateOfBirth
+                    verifyIdRequest.reference = reference
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun passData(){
+        val inputIsValid = validateInputs()
+
+        if(inputIsValid){
+//            val firstName = AgentSharePreference(requireContext()).getString("FIRST_NAME")
+//            val lastName = AgentSharePreference(requireContext()).getString("LAST_NAME")
+//            verifyIdRequest.firstName = firstName
+//            verifyIdRequest.lastName = lastName
+            println("From SelectID: $verifyIdRequest")
+
+            val action = SelectIDFragmentDirections.actionSelectIDFragmentToUploadPassportFragment(verifyIdRequest)
+            findNavController().navigate(action)
+        }else{
+            Snackbar.make(requireView(), "Only test data is allowed", Snackbar.LENGTH_SHORT).show()
+        }
+
+    }
     override fun onResume() {
         super.onResume()
 

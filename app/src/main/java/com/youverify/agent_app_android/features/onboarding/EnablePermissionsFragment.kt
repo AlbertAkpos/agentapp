@@ -1,13 +1,11 @@
 package com.youverify.agent_app_android.features.onboarding
 
 import android.Manifest
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,15 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentEnablePermissionsBinding
+import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.SharedPrefKeys
 
 class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions) {
 
     private lateinit var binding: FragmentEnablePermissionsBinding
 
-    private lateinit var location : SwitchCompat
-    private lateinit var photos : SwitchCompat
-    private lateinit var camera : SwitchCompat
-    private lateinit var notification : SwitchCompat
+    private lateinit var location: SwitchCompat
+    private lateinit var photos: SwitchCompat
+    private lateinit var camera: SwitchCompat
+    private lateinit var notification: SwitchCompat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,17 +118,23 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
     private fun ensurePermissions() {
         location.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                requestLocationPermission(locationPermissionsLauncher, Manifest.permission.ACCESS_COARSE_LOCATION)
+                requestLocationPermission(
+                    locationPermissionsLauncher,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    requestLocationPermission(locationPermissionsLauncher, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    requestLocationPermission(
+                        locationPermissionsLauncher,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    )
                 }
 
-                if (notification.isChecked && photos.isChecked && camera.isChecked){
+                if (notification.isChecked && photos.isChecked && camera.isChecked) {
                     binding.verifyButton.visibility = View.VISIBLE
                 } else {
                     binding.verifyButton.visibility = View.GONE
                 }
-            }else {
+            } else {
                 binding.verifyButton.visibility = View.GONE
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
@@ -138,26 +144,26 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
             if (isChecked) {
                 photosPermissionsLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
 
-                if (location.isChecked && notification.isChecked && camera.isChecked){
+                if (location.isChecked && notification.isChecked && camera.isChecked) {
                     binding.verifyButton.visibility = View.VISIBLE
                 } else {
                     binding.verifyButton.visibility = View.GONE
                 }
-            }else {
+            } else {
                 binding.verifyButton.visibility = View.GONE
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
 
-       camera.setOnCheckedChangeListener { _, isChecked ->
+        camera.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 cameraPermissionsLauncher.launch(Manifest.permission.CAMERA)
-                if (location.isChecked && photos.isChecked && notification.isChecked){
+                if (location.isChecked && photos.isChecked && notification.isChecked) {
                     binding.verifyButton.visibility = View.VISIBLE
                 } else {
                     binding.verifyButton.visibility = View.GONE
                 }
-            }else {
+            } else {
                 binding.verifyButton.visibility = View.GONE
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
@@ -167,9 +173,9 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
             if (isChecked) {
                 Toast.makeText(requireContext(), "Permission has been granted", Toast.LENGTH_SHORT)
                     .show()
-                if (location.isChecked && photos.isChecked && camera.isChecked){
+                if (location.isChecked && photos.isChecked && camera.isChecked) {
                     binding.verifyButton.visibility = View.VISIBLE
-                }else {
+                } else {
                     binding.verifyButton.visibility = View.GONE
                 }
             } else {
@@ -181,9 +187,6 @@ class EnablePermissionsFragment : Fragment(R.layout.fragment_enable_permissions)
     }
 
     private fun onBoardingFinished() {
-        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putBoolean("Finished", true)
-        editor.apply()
+        AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.ONBOARDING_FINISHED, true)
     }
 }

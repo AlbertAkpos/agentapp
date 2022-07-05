@@ -62,11 +62,45 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         registerListeners()
         getStates()
-
         return binding.root
     }
 
     private fun registerListeners() {
+        binding.firstNameField.setOnClickListener {
+            firstNameLayout.error = null
+            firstNameLayout.isErrorEnabled = false
+        }
+
+        binding.lastNameField.setOnClickListener {
+            lastNameLayout.error = null
+            lastNameLayout.isErrorEnabled = false
+        }
+
+        binding.phoneNumField.setOnClickListener{
+            phoneLayout.error = null
+            phoneLayout.isErrorEnabled = false
+        }
+
+        binding.emailField.setOnClickListener{
+            emailLayout.error = null
+            emailLayout.isErrorEnabled = false
+        }
+
+        binding.passwordField.setOnClickListener{
+            passLayout.error = null
+            passLayout.isErrorEnabled = false
+        }
+
+        binding.confirmPassField.setOnClickListener{
+            confirmPassLayout.error = null
+            confirmPassLayout.isErrorEnabled = false
+        }
+
+        binding.stateOfResidenceInput.setOnClickListener{
+            stateOfResLayout.error = null
+            stateOfResLayout.isErrorEnabled = false
+        }
+
         binding.stateOfResidenceInput.setOnClickListener {
             binding.stateOfResidenceInput.showDropDown()
         }
@@ -220,7 +254,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 false
             }
             value.length < 11 || value.length > 11 -> {
-                phoneLayout.error = "Phone number less than 11 digits"
+                phoneLayout.error = "Invalid phone number"
                 phoneLayout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
@@ -281,31 +315,23 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         }
     }
 
-    private fun validatePassword(value: String): Boolean {
-        val checkSpaces = "\\A\\w{1,20}\\z"
-
+    private fun validatePassword(value: String, layout: TextInputLayout): Boolean {
         return when {
             value.isEmpty() -> {
-                passLayout.error = "Field cannot be empty"
-                passLayout.errorIconDrawable =
+                layout.error = "Field cannot be empty"
+                layout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             value.length < 8 -> {
-                passLayout.error = "Password must be up to 8 characters"
-                passLayout.errorIconDrawable =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-                false
-            }
-            !value.matches(checkSpaces.toRegex()) -> {
-                passLayout.error = "No whitespaces are allowed!"
-                passLayout.errorIconDrawable =
+                layout.error = "Password must be up to 8 characters"
+                layout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
-                passLayout.error = null
-                passLayout.isErrorEnabled = false
+                layout.error = null
+                layout.isErrorEnabled = false
                 true
             }
         }
@@ -320,8 +346,13 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         validatePhone()
         validateEmail()
         validateStateOfResidence()
+        validatePassword(password, passLayout)
+        validatePassword(confirmPassword, confirmPassLayout)
 
-        return if (validatePassword(password) && validatePassword(confirmPassword)) {
+        return if (validateFirstName() && validateLastName()
+            && validatePhone() && validateEmail() &&
+            validateStateOfResidence() && validatePassword(password, passLayout)
+            && validatePassword(confirmPassword, confirmPassLayout)) {
             if (password == confirmPassword) {
                 confirmPassLayout.error = null
                 confirmPassLayout.isErrorEnabled = false
@@ -385,9 +416,11 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun getStates() {
+        progressLoader.show("Please wait...")
         val responseLiveData = signUpViewModel.getStates()
         responseLiveData.observe(requireActivity()) {
             if (it != null) {
+                progressLoader.hide()
                 val arrayAdapter =
                     ArrayAdapter(requireContext(), R.layout.states_drop_down_item, it)
                 binding.stateOfResidenceInput.setAdapter(arrayAdapter)

@@ -3,13 +3,20 @@ package com.youverify.agent_app_android.data.api
 import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponse
+import com.youverify.agent_app_android.data.model.profile.ChangePassRequest
+import com.youverify.agent_app_android.data.model.profile.ChangePassResponse
 import com.youverify.agent_app_android.data.model.resetpassword.Email
 import com.youverify.agent_app_android.data.model.resetpassword.ResetPassResponse
 import com.youverify.agent_app_android.data.model.signup.SignUpRequest
 import com.youverify.agent_app_android.data.model.signup.SignUpResponse
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreaRequest
+import com.youverify.agent_app_android.data.model.verification.areas.PrefAreasResponse
+import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenRequest
+import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
-import com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
+import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -25,7 +32,10 @@ interface AgentService {
     suspend fun sendResetEmail(@Body email: Email): Response<ResetPassResponse>
 
     @POST("agents/verify")
-    suspend fun verifyAgentId(@Body verifyIDRequest: VerifyIDRequest): Response<UploadImageResponse>
+    suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest): Response<VerifyIdResponse>
+
+    @PUT("agents/me/areas")
+    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest):  Response<PrefAreasResponse>
 
     @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
     suspend fun getAgentTasks(@Query("state") state: String? = null, @Query("status") status: String? = null): TasksDto.AgentTasksResponse
@@ -51,4 +61,12 @@ interface AgentService {
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/status")
     suspend fun getTaskStatuses() : TasksDto.TaskStatusesResponse
 
+    @POST("auth/refresh")
+    suspend fun refreshToken(@Body tokenRequest: TokenRequest): Response<TokenResponse>
+
+    @POST("auth/change-password")
+    suspend fun changePassword(@Body changePassRequest: ChangePassRequest): Response<ChangePassResponse>
+
+    @PUT("agents/me/visibility")
+    suspend fun updateAgentStatus(@Body request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse
 }

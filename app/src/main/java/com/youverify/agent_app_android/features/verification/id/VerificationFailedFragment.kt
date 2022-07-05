@@ -6,23 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentVerificationFailedBinding
+import com.youverify.agent_app_android.features.HomeActivity
 
 class VerificationFailedFragment : Fragment(R.layout.fragment_verification_failed) {
     private lateinit var binding : FragmentVerificationFailedBinding
+    private val args: VerificationFailedFragmentArgs by navArgs()
+    private lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
-
         binding = FragmentVerificationFailedBinding.inflate(layoutInflater)
+        homeActivity = requireActivity() as HomeActivity
 
         binding.tryAgainBtn.setOnClickListener {
             findNavController().navigate(R.id.action_verificationFailedFragment_to_dashboardFragment)
         }
 
+        binding.textFailed.text = args.failureMessage.error
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeActivity.removeNavBar()
     }
 }

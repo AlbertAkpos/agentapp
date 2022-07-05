@@ -31,6 +31,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".features.task.views.TaskActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="open.task.activity"/>

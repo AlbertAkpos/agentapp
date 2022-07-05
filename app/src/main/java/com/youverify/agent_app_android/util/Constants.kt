@@ -21,6 +21,11 @@ object Constants {
     const val NO_ONE = "No one"
 }
 
+object AgentStatus {
+    const val ACTIVE = "ACTIVATED"
+    const val ONINE = "ONLINE"
+    const val OFFLINE = "OFFLINE"
+}
 
 object AgentTaskStatus {
     const val PENDING = "PENDING"
@@ -40,6 +45,23 @@ object Permissions {
     const val CAMERA = "android.permission.CAMERA"
     const val READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE"
     const val WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE"
+}
+
+object SharedPrefKeys {
+    const val TOKEN = "TOKEN"
+    const val REFRESH_TOKEN = "REFRESH_TOKEN"
+    const val FIRST_NAME = "FIRST_NAME"
+    const val LAST_NAME = "LAST_NAME"
+    const val EMAIL = "EMAIL"
+    const val PHONE = "PHONE"
+    const val STATE_OF_RESIDENCE = "STATE_OF_RESIDENCE"
+    const val IS_TRAINED = "IS_TRAINED"
+    const val IS_VERIFIED = "IS_VERIFIED"
+    const val PREF_AREAS = "PREF_AREAS"
+    const val AGENT_STATUS = "AGENT_STATUS"
+    const val AGENT_ID = "AGENT_ID"
+    const val AGENT_VISIBLITY_STATE = "AGENT_VISIBLITY_STATE"
+    const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
 }
 
 private fun getBuildingTyepes() =

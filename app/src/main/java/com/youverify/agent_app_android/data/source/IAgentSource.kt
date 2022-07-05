@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.data.source
 
+import com.youverify.agent_app_android.data.model.common.Domain
 import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
@@ -16,5 +17,6 @@ interface IAgentSource {
     suspend fun doImageUpload(file: List<MultipartBody.Part>): UploadImageResponse
     suspend fun submitFcmToken(request: Dto.FcmToken): Dto.GenericResponse
     suspend fun getTaskStatuses() : TasksDto.TaskStatusesResponse
+    suspend fun updateAgentStatus(request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse
 
 }

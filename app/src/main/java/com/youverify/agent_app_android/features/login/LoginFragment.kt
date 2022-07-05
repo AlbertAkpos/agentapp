@@ -16,12 +16,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.api.TokenInterceptor
 import com.youverify.agent_app_android.data.model.login.LoginRequest
 import com.youverify.agent_app_android.data.model.login.LoginResponseData
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.SharedPrefKeys
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -156,23 +159,61 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         if (loginResponse != null) {
             Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
-            AgentSharePreference(requireContext()).setString("TOKEN", loginResponse.token)
-            AgentSharePreference(requireContext()).setString("FIRST_NAME", loginResponse.agent.firstName)
-            AgentSharePreference(requireContext()).setString("LAST_NAME", loginResponse.agent.lastName)
-            AgentSharePreference(requireContext()).setString("STATE_OF_RESIDENCE", loginResponse.agent.stateOfResidence)
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.TOKEN,
+                loginResponse.token
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.REFRESH_TOKEN,
+                loginResponse.refreshToken
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.FIRST_NAME,
+                loginResponse.agent.firstName
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.LAST_NAME,
+                loginResponse.agent.lastName
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.EMAIL,
+                loginResponse.agent.emailAddress
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.PHONE,
+                loginResponse.agent.phoneNumber
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.STATE_OF_RESIDENCE,
+                loginResponse.agent.stateOfResidence
+            )
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.AGENT_STATUS,
+                loginResponse.agent.agentStatus
+            )
             AgentSharePreference(requireContext()).setBoolean(
-                "IS_TRAINED",
+                SharedPrefKeys.IS_TRAINED,
                 loginResponse.agent.isTrained
             )
             AgentSharePreference(requireContext()).setBoolean(
-                "IS_VERIFIED",
+                SharedPrefKeys.IS_VERIFIED,
                 loginResponse.agent.isVerified
             )
-            if (loginResponse.agent.preferredAreas.isNotEmpty()) {
-                AgentSharePreference(requireContext()).setBoolean("PREF_AREAS", true)
+
+            AgentSharePreference(requireContext()).setString(
+                SharedPrefKeys.AGENT_ID,
+                loginResponse.agent.id
+            )
+            val prefAreas = loginResponse.agent.preferredAreas
+            if (prefAreas.isEmpty()) {
+                AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, false)
+            } else {
+                AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, true)
             }
 
             preference.agentId = loginResponse.agent.id
+
+            preference.agentVisiblityStatus = loginResponse.agent?.visibilityStatus ?: AgentStatus.ONINE
 
             println("Response: $loginResponse")
         }

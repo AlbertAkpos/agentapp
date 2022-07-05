@@ -19,7 +19,7 @@ class UploadRepositoryImpl @Inject constructor(
         return flow {
             when (val res = uploadRemoteDataSource.uploadImage(uploadRequest)) {
                 is Result.Success<*> -> {
-                    if (res.data is LoginResponse) {
+                    if (res.data is UploadImageResponse) {
                         emit(Result.Success(res.data))
                     } else if (res.data is UploadImageResponse) {
                         emit(Result.Success(res.data))

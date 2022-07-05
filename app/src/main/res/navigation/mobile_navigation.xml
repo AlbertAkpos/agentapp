@@ -72,13 +72,17 @@
         tools:layout="@layout/fragment_upload_image" >
         <action
             android:id="@+id/action_uploadPassportFragment_to_verificationResponseFragment"
-            app:destination="@id/verificationResponseFragment" />
+            app:destination="@id/verificationResponseFragment"
+            app:popUpTo="@id/selectIDFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_uploadPassportFragment_to_verificationFailedFragment"
-            app:destination="@id/verificationFailedFragment" />
+            app:destination="@id/verificationFailedFragment"
+            app:popUpTo="@id/selectIDFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="verifyIdRequest"
-            app:argType="com.youverify.agent_app_android.data.model.verification.upload.VerifyIDRequest" />
+            app:argType="com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest" />
 
     </fragment>
     <fragment
@@ -88,7 +92,9 @@
         tools:layout="@layout/fragment_verification_success" >
         <action
             android:id="@+id/action_verificationResponseFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/verificationResponseFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/verificationFailedFragment"
@@ -100,7 +106,12 @@
             app:destination="@id/selectIDFragment" />
         <action
             android:id="@+id/action_verificationFailedFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/verificationFailedFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="failureMessage"
+            app:argType="com.youverify.agent_app_android.data.model.verification.id.FailMessage" />
     </fragment>
     <fragment
         android:id="@+id/selectAreasFragment"
