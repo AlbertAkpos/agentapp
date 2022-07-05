@@ -75,7 +75,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
     private fun setObservers() {
         viewModel.tasksState.observe(viewLifecycleOwner) {
-            val state = it ?: return@observe
+            val state = it.getContentIfNotHandled() ?: return@observe
             when (state) {
                 is ResultState.Loading -> {
                     progressLoader.show(message = "Please wait...", false)

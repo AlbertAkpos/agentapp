@@ -1,6 +1,7 @@
 package com.youverify.agent_app_android.domain.repository
 
 import androidx.lifecycle.LiveData
+import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
@@ -20,7 +21,7 @@ interface ITaskRepository {
     suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskItem:  TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskId: String)
-    fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>>
+    fun fetchOfflineTasks(agentId: String): LiveData<List<NotificationItem>>
     fun fetchAgentId(): String
 
 }

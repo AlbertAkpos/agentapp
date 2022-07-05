@@ -71,6 +71,7 @@ fun TaskEntity.TaskItem.domain(): TasksDomain.AgentTask {
         photo = agentTask.candidate?.photo
     )
 
+
     return TasksDomain.AgentTask(
         candidate = candidate,
         buildingNumber = agentTask.buildingNumber,
