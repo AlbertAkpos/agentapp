@@ -203,6 +203,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 SharedPrefKeys.AGENT_ID,
                 loginResponse.agent.id
             )
+
+//            AgentSharePreference(requireContext()).setString(
+//                SharedPrefKeys.IMG_URL,
+//                loginResponse.agent.photo
+//            )
+
             val prefAreas = loginResponse.agent.preferredAreas
             if (prefAreas.isEmpty()) {
                 AgentSharePreference(requireContext()).setBoolean(SharedPrefKeys.PREF_AREAS, false)

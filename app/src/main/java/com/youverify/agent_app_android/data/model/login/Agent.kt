@@ -33,7 +33,7 @@ data class Agent(
     @SerializedName("phoneNumber")
     val phoneNumber: String,
     @SerializedName("photo")
-    val photo: Any,
+    val photo: String,
     @SerializedName("preferredAreas")
     val preferredAreas: List<String>,
     @SerializedName("settings")
