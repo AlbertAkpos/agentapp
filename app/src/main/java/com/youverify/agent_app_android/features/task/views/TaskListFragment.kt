@@ -8,7 +8,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -20,13 +22,17 @@ import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.databinding.BottomFilterLayoutBinding
 import com.youverify.agent_app_android.databinding.TaskAssignedDialogBinding
+import com.youverify.agent_app_android.features.dashboard.DashboardViewModel
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.AgentTaskStatus
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.extension.*
+import com.youverify.agent_app_android.util.helper.isLollipopPlus
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,6 +56,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
     private val viewModel by viewModels<TaskViewModel>()
 
+    private val dashboardViewModel by activityViewModels<DashboardViewModel>()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +79,16 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         binding.taskRecyclerView.adapter = adapter
 
         binding.filterBtn.setOnClickListener { viewModel.getFilterParams() }
+
+        binding.dutySwitch.setOnCheckedChangeListener { compoundButton, b ->
+            val currentStatus = binding.dutySwitch.tag as? String
+            Timber.d("Tag ==> $currentStatus")
+            currentStatus?.let {
+                val status = if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
+                dashboardViewModel.updateAgentStatus(status)
+            }
+
+        }
     }
 
 
@@ -108,6 +127,32 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
             }
         }
+
+        dashboardViewModel.agentVisibiltyStatus.observe(viewLifecycleOwner) {
+            val state = it ?: return@observe
+            Timber.d("Status ==> $state")
+            updateStatus(state)
+        }
+    }
+
+    private fun updateStatus(state: String) {
+        val check = state == AgentStatus.ONINE
+        binding.dutySwitch.isChecked = check
+        binding.dutySwitch.tag = state
+        val showText = if (check) "On duty" else "Off duty"
+        binding.dutySwitch.text = showText
+
+        binding.toolBar.setColor(check, R.color.colorPrimaryDark, R.color.off_duty)
+
+        if (isLollipopPlus()) {
+            val window = activity?.window
+            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            val color = if (check) R.color.colorPrimaryDark else R.color.off_duty
+            window?.statusBarColor = ContextCompat.getColor(requireContext(), color)
+        }
+
+        val curvedBackground = if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        binding.toolbarDropped.setBackgroundResource(curvedBackground)
     }
 
 
