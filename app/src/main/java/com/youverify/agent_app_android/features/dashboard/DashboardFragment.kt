@@ -75,21 +75,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         setObservers()
     }
 
-    private fun setupUI() = with(binding) {
-        agentVisibilitySwitch.setOnClickListener {
-            val currentStatus = binding.agentVisibilitySwitch.tag as? String
-            Timber.d("Tag ==> $currentStatus")
-            currentStatus?.let {
+    private fun setupUI()   {
+        with(binding) {
+            agentVisibilitySwitch.setOnCheckedChangeListener { compoundButton, b ->
+                val currentStatus = binding.agentVisibilitySwitch.tag as? String
+                Timber.d("Tag ==> $currentStatus")
+                currentStatus?.let {
                     val status = if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
                     viewModel.updateAgentStatus(status)
-            }
+                }
 
+            }
         }
     }
 
     private fun setObservers() {
         viewModel.agentVisibiltyStatus.observe(viewLifecycleOwner) {
-            val state = it.getContentIfNotHandled() ?: return@observe
+            val state = it ?: return@observe
             Timber.d("Status ==> $state")
             updateStatus(state)
         }
