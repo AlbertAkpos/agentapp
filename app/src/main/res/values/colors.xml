@@ -80,7 +80,7 @@
     <color name="grey">#EFF8F9</color>
     <color name="choice_bg">#EBEBEC</color>
     <color name="red_btn">#E02020</color>
-
+    <color name="off_duty">#333333</color>
 
 
 </resources>

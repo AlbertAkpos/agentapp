@@ -21,6 +21,11 @@ object Constants {
     const val NO_ONE = "No one"
 }
 
+object AgentStatus {
+    const val ACTIVE = "ACTIVATED"
+    const val ONINE = "ONLINE"
+    const val OFFLINE = "OFFLINE"
+}
 
 object AgentTaskStatus {
     const val PENDING = "PENDING"
@@ -54,6 +59,7 @@ object SharedPrefKeys {
     const val FIRST_NAME = "FIRST_NAME"
     const val IS_VERIFIED = "IS_VERIFIED"
     const val AGENT_STATUS = "AGENT_STATUS"
+    const val AGENT_VISIBLITY_STATE = "AGENT_VISIBLITY_STATE"
     const val REFRESH_TOKEN = "REFRESH_TOKEN"
     const val STATE_OF_RESIDENCE = "STATE_OF_RESIDENCE"
     const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"

@@ -2,6 +2,7 @@ package com.youverify.agent_app_android.data.source
 
 import com.youverify.agent_app_android.data.api.AgentService
 import com.youverify.agent_app_android.data.api.UploadService
+import com.youverify.agent_app_android.data.model.common.Domain
 import com.youverify.agent_app_android.data.model.common.Dto
 import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
@@ -43,5 +44,9 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
 
     override suspend fun getTaskStatuses(): TasksDto.TaskStatusesResponse {
         return service.getTaskStatuses()
+    }
+
+    override suspend fun updateAgentStatus(request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse {
+        return service.updateAgentStatus(request)
     }
 }

@@ -6,4 +6,10 @@ object Domain {
         val statusCode: Int?,
         val message: String?,
     )
+
+    data class UpdateAgentResponse(
+        val success: Boolean,
+        val message: String?,
+        val status: String?
+    )
 }

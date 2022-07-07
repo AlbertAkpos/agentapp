@@ -35,3 +35,5 @@ fun getDateInMilliSecond(dateString: String): Long? {
 fun getTimePassedSinceDate(date: Long) = DateUtils.getRelativeTimeSpanString( date, Date().time, DateUtils.MINUTE_IN_MILLIS).toString()
 
 fun isOreoPlus(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+fun isLollipopPlus(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP

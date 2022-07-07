@@ -31,7 +31,7 @@ class TaskViewModel @Inject constructor(
 
     private  val taskId by lazy { repository.fetchAgentId() }
 
-    val tasksState = MutableLiveData<ResultState<ArrayList<TasksDomain.AgentTask>>>()
+    val tasksState = MutableLiveData<SingleEvent<ResultState<ArrayList<TasksDomain.AgentTask>>>>()
 
     val canYouLocateTheAddressState = MutableLiveData<SingleEvent<Boolean>>()
 
@@ -57,9 +57,9 @@ class TaskViewModel @Inject constructor(
         addSource(repository.fetchOfflineTasks(taskId)) { updateNotifications(it) }
     }
 
-    private fun updateNotifications(offlineTasks: List<TasksDomain.AgentTask>) {
+    private fun updateNotifications(offlineTasks: List<NotificationItem>) {
         val currentNotifications = notifications.value ?: arrayListOf()
-        currentNotifications.addAll(offlineTasks.map { it.notification() })
+        currentNotifications.addAll(offlineTasks)
         notifications.postValue(currentNotifications)
     }
 
@@ -79,15 +79,15 @@ class TaskViewModel @Inject constructor(
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
-            tasksState.postValue(ResultState.Error(message))
+            tasksState.postValue(SingleEvent(ResultState.Error(message)))
         }
         viewModelScope.launch(coroutineExceptionHandler) {
-            tasksState.postValue(ResultState.Loading())
+            tasksState.postValue(SingleEvent(ResultState.Loading()))
             val response = repository.fetchAgentTasks(state, status)
             if (response.success) {
-                tasksState.postValue(ResultState.Success(response.taskItems))
+                tasksState.postValue(SingleEvent(ResultState.Success(response.taskItems)))
             } else {
-                tasksState.postValue(ResultState.Error(response.message ?: "Some error occurred"))
+                tasksState.postValue(SingleEvent(ResultState.Error(response.message ?: "Some error occurred")))
             }
         }
     }
@@ -179,11 +179,15 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun updateAndSubmitTask(taskItem: TasksDomain.SubmitTask) {
+    fun updateAndSubmitTask(taskItem: TasksDomain.SubmitTask, notificationItem: NotificationItem? = null) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
             updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(message)))
+            if (notificationItem != null) {
+                // Put the notificatio Item back if submission fails. This is just to update the UI
+                updateNotifications(listOf(notificationItem))
+            }
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {

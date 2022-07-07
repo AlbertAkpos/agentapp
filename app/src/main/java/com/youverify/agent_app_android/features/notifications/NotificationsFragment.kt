@@ -13,12 +13,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
 import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.databinding.LayoutSuccessBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.extension.inflateDialog
+import com.youverify.agent_app_android.util.extension.showDialog
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
@@ -28,6 +36,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private lateinit var homeActivity : HomeActivity
 
     private val viewModel by viewModels<TaskViewModel>()
+
+    @Inject  lateinit var progressLoader: ProgressLoader
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -58,43 +69,28 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private fun setObservers() {
         viewModel.notifications.observe(viewLifecycleOwner) {
             val tasks = it ?: return@observe
+            Timber.d("Offline tasks ==> ${tasks.size}")
             // Set adapter
             notificationItemsAdapter.setData(tasks)
+        }
+
+        viewModel.updateAndSubmitTaskState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when(state) {
+                is ResultState.Loading -> progressLoader.show("Submitting task...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+                is ResultState.Success -> {
+                    progressLoader.hide()
+                    showMessage(state.data)
+                }
+            }
         }
     }
 
     private fun setupList() {
-        //dummy data
-        val notificationItems = arrayListOf(
-                NotificationItem(
-                    image = R.drawable.ic_access_granted,
-                    accessText = "Address access granted",
-                    nameText = "Janet Foly",
-                    addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
-                    timeText = "10 min. ago"
-                ),
-                NotificationItem(
-                    image = R.drawable.ic_offline_task,
-                    accessText = "Offline task",
-                    nameText = "Janet Foly",
-                    addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
-                    timeText = "1 hr. ago"
-                ),
-                NotificationItem(
-                    image = R.drawable.ic_access_granted,
-                    accessText = "Access time expired",
-                    nameText = "Thomas Peters",
-                    addressText = "78, Tony Cresent, Ajah, Off Lekki toll gate, Lagos",
-                    timeText = "1 hr. ago"
-                ),
-                NotificationItem(
-                    image = R.drawable.ic_access_granted,
-                    accessText = "Task rejected",
-                    nameText = "Ada Nnenna",
-                    addressText = "1901 Thornridge Cir. Shiloh, Hawaii 81063",
-                    timeText = "2 hrs ago"
-                )
-            )
 
         val swipeGesture = object : SwipeGesture(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -127,9 +123,23 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private fun onItemSwiped(notificationItem: NotificationItem) {
         val task = notificationItem.submitTask
+        Timber.d("NotificationItem ==> $notificationItem")
         if (task != null) {
-            viewModel.updateAndSubmitTask(task)
+            viewModel.updateAndSubmitTask(task, notificationItem)
         }
+    }
+
+    private fun showMessage(message: String) {
+        var dialog: MaterialDialog? = null
+        val binding = LayoutSuccessBinding.inflate(layoutInflater)
+        binding.message.text = message
+
+        binding.process.setOnClickListener {
+            dialog?.dismiss()
+        }
+
+        dialog = context?.inflateDialog(binding.root)
+
     }
 
 

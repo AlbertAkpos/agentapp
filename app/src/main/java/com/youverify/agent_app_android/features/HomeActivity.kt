@@ -1,5 +1,6 @@
 package com.youverify.agent_app_android.features
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
     @Inject
     lateinit var progressLoader: ProgressLoader
     private lateinit var binding: ActivityMainBinding
-    private val tokenViewModel: TokenViewModel by viewModels()
+    private val tokenViewModel : TokenViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,16 +40,15 @@ class HomeActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        navView.labelVisibilityMode =
-            NavigationBarView.LABEL_VISIBILITY_LABELED        //set the bottom navigation to always be labelled
+        navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED        //set the bottom navigation to always be labelled
     }
 
-    fun showNavBar() {
+    fun showNavBar(){
         val bottomNav = binding.navView
         bottomNav.showNavBar()
     }
 
-    fun removeNavBar() {
+    fun removeNavBar(){
         val bottomNav = binding.navView
         bottomNav.removeNavBar()
     }
@@ -60,10 +60,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun refreshToken() {
-        val refreshToken = AgentSharePreference(this).getString(SharedPrefKeys.REFRESH_TOKEN)
-        val agentId = AgentSharePreference(this).getString(SharedPrefKeys.AGENT_ID)
+      val refreshToken = AgentSharePreference(this).getString(SharedPrefKeys.REFRESH_TOKEN)
+      val agentId = AgentSharePreference(this).getString(SharedPrefKeys.AGENT_ID)
 
-        val tokenRequest = TokenRequest(refreshToken, agentId)
+      val tokenRequest = TokenRequest(refreshToken, agentId)
 
         tokenViewModel.refreshToken(tokenRequest = tokenRequest)
 
@@ -71,10 +71,11 @@ class HomeActivity : AppCompatActivity() {
             tokenViewModel.tokenChannel.collect {
                 when (it) {
                     is TokenViewState.Loading -> {
-                        progressLoader.show(message = "Please wait...")
+                        //Its best the user doesnt know
+                       // progressLoader.show(message = "Please wait...")
                     }
                     is TokenViewState.Success -> {
-                        progressLoader.hide()
+                       // progressLoader.hide()
                         AgentSharePreference(this@HomeActivity).setString(
                             SharedPrefKeys.REFRESH_TOKEN,
                             it.tokenResponse?.data?.refreshToken!!
@@ -85,9 +86,9 @@ class HomeActivity : AppCompatActivity() {
                         )
                     }
                     is TokenViewState.Failure -> {
-                        progressLoader.hide()
-                        Toast.makeText(this@HomeActivity, it.errorMessage, Toast.LENGTH_LONG)
-                            .show()
+                        //progressLoader.hide()
+//                        Toast.makeText(this@HomeActivity, it.errorMessage, Toast.LENGTH_LONG)
+//                            .show()
                     }
                     else -> {}
                 }

@@ -7,21 +7,30 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentDashboardBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.SharedPrefKeys
+import com.youverify.agent_app_android.util.extension.setColor
+import com.youverify.agent_app_android.util.extension.toast
+import com.youverify.agent_app_android.util.helper.isLollipopPlus
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var homeActivity: HomeActivity
@@ -29,6 +38,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var isVerified: Boolean = false
     private var isTrained: Boolean = false
     private var prefAreasIsChosen: Boolean = false
+
+    private val viewModel by activityViewModels<DashboardViewModel>()
+
+    @Inject
+    lateinit var sharePreference: AgentSharePreference
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,11 +69,69 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        setObservers()
+    }
+
+    private fun setupUI() = with(binding) {
+        agentVisibilitySwitch.setOnClickListener {
+            val currentStatus = binding.agentVisibilitySwitch.tag as? String
+            Timber.d("Tag ==> $currentStatus")
+            currentStatus?.let {
+                    val status = if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
+                    viewModel.updateAgentStatus(status)
+            }
+
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.agentVisibiltyStatus.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            Timber.d("Status ==> $state")
+            updateStatus(state)
+        }
+
+        viewModel.updateAgentStatusState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            binding.agentVisibilitySwitch.isEnabled = state !is ResultState.Loading
+            when(state) {
+                is ResultState.Error -> {
+                    context?.toast(state.error)
+                   viewModel.updateAgentVisibility(sharePreference.agentVisiblityStatus)
+                }
+            }
+        }
+    }
+
+    private fun updateStatus(state: String) {
+        val check = state == AgentStatus.ONINE
+        binding.agentVisibilitySwitch.isChecked = check
+        binding.agentVisibilitySwitch.tag = state
+        val showText = if (check) "On duty" else "Off duty"
+        binding.agentVisibilitySwitch.text = showText
+
+        binding.toolBar.setColor(check, R.color.colorPrimaryDark, R.color.off_duty)
+
+        if (isLollipopPlus()) {
+            val window = activity?.window
+            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            val color = if (check) R.color.colorPrimaryDark else R.color.off_duty
+            window?.statusBarColor = ContextCompat.getColor(requireContext(), color)
+        }
+
+        val curvedBackground = if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        binding.toolbarDropped.setBackgroundResource(curvedBackground)
+    }
+
     //verify that user has finished onboarding
     private fun verificationDone(): Boolean {
         isVerified = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_VERIFIED)
         isTrained = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.IS_TRAINED)
-        prefAreasIsChosen = AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.PREF_AREAS, false)
+        prefAreasIsChosen =
+            AgentSharePreference(requireContext()).getBoolean(SharedPrefKeys.PREF_AREAS, false)
         return isTrained && isVerified && prefAreasIsChosen
     }
 
@@ -198,7 +271,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onResume() {
         super.onResume()
         homeActivity.showNavBar()
-        val agentStatus = AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_STATUS)
+        val agentStatus =
+            AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_STATUS)
         if ((verificationDone() && agentStatus == "IN_ACTIVE") || !verificationDone()) {
             showCompleteOnboardingDialog()
         }

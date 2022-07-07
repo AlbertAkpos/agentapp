@@ -22,6 +22,7 @@ import com.youverify.agent_app_android.data.model.login.LoginResponseData
 import com.youverify.agent_app_android.databinding.FragmentLoginBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.SharedPrefKeys
 import dagger.hilt.android.AndroidEntryPoint
@@ -217,6 +218,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             preference.agentId = loginResponse.agent.id
+
+            preference.agentVisiblityStatus = loginResponse.agent?.visibilityStatus ?: AgentStatus.ONINE
 
             println("Response: $loginResponse")
         }

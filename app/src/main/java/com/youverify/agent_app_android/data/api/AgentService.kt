@@ -66,4 +66,7 @@ interface AgentService {
 
     @POST("auth/change-password")
     suspend fun changePassword(@Body changePassRequest: ChangePassRequest): Response<ChangePassResponse>
+
+    @PUT("agents/me/visibility")
+    suspend fun updateAgentStatus(@Body request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse
 }

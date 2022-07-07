@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.youverify.agent_app_android.data.mapper.entity
 import com.youverify.agent_app_android.data.mapper.map
+import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.entity.entity
@@ -79,8 +80,8 @@ class TasksRepository @Inject constructor(
         localSource.deleteTask(taskId)
     }
 
-    override fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>> {
-        return localSource.fetchOfflineTasks(agentId).map { it.map { item -> item.domain() } }
+    override fun fetchOfflineTasks(agentId: String): LiveData<List<NotificationItem>> {
+        return localSource.fetchOfflineTasks(agentId).map { it.map { item -> item.domain("dummy") } }
     }
 
     override fun fetchAgentId(): String {

@@ -59,4 +59,7 @@ interface DataModule {
 
     @get:Binds
     val LocalSource.localSource: ILocalSource
+
+    @get:Binds
+    val AgentRepository.agentRespository: IAgentRepository
 }
