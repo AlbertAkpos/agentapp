@@ -65,6 +65,27 @@ object SharedPrefKeys {
     const val ONBOARDING_FINISHED = "ONBOARDING_FINISHED"
 }
 
+object TaskKeys {
+    const val TAKS_ID = "taskId"
+    const val LAT = "lat"
+    const val LONG = "lon"
+    const val FLAT_NUMBER = "flatNumber"
+    const val BUILDING_NAME = "buildingName"
+    const val SUB_STREET = "subStreet"
+    const val LGA = "lga"
+    const val COUNTRY = "country"
+    const val BUILDING_NUMBER  = "buildingNumber"
+    const val LANDMARK = "landmark"
+    const val STREET = "street"
+    const val CITY = "city"
+    const val STATE = "state"
+    const val BUSINESS_NAME = "businessName"
+    const val BUSINESS_REG_NUM = "businessRegNumber"
+    const val STATUS = "status"
+    const val VERIFICATION_TYPE = "verificationType"
+    const val LAST_MODIFIED_AT = "lastModifiedAt"
+}
+
 private fun getBuildingTyepes() =
     arrayListOf(
         "Townhouse",

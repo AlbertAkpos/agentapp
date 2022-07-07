@@ -1,19 +1,35 @@
 package com.youverify.agent_app_android.features.task.views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.youverify.agent_app_android.R
+import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.features.common.BaseActivity
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.util.TaskKeys
+import com.youverify.agent_app_android.util.TaskKeys.BUILDING_NAME
+import com.youverify.agent_app_android.util.TaskKeys.BUILDING_NUMBER
+import com.youverify.agent_app_android.util.TaskKeys.BUSINESS_NAME
+import com.youverify.agent_app_android.util.TaskKeys.BUSINESS_REG_NUM
+import com.youverify.agent_app_android.util.TaskKeys.CITY
+import com.youverify.agent_app_android.util.TaskKeys.COUNTRY
+import com.youverify.agent_app_android.util.TaskKeys.FLAT_NUMBER
+import com.youverify.agent_app_android.util.TaskKeys.LANDMARK
+import com.youverify.agent_app_android.util.TaskKeys.LAST_MODIFIED_AT
+import com.youverify.agent_app_android.util.TaskKeys.LAT
+import com.youverify.agent_app_android.util.TaskKeys.LGA
+import com.youverify.agent_app_android.util.TaskKeys.LONG
+import com.youverify.agent_app_android.util.TaskKeys.STATE
+import com.youverify.agent_app_android.util.TaskKeys.STATUS
+import com.youverify.agent_app_android.util.TaskKeys.STREET
+import com.youverify.agent_app_android.util.TaskKeys.SUB_STREET
+import com.youverify.agent_app_android.util.TaskKeys.TAKS_ID
+import com.youverify.agent_app_android.util.TaskKeys.VERIFICATION_TYPE
 import com.youverify.agent_app_android.util.extension.toObject
-import com.youverify.agent_app_android.util.helper.LocationHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * The [TaskDetailsFragment] in this Activty needs the [TaskBundle] passed to this
@@ -60,11 +76,54 @@ class TaskActivity : BaseActivity() {
     private fun handleIntent(intent: Intent) {
         val extras = intent.extras
         if (extras != null) {
+            val task = buildDomainTask(extras)
+            viewModel.setTaskItem(task)
+
             for (key in extras.keySet()) {
                 Timber.d("Key: $key value: ${extras.get(key)}")
             }
         }
 
+    }
+
+
+    private fun buildDomainTask(extra: Bundle): TasksDomain.AgentTask {
+        val taskId = extra.getString(TAKS_ID).toString()
+        val lat = extra.getString(LAT).toString()
+        val long = extra.getString(LONG).toString()
+        val flatNumber = extra.getString(FLAT_NUMBER).toString()
+        val buildingName = extra.getString(BUILDING_NAME).toString()
+        val substreet = extra.getString(SUB_STREET).toString()
+        val lga = extra.getString(LGA).toString()
+        val country = extra.getString(COUNTRY).toString()
+        val buildingNumber = extra.getString(BUILDING_NUMBER).toString()
+        val landmark = extra.getString(LANDMARK).toString()
+        val street = extra.getString(STREET).toString()
+        val city = extra.getString(CITY).toString()
+        val state = extra.getString(STATE).toString()
+        val businessName = extra.getString(BUSINESS_NAME).toString()
+        val businessRegNumber = extra.getString(BUSINESS_REG_NUM).toString()
+        val status = extra.getString(STATUS).toString()
+        val verificationType = extra.getString(VERIFICATION_TYPE).toString()
+        val lastModified = extra.getString(LAST_MODIFIED_AT).toString()
+
+        return  TasksDomain.AgentTask (
+            buildingNumber = buildingNumber,
+            businessName = businessName,
+            id = taskId,
+            lga = lga,
+            businessRegNumber = businessRegNumber,
+            landmark = landmark,
+            status = status,
+            state = state,
+            city = city,
+            country = country,
+            flatNumber = flatNumber,
+            street = street,
+            verificationType = verificationType,
+            lastModifiedAt = lastModified,
+            candidate = null
+        )
     }
 
     companion object {

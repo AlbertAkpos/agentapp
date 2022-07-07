@@ -21,7 +21,7 @@ class DashboardViewModel @Inject constructor(
     private val agentRepository: IAgentRepository
 ) : ViewModel() {
 
-    val agentVisibiltyStatus = MutableLiveData<SingleEvent<String>>()
+    val agentVisibiltyStatus = MutableLiveData<String>()
 
     init {
         updateAgentVisibility(sharePreference.agentVisiblityStatus)
@@ -29,7 +29,7 @@ class DashboardViewModel @Inject constructor(
 
 
     fun updateAgentVisibility(status: String) {
-        agentVisibiltyStatus.postValue(SingleEvent(status))
+        agentVisibiltyStatus.postValue(status)
     }
 
     val updateAgentStatusState = MutableLiveData<SingleEvent<ResultState<String>>>()
