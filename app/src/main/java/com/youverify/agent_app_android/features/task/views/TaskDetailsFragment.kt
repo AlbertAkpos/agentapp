@@ -725,7 +725,9 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
                 is ResultState.Error -> {
                     progressLoader.hide()
-                    context?.showDialog(message = state.error)
+                    context?.showDialog(message = "Unable to submit task. This task has been saved offline") {
+                        navigateUp()
+                    }
                 }
 
                 is ResultState.Success -> {
