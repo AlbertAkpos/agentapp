@@ -42,6 +42,7 @@ class SettingsFragment : Fragment() {
                 .setPositiveButton("Yes") { _, _ ->
                     AgentSharePreference(requireContext()).clear(SharedPrefKeys.TOKEN)
                     AgentSharePreference(requireContext()).clear(SharedPrefKeys.AGENT_STATUS)
+                    AgentSharePreference(requireContext()).clear(SharedPrefKeys.IMG_URL)
                     startActivity(Intent(requireContext(), OnBoardingActivity::class.java))
                     activity?.finish()
                 }

@@ -65,6 +65,6 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
     fun getInt(key: String, defaultInt: Int = 0) = sharedPreferences.getInt(key, defaultInt)
 
     fun clear(key: String) {
-        sharedPreferences.edit().remove(key).apply()
+        sharedPreferences.edit().remove(key).commit()
     }
 }

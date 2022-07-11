@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class Agent(
     @SerializedName("agentStatus")
     val agentStatus: String,
-    @SerializedName("createdAt")
-    val createdAt: String,
     @SerializedName("emailAddress")
     val emailAddress: String,
     @SerializedName("fcmToken")
@@ -24,26 +22,18 @@ data class Agent(
     val id: String,
     @SerializedName("isVerified")
     val isVerified: Boolean,
-    @SerializedName("lastLogin")
-    val lastLogin: Long,
-    @SerializedName("lastModifiedAt")
-    val lastModifiedAt: String,
     @SerializedName("lastName")
     val lastName: String,
     @SerializedName("phoneNumber")
     val phoneNumber: String,
     @SerializedName("photo")
-    val photo: String,
+    val photo: String?,
     @SerializedName("preferredAreas")
     val preferredAreas: List<String>,
     @SerializedName("settings")
     val settings: Settings,
     @SerializedName("stateOfResidence")
     val stateOfResidence: String,
-    @SerializedName("teamIds")
-    val teamIds: List<Any>,
-    @SerializedName("verificationAttempts")
-    val verificationAttempts: List<Any>,
     @SerializedName("visibilityStatus")
     val visibilityStatus: String
 )

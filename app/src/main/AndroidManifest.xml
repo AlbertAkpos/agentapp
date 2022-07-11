@@ -54,12 +54,9 @@
             android:name=".features.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".features.SplashActivity"
-            android:screenOrientation="portrait"></activity>
+
         <service android:name=".service.FirebaseService"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

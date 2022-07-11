@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentProfileBinding
 import com.youverify.agent_app_android.features.HomeActivity
@@ -62,7 +63,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun loadProfileImage(imageUrl: String){
         Glide.with(requireContext())
             .load(imageUrl)
-            .centerCrop()
+            .apply(RequestOptions.circleCropTransform())
             .into(profileImage)
     }
 }

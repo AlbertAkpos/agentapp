@@ -205,10 +205,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loginResponse.agent.id
             )
 
-//            AgentSharePreference(requireContext()).setString(
-//                SharedPrefKeys.IMG_URL,
-//                loginResponse.agent.photo
-//            )
+            val photoUrl =  loginResponse.agent.photo
+            if(!photoUrl.isNullOrEmpty()){
+                AgentSharePreference(requireContext()).setString(
+                    SharedPrefKeys.IMG_URL,
+                     photoUrl
+                )
+            }
 
             val prefAreas = loginResponse.agent.preferredAreas
             if (prefAreas.isEmpty()) {
@@ -219,7 +222,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             preference.agentId = loginResponse.agent.id
 
-            preference.agentVisiblityStatus = loginResponse.agent?.visibilityStatus ?: AgentStatus.ONINE
+            preference.agentVisiblityStatus = loginResponse.agent.visibilityStatus
 
             println("Response: $loginResponse")
         }

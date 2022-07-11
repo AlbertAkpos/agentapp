@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +20,7 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.profile.ChangePassRequest
 import com.youverify.agent_app_android.databinding.FragmentChangePasswordBinding
 import com.youverify.agent_app_android.features.HomeActivity
-import com.youverify.agent_app_android.features.signup.SignUpViewModel
-import com.youverify.agent_app_android.features.signup.SignUpViewState
 import com.youverify.agent_app_android.util.ProgressLoader
-import com.youverify.agent_app_android.util.extension.visibleIf
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -37,7 +32,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     lateinit var progressLoader: ProgressLoader
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentChangePasswordBinding
-    private lateinit var homeActivity : HomeActivity
+    private lateinit var homeActivity: HomeActivity
     private lateinit var oldPassLayout: TextInputLayout
     private lateinit var newPassLayout: TextInputLayout
     private lateinit var confirmPassLayout: TextInputLayout
@@ -47,7 +42,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
 
         binding = FragmentChangePasswordBinding.inflate(layoutInflater)
         homeActivity = requireActivity() as HomeActivity
@@ -101,79 +96,83 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
         }
     }
 
-    private fun validateFields(): Boolean{
+    private fun validateFields(): Boolean {
         val oldPassword = oldPassLayout.editText?.text.toString().trim()
         val newPassword = newPassLayout.editText?.text.toString().trim()
         val confirmPassword = confirmPassLayout.editText?.text.toString().trim()
 
-        validatePassword(oldPassword, oldPassLayout)
-        validatePassword(newPassword, newPassLayout)
-        validatePassword(confirmPassword, confirmPassLayout)
-
-        return if (newPassword == confirmPassword) {
-            confirmPassLayout.error = null
-            confirmPassLayout.isErrorEnabled = false
-            true
+        if (validatePassword(oldPassword, oldPassLayout) &&
+            validatePassword(newPassword, newPassLayout) &&
+            validatePassword(confirmPassword, confirmPassLayout)
+        ) {
+            return if (newPassword == confirmPassword) {
+                confirmPassLayout.error = null
+                confirmPassLayout.isErrorEnabled = false
+                true
+            } else {
+                newPassLayout.error = "Both passwords must match"
+                confirmPassLayout.error = "Both passwords must match"
+                newPassLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                confirmPassLayout.errorIconDrawable =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
+                false
+            }
         } else {
-            newPassLayout.error = "Both passwords must match"
-            confirmPassLayout.error = "Both passwords must match"
-            newPassLayout.errorIconDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            confirmPassLayout.errorIconDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            false
+            return false
         }
     }
 
-    private fun changePassword(){
-      if(validateFields()){
-          val changePassRequest = ChangePassRequest(
-              oldPassword = oldPassLayout.editText?.text.toString().trim(),
-              newPassword = newPassLayout.editText?.text.toString().trim()
-          )
+    private fun changePassword() {
+        if (validateFields()) {
+            val changePassRequest = ChangePassRequest(
+                oldPassword = oldPassLayout.editText?.text.toString().trim(),
+                newPassword = newPassLayout.editText?.text.toString().trim()
+            )
 
-          profileViewModel.changePassword(changePassRequest = changePassRequest)
+            profileViewModel.changePassword(changePassRequest = changePassRequest)
 
-          lifecycleScope.launchWhenCreated {
-              profileViewModel.changePassChannel.collect {
-                  when (it) {
-                      is ChangePassViewState.Loading -> {
-                          progressLoader.show(message = "Please wait...")
-                      }
-                      is ChangePassViewState.Success -> {
-                          progressLoader.hide()
-                          changePassSuccessful(it.changePassResponse?.message)
-                          showSuccessDialog(it.changePassResponse?.message)
-                      }
-                      is ChangePassViewState.Failure -> {
-                          progressLoader.hide()
-                          Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT)
-                              .show()
-                      }
-                      else -> {}
-                  }
-              }
-          }
-      }
+            lifecycleScope.launchWhenCreated {
+                profileViewModel.changePassChannel.collect {
+                    when (it) {
+                        is ChangePassViewState.Loading -> {
+                            progressLoader.show(message = "Please wait...")
+                        }
+                        is ChangePassViewState.Success -> {
+                            progressLoader.hide()
+                            changePassSuccessful(it.changePassResponse?.message)
+                            showSuccessDialog(it.changePassResponse?.message)
+                        }
+                        is ChangePassViewState.Failure -> {
+                            progressLoader.hide()
+                            Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
     }
 
     private fun changePassSuccessful(changePassResponse: String?) {
         println(changePassResponse)
     }
 
-    private fun showSuccessDialog(changePassResponse: String?){
-            val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
-            val view = layoutInflater.inflate(R.layout.change_pass_dialog, null)
-            val successText = view.findViewById<TextView>(R.id.text_link_sent)
-            successText.text = changePassResponse
-            val okButton = view.findViewById<TextView>(R.id.text_ok)
-            dialogBuilder.setView(view)
-            okButton.setOnClickListener{
-                dialogBuilder.dismiss()
-                findNavController().navigate(R.id.action_changePasswordFragment_to_profileFragment)
-            }
-            dialogBuilder.setCancelable(false)
-            dialogBuilder.show()
-            dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    private fun showSuccessDialog(changePassResponse: String?) {
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+        val view = layoutInflater.inflate(R.layout.change_pass_dialog, null)
+        val successText = view.findViewById<TextView>(R.id.text_link_sent)
+        successText.text = changePassResponse
+        val okButton = view.findViewById<TextView>(R.id.text_ok)
+        dialogBuilder.setView(view)
+        okButton.setOnClickListener {
+            dialogBuilder.dismiss()
+            findNavController().navigate(R.id.action_changePasswordFragment_to_profileFragment)
+        }
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.show()
+        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }
