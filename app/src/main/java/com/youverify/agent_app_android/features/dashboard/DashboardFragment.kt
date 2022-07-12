@@ -221,7 +221,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val trainingCheck = view.findViewById<CheckBox>(R.id.check_complete_training)
         val verifyIdCheck = view.findViewById<CheckBox>(R.id.check_verify_identity)
         val prefAreasCheck = view.findViewById<CheckBox>(R.id.check_select_areas)
-        val activationText = view.findViewById<TextView>(R.id.activate_text)
         dialogBuilder.setView(view)
 
         if (isTrained) {
@@ -259,13 +258,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         }
 
-        if (isTrained && isVerified && prefAreasIsChosen) {
-            activationText.visibility = View.VISIBLE
-        } else {
-            activationText.visibility = View.GONE
-        }
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.show()
+        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
 
-        dialogBuilder.setCancelable(true)
+    private fun showCompletedDialog(){
+        val dialogBuilder =
+            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
+        val view = layoutInflater.inflate(R.layout.onboarding_completed_dialog, null)
+        dialogBuilder.setView(view)
+        dialogBuilder.setCancelable(false)
         dialogBuilder.show()
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
@@ -275,7 +278,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         homeActivity.showNavBar()
         val agentStatus =
             AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_STATUS)
-        if ((verificationDone() && agentStatus == "IN_ACTIVE") || !verificationDone()) {
+        if ((verificationDone() && agentStatus == "IN_ACTIVE")) {
+            showCompletedDialog()
+        }else if (!verificationDone()){
             showCompleteOnboardingDialog()
         }
     }

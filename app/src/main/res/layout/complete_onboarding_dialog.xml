@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_verify_email"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_24">
+                android:layout_marginBottom="@dimen/margin_48">
 
 
                 <androidx.cardview.widget.CardView
@@ -90,7 +90,7 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <CheckBox
@@ -128,7 +128,7 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <CheckBox
@@ -162,13 +162,13 @@
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_marginEnd="@dimen/margin_8"
                     android:layout_marginBottom="@dimen/margin_8"
-                    app:layout_constraintBottom_toTopOf="@+id/activate_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/verify_card"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <CheckBox
@@ -193,26 +193,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
-
-
-                <TextView
-                    android:id="@+id/activate_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:fontFamily="@font/br_sonoma_regular"
-                    android:lineSpacingExtra="4dp"
-                    android:text="@string/activation_text"
-                    android:textAlignment="center"
-                    android:visibility="gone"
-                    android:textColor="@color/colorTextPrimary"
-                    android:textSize="13sp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/areas_card" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

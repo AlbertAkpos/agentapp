@@ -110,7 +110,7 @@
     <string name="complete_reset">We\'ve sent an email to reset your paassword.\nPlease click the link in your email to complete the\n process</string>
     <string name="complete_onboarding_process">Complete Onboarding Process</string>
     <string name="perform_address_verifications">For your account to be activated so you can start\nearning money perform Address Verifications\.</string>
-    <string name="activation_text">Now that you’ve completed the Onboarding\nchecklist, a supervisor will reach out to you\nand activate your account\.</string>
+    <string name="activation_text">Now that you’ve completed the Onboarding\nchecklist, your account will soon be \nactivated and a supervisor will reach out to \nyou.</string>
     <string name="perform_address_verification">For your account to be activated so you can start earning\nmoney perform Address Verifications,</string>
     <string name="complete_training">Complete Training</string>
     <string name="select_preffered_areas">Select Preffered Areas</string>
@@ -254,4 +254,5 @@
     <string name="reset">Reset</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_checklist_completed">Onboarding Checklist Completed</string>
 </resources>
