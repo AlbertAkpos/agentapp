@@ -66,7 +66,7 @@ class TasksRepository @Inject constructor(
 
     override suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String) = withContext(dispatcher) {
         val entity = taskDomain.entity(taskItem, agentId)
-        Timber.d("Undating task with id: ${entity.taskId}")
+        Timber.d("Undating task with id: ${entity.taskId} Entity\n  $entity")
         localSource.updateTask(entity)
     }
 

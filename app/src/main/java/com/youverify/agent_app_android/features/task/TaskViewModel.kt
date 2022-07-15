@@ -3,7 +3,6 @@ package com.youverify.agent_app_android.features.task
 import android.util.Log
 import androidx.lifecycle.*
 import com.youverify.agent_app_android.core.functional.ResultState
-import com.youverify.agent_app_android.data.mapper.notification
 import com.youverify.agent_app_android.data.model.NotificationItem
 import com.youverify.agent_app_android.data.model.signup.State
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
@@ -15,6 +14,7 @@ import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class TaskViewModel @Inject constructor(
     var currentTask: TasksDomain.AgentTask ? = null
         private set
 
-    private  val taskId by lazy { repository.fetchAgentId() }
+    private  val agentId by lazy { repository.fetchAgentId() }
 
     val tasksState = MutableLiveData<SingleEvent<ResultState<ArrayList<TasksDomain.AgentTask>>>>()
 
@@ -54,7 +54,7 @@ class TaskViewModel @Inject constructor(
     val canAccessBuildingState = MutableLiveData<SingleEvent<Boolean>>()
 
     val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
-        addSource(repository.fetchOfflineTasks(taskId)) { updateNotifications(it) }
+        addSource(repository.fetchOfflineTasks(agentId)) { updateNotifications(it) }
     }
 
     private fun updateNotifications(offlineTasks: List<NotificationItem>) {
@@ -95,6 +95,9 @@ class TaskViewModel @Inject constructor(
     val startTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
     val rejectionMessages = arrayListOf<String>()
     val submissionMessages = arrayListOf<String>()
+
+    val offlinePhotos = arrayListOf<String>()
+    var offlineSignature = ""
 
     val cantLocateAddressReasons = Constants.cantLocateAddressReasons
 
@@ -193,7 +196,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch(coroutineExceptionHandler) {
                 updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Loading()))
             // Update the task on local
-            currentTask?.let { repository.updateTask(taskItem, currentTask!!, taskId) }
+            currentTask?.let { repository.updateTask(taskItem, currentTask!!, agentId) }
             // Update on remote
             val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
                 if (response.success) {
@@ -206,6 +209,16 @@ class TaskViewModel @Inject constructor(
 
                 } else updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
 
+        }
+    }
+
+    fun updateTaskOnLocale(taskItem: TasksDomain.SubmitTask) {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+        }
+        viewModelScope.launch(exceptionHandler) {
+            Timber.d("Cuurent task: ==> $currentTask")
+            currentTask?.let { repository.updateTask(taskItem, it, agentId) }
         }
     }
 

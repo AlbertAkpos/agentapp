@@ -1,18 +1,25 @@
 package com.youverify.agent_app_android.features.verification.id
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.Result
+import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.data.model.response.ErrorMessage
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIDRequest
 import com.youverify.agent_app_android.data.model.verification.id.VerifyIdResponse
 import com.youverify.agent_app_android.data.model.verification.upload.UploadImageResponse
+import com.youverify.agent_app_android.data.repository.tasks.TasksRepository
+import com.youverify.agent_app_android.domain.repository.ITaskRepository
 import com.youverify.agent_app_android.domain.usecase.UploadUseCase
 import com.youverify.agent_app_android.domain.usecase.VerifyIdUseCase
 import com.youverify.agent_app_android.util.SingleEvent
+import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -24,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UploadViewModel @Inject constructor(
     private val uploadUseCase: UploadUseCase,
-    private val verifyIdUseCase: VerifyIdUseCase
+    private val verifyIdUseCase: VerifyIdUseCase,
+    private val tasksRepository: ITaskRepository
 ) : ViewModel() {
 
     private val _uploadChannel = Channel<UploadViewState>()
@@ -35,6 +43,8 @@ class UploadViewModel @Inject constructor(
     val uploadState = uploadChannel.mapLatest {
         SingleEvent(it)
     }.asLiveData()
+
+    val imagesUploadState = MutableLiveData<SingleEvent<ResultState<Pair<List<String>?, Int>>>>()
 
     //function for uploading the user photo
     fun uploadImage(
@@ -73,8 +83,28 @@ class UploadViewModel @Inject constructor(
                             )
                         }
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
+            }
+        }
+    }
+
+    fun uploadImages(uploadRequests: List<MultipartBody.Part>, imageType: Int = UploadViewState.Companion.UploadType.imageUpload, callback: (urls: List<String>) -> Unit) {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            throwable.printStackTrace()
+            val message = ErrorHelper.handleException(throwable)
+            imagesUploadState.postValue(SingleEvent(ResultState.Error(message)))
+        }
+
+        viewModelScope.launch(exceptionHandler) {
+            imagesUploadState.postValue(SingleEvent(ResultState.Loading()))
+           val response = tasksRepository.uploadImages(uploadRequests)
+            if (response.success) {
+                imagesUploadState.postValue(SingleEvent(ResultState.Success(Pair(response.urls, imageType))))
+                callback(response.urls ?: emptyList())
+            } else {
+                imagesUploadState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
             }
         }
     }
@@ -98,7 +128,7 @@ class UploadViewModel @Inject constructor(
                         }
                     }
                     is Result.Failed -> {
-                        if (it.errorMessage is ErrorMessage){
+                        if (it.errorMessage is ErrorMessage) {
                             _verifyIdChannel.send(
                                 VerifyIdViewState.Failure(
                                     R.string.verify,
@@ -107,7 +137,8 @@ class UploadViewModel @Inject constructor(
                             )
                         }
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
         }

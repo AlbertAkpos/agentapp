@@ -55,19 +55,7 @@ import javax.inject.Inject
 class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private lateinit var binding: FragmentTaskDetailsBinding
 
-    /**
-     * Steps:
-     * 1. Start task - call api
-     * 2. Fetch and set response reason endpoint
-     */
 
-    /**
-     * change message when cant locate adddress =: business has been notified
-     * Reset edittext eror
-     * Make error messages ordered
-     * show focus on edittecxt that has eeror
-     *
-     */
 
     @Inject
     lateinit var locationHelper: LocationHelper
@@ -331,13 +319,13 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
 
-        if (agentSignature.isEmpty()) {
+        if (agentSignature.isEmpty() && viewModel.offlineSignature.isEmpty()) {
             context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
             binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.signBtn.y.toInt() + 500)
             return
         }
 
-        if (viewModel.uploadedImages.isEmpty()) {
+        if (viewModel.uploadedImages.isEmpty()  && viewModel.offlinePhotos.isEmpty()) {
             context?.showDialog(title = "Incomplete form", message = "Please add images")
             binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.candidateImageUploadBtn.y.toInt() + 500)
             return
@@ -380,8 +368,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             taskId = viewModel.currentTask?.id.toString(),
             updateTaskRequest = updateTaskRequest,
             message = confirmedBy,
-            subitTaskRequest = submitRequest
+            subitTaskRequest = submitRequest,
+            offlineSignature = viewModel.offlineSignature,
+            offlinePhotos = viewModel.offlinePhotos
         )
+
+        if (viewModel.offlinePhotos.isNotEmpty() || viewModel.offlineSignature.isNotEmpty()) {
+            viewModel.updateTaskOnLocale(taskItem)
+            context?.showDialog(title = "Notice", message = "Task has been saved offline") {
+                navigateUp()
+            }
+            return
+        }
 
         callback(taskItem)
 
@@ -401,7 +399,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val latLng = viewModel.taskAnswers.latLong
         val agentSignature = viewModel.taskAnswers.signatureLink
 
-        if (noOfImages < 1) {
+        if (noOfImages < 1 && viewModel.offlinePhotos.isEmpty()) {
             context?.showDialog(
                 title = "Incomplete form",
                 message = "Please take pictures of the place"
@@ -424,7 +422,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             return
         }
 
-        if (agentSignature.isEmpty()) {
+        if (agentSignature.isEmpty() && viewModel.offlineSignature.isEmpty()) {
             context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
             return
         }
@@ -453,8 +451,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             taskId = viewModel.currentTask?.id.toString(),
             updateTaskRequest = updateTaskRequest,
             message = cantLocateAddressReason,
-            subitTaskRequest = submitRequest
+            subitTaskRequest = submitRequest,
+            offlinePhotos = viewModel.offlinePhotos,
+            offlineSignature = viewModel.offlineSignature
         )
+
+        if (viewModel.offlinePhotos.isNotEmpty() || viewModel.offlineSignature.isNotEmpty()) {
+            viewModel.updateTaskOnLocale(taskItem)
+            context?.showDialog(title = "Notice", message = "Task has been saved offline") {
+                navigateUp()
+            }
+            return
+        }
 
         callback(taskItem)
 
@@ -669,7 +677,17 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         "Upload error",
                         state.errorMessage,
                         positiveTitle = "Retry",
-                        negativeTitle = "Cancel"
+                        negativeTitle = "Continue offline",
+                        negativeCallback = {
+                            if (state.uploadType == UploadViewState.Companion.UploadType.imageUpload) {
+                                viewModel.offlineSignature = state.file?.absolutePath.toString()
+                                state.file?.let { viewModel.updateImagesPicked(state.file) }
+                            } else {
+                                viewModel.offlinePhotos.add(state.file?.absolutePath.toString())
+                                binding.canAccessBuildingContainer.signature.loadImage(state.file?.absolutePath)
+                                binding.signatureTwo.loadImage(state.file?.absolutePath)
+                            }
+                        }
                     ) {
                         val file = state.file ?: return@showDialog
                         val multipart = createMultipart(state.file)

@@ -91,9 +91,11 @@ object TasksDomain {
 
     data class SubmitTask(
         val taskId: String,
-        val updateTaskRequest: TasksDto.UpdateTaskRequest,
+        var updateTaskRequest: TasksDto.UpdateTaskRequest,
         val message: String,
-        val subitTaskRequest: TasksDto.SubmitTaskRequest
+        val subitTaskRequest: TasksDto.SubmitTaskRequest,
+        val offlinePhotos: List<String>? = null,
+        val offlineSignature: String? = null
     )
 
     data class TasksStatusesResponse(

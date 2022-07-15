@@ -120,7 +120,9 @@ fun TasksDomain.SubmitTask.entity(): TaskEntity.SubmitTask {
         updateTaskRequest = updateTaskRequest.entity(),
         taskId = taskId,
         message = message,
-        subitTaskRequest = subitTaskRequest.entity()
+        subitTaskRequest = subitTaskRequest.entity(),
+        offlinePhotos = offlinePhotos,
+        offlineSignature = offlineSignature
     )
 }
 

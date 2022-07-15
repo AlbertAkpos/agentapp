@@ -106,7 +106,9 @@ object TaskEntity {
         @SerializedName("taskId") val taskId: String,
         @SerializedName("UpdateTaskRequest") val updateTaskRequest: UpdateTaskRequest,
         @SerializedName("message") val message: String,
-        @SerializedName("subitTaskRequest") val subitTaskRequest: SubmitTaskRequest
+        @SerializedName("subitTaskRequest") val subitTaskRequest: SubmitTaskRequest,
+        @SerializedName("offlinePhotos") val offlinePhotos: List<String>? = null,
+        @SerializedName("offlineSignature") val offlineSignature: String? = null
     )
 
     data class SubmitTaskRequest(
