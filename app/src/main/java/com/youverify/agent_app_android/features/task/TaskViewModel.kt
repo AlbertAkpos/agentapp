@@ -115,7 +115,7 @@ class TaskViewModel @Inject constructor(
         supervisScope.launch(coroutineExceptionHandler) {
             startTaskState.postValue(SingleEvent(ResultState.Loading("Starting task...")))
 
-            currentTask?.let { repository.addTask(currentTask!!, taskId) } //TODO Remove this
+            currentTask?.let { repository.addTask(currentTask!!, agentId) } //TODO Remove this
 
             val startTaskResponse = async {
                 repository.startTask(taskId)
@@ -196,6 +196,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch(coroutineExceptionHandler) {
                 updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Loading()))
             // Update the task on local
+            currentTask?.let { repository.addTask(currentTask!!, agentId) }
             currentTask?.let { repository.updateTask(taskItem, currentTask!!, agentId) }
             // Update on remote
             val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)

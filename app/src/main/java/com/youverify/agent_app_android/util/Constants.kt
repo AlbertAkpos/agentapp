@@ -136,3 +136,8 @@ private fun negativeWhoConfirmedCandidateLiveHere(): List<String> = arrayListOf(
 )
 
 private fun cantLocateAddressReasons() = arrayListOf("Address does not exist", "Incorrect address")
+
+object TaskStatus {
+    const val started = "STARTED"
+    const val unasigned = "UNASSIGNED"
+}

@@ -38,10 +38,7 @@ import com.youverify.agent_app_android.features.customview.PaintView
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewModel
 import com.youverify.agent_app_android.features.verification.id.UploadViewState
-import com.youverify.agent_app_android.util.Constants
-import com.youverify.agent_app_android.util.Permissions
-import com.youverify.agent_app_android.util.ProgressLoader
-import com.youverify.agent_app_android.util.SingleEvent
+import com.youverify.agent_app_android.util.*
 import com.youverify.agent_app_android.util.extension.*
 import com.youverify.agent_app_android.util.helper.FileHelper
 import com.youverify.agent_app_android.util.helper.LocationHelper
@@ -522,12 +519,18 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             locationHelper.getCurrentLocation { latLng, address ->
 
                 Timber.d("Current location: $latLng $address")
-                binding.canAccessBuildingContainer.yesGeoTaginput.setText(
-                    address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
-                )
-                binding.noGeoTaginput.setText(
-                    address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
-                )
+                val locationAddress = "Location captured"  //address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
+
+                binding.canAccessBuildingContainer.yesGeoTaginput.setText(locationAddress)
+                binding.noGeoTaginput.setText(locationAddress)
+                val color = ContextCompat.getColor(requireContext(), R.color.colorDark)
+
+                binding.canAccessBuildingContainer.yesGeoTaglayout.setBackgroundColor(color)
+                binding.noGeoTaglayout.setBackgroundColor(color)
+
+                val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+                binding.canAccessBuildingContainer.yesGeoTaginput.setTextColor(whiteColor)
+                binding.noGeoTaginput.setTextColor(whiteColor)
 
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(latLong = latLng)
 
@@ -816,7 +819,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         candidateImage.loadImage(taskItem.candidate?.photo)
         candidateName.text = taskItem.candidate?.name
 
-        viewModel.startTask(taskItem.id)
+        //Only task is unasinged
+        if (taskItem.status == TaskStatus.unasigned) {
+            viewModel.startTask(taskItem.id)
+        }
 
     }
 
