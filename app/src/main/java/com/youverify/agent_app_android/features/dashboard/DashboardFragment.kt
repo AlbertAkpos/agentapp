@@ -11,6 +11,7 @@ import android.text.Html
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -67,7 +68,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         //if select period button is clicked, slide the bottom bar from beneath
         binding.selectPeriodBtn.setOnClickListener {
-            showBottomBar()
+            setupRangePickerDialog()
+            //showBottomBar()
         }
 
         return binding.root
@@ -176,15 +178,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun setupRangePickerDialog() {
-        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.dateRangePicker()
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+        builder.setTitleText("Select period")
+        builder.setTheme(R.style.MaterialCalendarTheme)
         val constraintsBuilder = CalendarConstraints.Builder()
         builder.setCalendarConstraints(constraintsBuilder.build())
-        val picker: MaterialDatePicker<*> = builder.build()
+        val picker= builder.build()
         getDateRange(picker)
         picker.show(parentFragmentManager, picker.toString())
     }
 
-    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
+    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<Pair<Long, Long>>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
             Timber.e(materialCalendarPicker.headerText)
         }
@@ -198,6 +202,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dialog.setContentView(R.layout.bottom_select_period_layout)
 
         val calendar = dialog.findViewById<CalendarView>(R.id.calendar_view)
+
         val applyButton = dialog.findViewById<Button>(R.id.button_apply)
         val drawerHandle = dialog.findViewById<View>(R.id.drawer_handle)
 
@@ -205,6 +210,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             dialog.dismiss()
             Toast.makeText(requireContext(), "Clicked Calendar", Toast.LENGTH_SHORT).show()
         }
+
+
 
         dialog.show()
         dialog.window?.setLayout(

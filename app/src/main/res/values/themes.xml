@@ -91,4 +91,10 @@
         <item name="cornerSize">10%</item>
         <item name="cornerFamily">rounded</item>
     </style>
+
+    <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <!-- just override the colors used in the default style -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
 </resources>
