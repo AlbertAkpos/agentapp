@@ -35,10 +35,13 @@ interface AgentService {
     suspend fun verifyId(@Body verifyIDRequest: VerifyIDRequest): Response<VerifyIdResponse>
 
     @PUT("agents/me/areas")
-    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest):  Response<PrefAreasResponse>
+    suspend fun saveAreas(@Body prefAreaRequest: PrefAreaRequest): Response<PrefAreasResponse>
 
     @GET("https://address-task.dev.svc.youverify.co/v1/agents/tasks/pending")
-    suspend fun getAgentTasks(@Query("state") state: String? = null, @Query("status") status: String? = null): TasksDto.AgentTasksResponse
+    suspend fun getAgentTasks(
+        @Query("state") state: String? = null,
+        @Query("status") status: String? = null
+    ): TasksDto.AgentTasksResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/start")
     suspend fun startTask(@Path("taskId") taskId: String): TasksDto.StartTaskResponse
@@ -50,16 +53,22 @@ interface AgentService {
     suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/submit")
-    suspend fun submitTask(@Body request: TasksDto.SubmitTaskRequest, @Path("taskId") taskId: String): TasksDto.GenericResponse
+    suspend fun submitTask(
+        @Body request: TasksDto.SubmitTaskRequest,
+        @Path("taskId") taskId: String
+    ): TasksDto.GenericResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{addressId}")
-    suspend fun updateTask(@Path("addressId") taskId: String, @Body updateTaskRequest: TasksDto.UpdateTaskRequest) : TasksDto.GenericResponse
+    suspend fun updateTask(
+        @Path("addressId") taskId: String,
+        @Body updateTaskRequest: TasksDto.UpdateTaskRequest
+    ): TasksDto.GenericResponse
 
     @PUT("https://agent.dev.svc.youverify.co/agents/me/fcmtoken")
     suspend fun submitFcmToken(@Body request: Dto.FcmToken): Dto.GenericResponse
 
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/status")
-    suspend fun getTaskStatuses() : TasksDto.TaskStatusesResponse
+    suspend fun getTaskStatuses(): TasksDto.TaskStatusesResponse
 
     @POST("auth/refresh")
     suspend fun refreshToken(@Body tokenRequest: TokenRequest): Response<TokenResponse>
@@ -69,4 +78,7 @@ interface AgentService {
 
     @PUT("agents/me/visibility")
     suspend fun updateAgentStatus(@Body request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse
+
+    @GET("https://address-task.dev.svc.youverify.co/v1/agents/{agentId}/tasks/analytics")
+    suspend fun fetchAgentAnalyticsOnTasks(@Path("agentId") agentId: String, @Query("startDate") startDate: String, @Query("endDate") endDate: String): Dto.AgentTasksAnalyticsResponse
 }

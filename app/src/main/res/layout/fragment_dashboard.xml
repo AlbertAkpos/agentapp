@@ -614,7 +614,7 @@
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
-                                    android:id="@+id/num_text"
+                                    android:id="@+id/completedTasks"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/margin_8"
@@ -636,7 +636,7 @@
                                     android:textStyle="normal"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/num_text" />
+                                    app:layout_constraintTop_toBottomOf="@+id/completedTasks" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -682,7 +682,7 @@
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
-                                    android:id="@+id/num_text2"
+                                    android:id="@+id/queriedTasks"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/margin_8"
@@ -704,7 +704,7 @@
                                     android:textStyle="normal"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/num_text2" />
+                                    app:layout_constraintTop_toBottomOf="@+id/queriedTasks" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"

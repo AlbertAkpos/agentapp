@@ -37,3 +37,17 @@ fun getTimePassedSinceDate(date: Long) = DateUtils.getRelativeTimeSpanString( da
 fun isOreoPlus(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
 fun isLollipopPlus(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+
+fun formatDate(date: Date, output: String = "yyyy-MM-dd"): String {
+    val formatter = SimpleDateFormat(output, Locale.ENGLISH)
+    return formatter.format(date)
+}
+
+fun getDateFromDayAgo(date: Date = Date(), daysAgo: Int): Date {
+    val calender = Calendar.getInstance()
+    calender.time = date
+    val negate = Math.negateExact(daysAgo)
+    Timber.d("Negate: $negate")
+    calender.add(Calendar.DAY_OF_YEAR, negate)
+    return calender.time
+}

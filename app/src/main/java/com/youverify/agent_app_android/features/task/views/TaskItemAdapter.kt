@@ -54,7 +54,7 @@ class TaskItemViewHolder(val binding : TaskItemBinding) : RecyclerView.ViewHolde
         }
         binding.status.text = taskItem.status?.toLowerCase()
         binding.status.setTextColor(viewColor)
-        binding.view.setBackgroundColor(ContextCompat.getColor(binding.root.context, viewColor))
+//        binding.view.setBackgroundColor(ContextCompat.getColor(binding.root.context, viewColor))
 
         binding.cardView.setOnClickListener {
             clickListener(taskItem)

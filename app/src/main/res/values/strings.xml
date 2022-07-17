@@ -180,7 +180,7 @@
     <string name="_0h_0m">0H : 0M</string>
     <string name="performance">Performance</string>
     <string name="statistics">Statistics</string>
-    <string name="_8th_july_2021_to_30th_august_2021"> <font color="#115766"><b>8th July 2021</b></font> to <font color="#115766"><b>30th August 2021</b></font></string>
+    <string name="_8th_july_2021_to_30th_august_2021"><![CDATA[ <font color=\'#115766\'><b>%s</b></font> to <font color=\'#115766\'><b>%s</b></font>]]></string>
     <string name="show_stats_from">Show stats from</string>
     <string name="select_period">Select period</string>
     <string name="day">Day</string>

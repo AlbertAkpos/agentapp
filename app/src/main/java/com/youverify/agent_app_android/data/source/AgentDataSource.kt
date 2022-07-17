@@ -49,4 +49,12 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
     override suspend fun updateAgentStatus(request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse {
         return service.updateAgentStatus(request)
     }
+
+    override suspend fun fetchAgentAnalyticsOnTasks(
+        agentId: String,
+        startDate: String,
+        endDate: String
+    ): Dto.AgentTasksAnalyticsResponse {
+        return service.fetchAgentAnalyticsOnTasks(agentId, startDate, endDate)
+    }
 }

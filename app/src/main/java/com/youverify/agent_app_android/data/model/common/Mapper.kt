@@ -9,3 +9,19 @@ fun Dto.UpdateAgentStatusResponse.map(): Domain.UpdateAgentResponse = Domain.Upd
     message = message,
     status = agent?.visibilityStatus
 )
+
+fun Dto.AgentTasksAnalyticsResponse.map(): Domain.AgentTasksAnalyticsResponse {
+    val anaylyticsData = Domain.AgentTasksAnalyticsData(
+        completed = data?.completed,
+        queried = data?.queried,
+        declined = data?.declined,
+        percentageInTat = data?.percentageInTat,
+        percentageOutOf = data?.percentageOutOf,
+        completionTimeInMilliseconds = data?.completionTimeInMilliseconds
+    )
+    return Domain.AgentTasksAnalyticsResponse(
+        success = success == true,
+        message = message ?: "",
+        analyticsData = anaylyticsData
+    )
+}

@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -24,9 +25,12 @@ import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.SharedPrefKeys
 import com.youverify.agent_app_android.util.extension.setColor
 import com.youverify.agent_app_android.util.extension.toast
+import com.youverify.agent_app_android.util.helper.formatDate
+import com.youverify.agent_app_android.util.helper.getDateFromDayAgo
 import com.youverify.agent_app_android.util.helper.isLollipopPlus
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -69,10 +73,30 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setObservers()
+
+        if (savedInstanceState == null) {
+            val todaysDate = Date()
+            val dateFrom7DaysAgo = getDateFromDayAgo(daysAgo = 7)
+            fetchAnalytics(dateFrom7DaysAgo, todaysDate)
+        }
+    }
+
+    private fun fetchAnalytics(startDate: Date, endDate: Date) {
+        val viewDateFormat = "dd MMMM yyyy"
+        val startInApiFormat  = formatDate(startDate)
+        val startInDomainFormat = formatDate(startDate, output = viewDateFormat)
+
+        val endDateApiFormat = formatDate(endDate)
+        val endDateDomainFormat = formatDate(endDate, output = viewDateFormat)
+        val durationString = getString(R.string._8th_july_2021_to_30th_august_2021, startInDomainFormat, endDateDomainFormat)
+        binding.durationText.setText(Html.fromHtml(durationString), TextView.BufferType.SPANNABLE)
+        viewModel.fetchAgentAnalytics(startInApiFormat, endDateApiFormat)
     }
 
     private fun setupUI()   {
@@ -103,6 +127,20 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 is ResultState.Error -> {
                     context?.toast(state.error)
                    viewModel.updateAgentVisibility(sharePreference.agentVisiblityStatus)
+                }
+            }
+        }
+
+        viewModel.analyticsDataState.observe(viewLifecycleOwner) {
+            val state = it ?: return@observe
+            when(state) {
+                is ResultState.Error -> {
+                    binding.completedTasks.text = "-- --"
+                    binding.queriedTasks.text = "-- --"
+                }
+                is ResultState.Success -> {
+                    binding.completedTask.text = state.data.completed.toString()
+                    binding.queriedTasks.text = state.data.queried.toString()
                 }
             }
         }
