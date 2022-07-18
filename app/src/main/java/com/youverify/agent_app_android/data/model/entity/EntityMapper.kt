@@ -97,6 +97,8 @@ fun TaskEntity.SubmitTask.domain(): TasksDomain.SubmitTask {
         subitTaskRequest = subitTaskRequest.dto(),
         taskId = taskId,
         updateTaskRequest = updateTaskRequest.dto(),
+        offlinePhotos = offlinePhotos,
+        offlineSignature = offlineSignature
     )
 }
 

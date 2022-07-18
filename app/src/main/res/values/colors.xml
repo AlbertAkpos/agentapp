@@ -81,6 +81,7 @@
     <color name="choice_bg">#EBEBEC</color>
     <color name="red_btn">#E02020</color>
     <color name="off_duty">#333333</color>
+    <color name="cyanide">#6C63FF</color>
 
 
 </resources>

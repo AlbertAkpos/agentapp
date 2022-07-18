@@ -7,9 +7,11 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -24,9 +26,13 @@ import com.youverify.agent_app_android.util.AgentStatus
 import com.youverify.agent_app_android.util.SharedPrefKeys
 import com.youverify.agent_app_android.util.extension.setColor
 import com.youverify.agent_app_android.util.extension.toast
+import com.youverify.agent_app_android.util.helper.formatDate
+import com.youverify.agent_app_android.util.helper.getDate
+import com.youverify.agent_app_android.util.helper.getDateFromDayAgo
 import com.youverify.agent_app_android.util.helper.isLollipopPlus
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -63,16 +69,37 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         //if select period button is clicked, slide the bottom bar from beneath
         binding.selectPeriodBtn.setOnClickListener {
-            showBottomBar()
+            setupRangePickerDialog()
+            //showBottomBar()
         }
 
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setObservers()
+
+        if (savedInstanceState == null) {
+            val todaysDate = Date()
+            val dateFrom7DaysAgo = getDateFromDayAgo(daysAgo = 7)
+            fetchAnalytics(dateFrom7DaysAgo, todaysDate)
+        }
+    }
+
+    private fun fetchAnalytics(startDate: Date, endDate: Date) {
+        val viewDateFormat = "dd MMMM yyyy"
+        val startInApiFormat  = formatDate(startDate)
+        val startInDomainFormat = formatDate(startDate, output = viewDateFormat)
+
+        val endDateApiFormat = formatDate(endDate)
+        val endDateDomainFormat = formatDate(endDate, output = viewDateFormat)
+        val durationString = getString(R.string._8th_july_2021_to_30th_august_2021, startInDomainFormat, endDateDomainFormat)
+        binding.durationText.setText(Html.fromHtml(durationString), TextView.BufferType.SPANNABLE)
+        viewModel.fetchAgentAnalytics(startInApiFormat, endDateApiFormat)
     }
 
     private fun setupUI()   {
@@ -107,6 +134,20 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 else -> {}
             }
         }
+
+        viewModel.analyticsDataState.observe(viewLifecycleOwner) {
+            val state = it ?: return@observe
+            when(state) {
+                is ResultState.Error -> {
+                    binding.completedTasks.text = "-- --"
+                    binding.queriedTasks.text = "-- --"
+                }
+                is ResultState.Success -> {
+                    binding.completedTask.text = state.data.completed.toString()
+                    binding.queriedTasks.text = state.data.queried.toString()
+                }
+            }
+        }
     }
 
     private fun updateStatus(state: String) {
@@ -139,16 +180,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun setupRangePickerDialog() {
-        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.dateRangePicker()
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+        builder.setTitleText("Select period")
+        builder.setTheme(R.style.MaterialCalendarTheme)
         val constraintsBuilder = CalendarConstraints.Builder()
         builder.setCalendarConstraints(constraintsBuilder.build())
-        val picker: MaterialDatePicker<*> = builder.build()
+        val picker= builder.build()
         getDateRange(picker)
         picker.show(parentFragmentManager, picker.toString())
     }
 
-    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out Any>) {
+    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<Pair<Long, Long>>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
+            val startDate = getDate(it.first)
+            val endDate = getDate(it.second)
+            fetchAnalytics(startDate, endDate)
             Timber.e(materialCalendarPicker.headerText)
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { }
@@ -161,6 +207,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dialog.setContentView(R.layout.bottom_select_period_layout)
 
         val calendar = dialog.findViewById<CalendarView>(R.id.calendar_view)
+
         val applyButton = dialog.findViewById<Button>(R.id.button_apply)
         val drawerHandle = dialog.findViewById<View>(R.id.drawer_handle)
 
@@ -168,6 +215,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             dialog.dismiss()
             Toast.makeText(requireContext(), "Clicked Calendar", Toast.LENGTH_SHORT).show()
         }
+
+
 
         dialog.show()
         dialog.window?.setLayout(

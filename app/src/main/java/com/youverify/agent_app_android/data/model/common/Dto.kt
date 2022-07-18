@@ -27,4 +27,42 @@ object Dto {
         /** Allowed values: Online, Offline */
         val status: String
     )
+
+    data class AgentTasksAnalyticsResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode", alternate = ["status_code"]) val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("data") val data: AgentTasksAnalytics?
+    )
+
+    data class AgentTasksAnalytics(
+        @SerializedName("completed")
+        val completed: Int?,
+        @SerializedName("queried")
+        val queried: Int?,
+        @SerializedName("declined")
+        val declined: Int?,
+        @SerializedName("avgCompletionTimeInMs")
+        val completionTimeInMilliseconds: Double?,
+        @SerializedName("percentInTAT")
+        val percentageInTat: Int?,
+        @SerializedName("percentOutOfTAT")
+        val percentageOutOf: Int?
+    )
+
+    data class AgentPerformanceAnalysisResponse(
+        @SerializedName("success") val success: Boolean?,
+        @SerializedName("statusCode", alternate = ["status_code"]) val statusCode: Int?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("data") val data: AgentTasksAnalytics?
+    )
+
+    data class AgentPerformanceAnalysisData(
+        @SerializedName("completed")
+        val completed: Int?,
+        @SerializedName("queried")
+        val queried: Int?,
+        @SerializedName("avgCompletionTimeInMs")
+        val completionTimeInMilliseconds: Double?,
+    )
 }

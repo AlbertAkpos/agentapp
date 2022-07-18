@@ -18,32 +18,40 @@ import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.databinding.FragmentNotificationsBinding
 import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.tasks.TasksDomain
+import com.youverify.agent_app_android.data.model.tasks.TasksDto
 import com.youverify.agent_app_android.databinding.LayoutSuccessBinding
 import com.youverify.agent_app_android.features.HomeActivity
 import com.youverify.agent_app_android.features.task.TaskViewModel
+import com.youverify.agent_app_android.features.verification.id.UploadViewModel
 import com.youverify.agent_app_android.util.ProgressLoader
 import com.youverify.agent_app_android.util.extension.inflateDialog
 import com.youverify.agent_app_android.util.extension.showDialog
+import com.youverify.agent_app_android.util.helper.createMultipart
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private lateinit var binding: FragmentNotificationsBinding
-    private  val notificationItemsAdapter: NotificationsAdapter by lazy { NotificationsAdapter() }
-    private lateinit var homeActivity : HomeActivity
+    private val notificationItemsAdapter: NotificationsAdapter by lazy { NotificationsAdapter() }
+    private lateinit var homeActivity: HomeActivity
 
     private val viewModel by viewModels<TaskViewModel>()
 
-    @Inject  lateinit var progressLoader: ProgressLoader
+    @Inject
+    lateinit var progressLoader: ProgressLoader
+
+    private val uploadViewModel by viewModels<UploadViewModel>()
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotificationsBinding.inflate(layoutInflater)
         homeActivity = requireActivity() as HomeActivity
@@ -76,7 +84,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
         viewModel.updateAndSubmitTaskState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
-            when(state) {
+            when (state) {
                 is ResultState.Loading -> progressLoader.show("Submitting task...")
                 is ResultState.Error -> {
                     progressLoader.hide()
@@ -88,17 +96,30 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                 }
             }
         }
+
+        uploadViewModel.imagesUploadState.observe(viewLifecycleOwner) {
+            val state = it.getContentIfNotHandled() ?: return@observe
+            when(state) {
+                is ResultState.Loading -> progressLoader.show("Uploading images...")
+                is ResultState.Error -> {
+                    progressLoader.hide()
+                    context?.showDialog(message = state.error)
+                }
+                is ResultState.Success -> progressLoader.hide()
+            }
+        }
     }
 
     private fun setupList() {
 
-        val swipeGesture = object : SwipeGesture(requireContext()){
+        val swipeGesture = object : SwipeGesture(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                when(direction){
+                when (direction) {
                     ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT -> {
                         notificationItemsAdapter.uploadItem(viewHolder.absoluteAdapterPosition)
-                        val notificationItem = (viewHolder as? NotificationsItemViewHolder)?.notificationItem
+                        val notificationItem =
+                            (viewHolder as? NotificationsItemViewHolder)?.notificationItem
                         notificationItem?.let { onItemSwiped(it) }
                     }
                 }
@@ -110,7 +131,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             ): Int {
                 if (viewHolder is NotificationsItemViewHolder) {
                     // Disables swipe on other views except for offline tasks
-                   if (viewHolder.binding.offlineView.visibility != View.VISIBLE) return 0
+                    if (viewHolder.binding.offlineView.visibility != View.VISIBLE) return 0
                 }
                 return super.getSwipeDirs(recyclerView, viewHolder)
             }
@@ -125,10 +146,59 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         val task = notificationItem.submitTask
         Timber.d("NotificationItem ==> $notificationItem")
         if (task != null) {
-            viewModel.updateAndSubmitTask(task, notificationItem)
+            when {
+                !task.offlinePhotos.isNullOrEmpty() -> {
+                  updateOfflinePhotos(task) {
+                      updateOfflinesSignature(task) { updateTask(task, notificationItem) }
+                  }
+                }
+
+                !task.offlineSignature.isNullOrEmpty() -> {
+                    updateOfflinesSignature(task) { updateTask(task, notificationItem) }
+                }
+
+                else -> updateTask(task, notificationItem)
+            }
         }
     }
 
+    private fun updateTask(task: TasksDomain.SubmitTask, notificationItem: NotificationItem) {
+        viewModel.updateAndSubmitTask(task, notificationItem)
+    }
+
+    private fun updateOfflinePhotos(task: TasksDomain.SubmitTask, _continue: (task: TasksDomain.SubmitTask) -> Unit) {
+        val parts = task.offlinePhotos?.map { createMultipart(File(it)) } ?: return
+        uploadViewModel.uploadImages(parts) {
+            val photos = arrayListOf<TasksDto.UpdateTaskPhoto>()
+            val current = task.updateTaskRequest.photos
+            val updatedPhotos = it.map { url ->
+                TasksDto.UpdateTaskPhoto(
+                    url = url,
+                    TasksDto.UpdateTaskLocation(
+                        task.updateTaskRequest.location.long,
+                        task.updateTaskRequest.location.lat
+                    )
+                )
+            }
+            photos.addAll(current)
+            photos.addAll(updatedPhotos)
+
+            task.updateTaskRequest = task.updateTaskRequest.copy(photos = photos)
+            _continue(task)
+        }
+    }
+
+    private fun updateOfflinesSignature(task: TasksDomain.SubmitTask, _continue: (task: TasksDomain.SubmitTask) -> Unit) {
+        if (!task.offlineSignature.isNullOrEmpty()) {
+            val list = listOf(createMultipart(File(task.offlineSignature)))
+            uploadViewModel.uploadImages(list) {
+                val url = it.firstOrNull().toString()
+                task.updateTaskRequest = task.updateTaskRequest.copy(agentSignature = url)
+                _continue(task)
+            }
+        } else _continue(task)
+
+    }
     private fun showMessage(message: String) {
         var dialog: MaterialDialog? = null
         val binding = LayoutSuccessBinding.inflate(layoutInflater)
@@ -148,7 +218,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         homeActivity.showNavBar()
     }
 
-    private fun showuploadSuccessDialog(){
+    private fun showuploadSuccessDialog() {
 //        val dialogBuilder =
 //            AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
 //        val view = layoutInflater.inflate(R.layout.upload_success_dialog, null)
@@ -169,7 +239,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private fun showToast(toast: Toast) {
         val customView: View = LayoutInflater.from(requireContext())
-            .inflate(R.layout.custom_toast, view?.findViewById<ConstraintLayout>(R.id.toast_wrapper))
+            .inflate(
+                R.layout.custom_toast,
+                view?.findViewById<ConstraintLayout>(R.id.toast_wrapper)
+            )
 
         toast.apply {
             duration = Toast.LENGTH_SHORT

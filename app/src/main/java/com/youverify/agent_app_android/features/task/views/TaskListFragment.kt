@@ -59,12 +59,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
     private val dashboardViewModel by activityViewModels<DashboardViewModel>()
 
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchAgentTasks()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
@@ -153,6 +147,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         val curvedBackground = if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
         binding.toolbarDropped.setBackgroundResource(curvedBackground)
+        binding.taskRecyclerView.visibleIf(check)
+        binding.noTasksMessage.visibleIf(!check)
     }
 
 
@@ -221,5 +217,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         dialog = context?.inflateBottomSheet(binding.root, cancelable = true)
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchAgentTasks()
     }
 }

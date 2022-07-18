@@ -14,12 +14,14 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.afollestad.materialdialogs.customview.customView
 import java.util.*
+import java.util.function.BinaryOperator
 
 fun Context.showDialog(
     title: String = "Error",
     message: String,
     positiveTitle: String = "ok",
     negativeTitle: String? = "",
+    dismiable: Boolean = false,
     negativeCallback: (() -> Unit)? = null,
     positiveCallback: (() -> Unit)? = null
 ) {
@@ -28,6 +30,7 @@ fun Context.showDialog(
         cornerRadius(5F)
         title(text = title)
         message(text = message)
+        cancelable(dismiable)
 
         positiveButton(text = positiveTitle) { dialog ->
            positiveCallback?.invoke()

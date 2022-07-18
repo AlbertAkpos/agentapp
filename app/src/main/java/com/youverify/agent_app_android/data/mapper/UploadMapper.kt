@@ -7,6 +7,7 @@ fun UploadImageResponse.map(): UploadDomain.UploadResponse {
     val fileUrls = data?.map { it.location }
     return UploadDomain.UploadResponse(
         urls = fileUrls,
-        message = message
+        message = message,
+        success =  success == true
     )
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.map
 import com.youverify.agent_app_android.data.mapper.entity
 import com.youverify.agent_app_android.data.mapper.map
 import com.youverify.agent_app_android.data.model.NotificationItem
+import com.youverify.agent_app_android.data.model.common.Domain
+import com.youverify.agent_app_android.data.model.common.map
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 import com.youverify.agent_app_android.data.model.entity.domain
 import com.youverify.agent_app_android.data.model.entity.entity
@@ -66,7 +68,7 @@ class TasksRepository @Inject constructor(
 
     override suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String) = withContext(dispatcher) {
         val entity = taskDomain.entity(taskItem, agentId)
-        Timber.d("Undating task with id: ${entity.taskId}")
+        Timber.d("Undating task with id: ${entity.taskId} Entity\n  $entity")
         localSource.updateTask(entity)
     }
 
@@ -86,5 +88,13 @@ class TasksRepository @Inject constructor(
 
     override fun fetchAgentId(): String {
         return preference.agentId
+    }
+
+    override suspend fun fetchAgentAnalyticsOnTasks(
+        agentId: String,
+        startDate: String,
+        endDate: String
+    ): Domain.AgentTasksAnalyticsResponse = withContext(dispatcher) {
+         source.fetchAgentAnalyticsOnTasks(agentId, startDate, endDate).map()
     }
 }
