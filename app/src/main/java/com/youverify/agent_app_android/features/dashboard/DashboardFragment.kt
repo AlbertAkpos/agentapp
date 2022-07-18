@@ -27,6 +27,7 @@ import com.youverify.agent_app_android.util.SharedPrefKeys
 import com.youverify.agent_app_android.util.extension.setColor
 import com.youverify.agent_app_android.util.extension.toast
 import com.youverify.agent_app_android.util.helper.formatDate
+import com.youverify.agent_app_android.util.helper.getDate
 import com.youverify.agent_app_android.util.helper.getDateFromDayAgo
 import com.youverify.agent_app_android.util.helper.isLollipopPlus
 import dagger.hilt.android.AndroidEntryPoint
@@ -190,6 +191,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun getDateRange(materialCalendarPicker: MaterialDatePicker<Pair<Long, Long>>) {
         materialCalendarPicker.addOnPositiveButtonClickListener {
+            val startDate = getDate(it.first)
+            val endDate = getDate(it.second)
+            fetchAnalytics(startDate, endDate)
             Timber.e(materialCalendarPicker.headerText)
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { }
