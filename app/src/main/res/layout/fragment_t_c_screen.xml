@@ -45,6 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:lineSpacingExtra="5dp"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:fontFamily="@font/br_sonoma_regular"
+            android:textSize="@dimen/text_14"
             android:text="@string/t_c_text" />
     </androidx.core.widget.NestedScrollView>
 
