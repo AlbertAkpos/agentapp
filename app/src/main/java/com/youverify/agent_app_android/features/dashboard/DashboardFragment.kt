@@ -104,6 +104,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     context?.toast(state.error)
                    viewModel.updateAgentVisibility(sharePreference.agentVisiblityStatus)
                 }
+                else -> {}
             }
         }
     }

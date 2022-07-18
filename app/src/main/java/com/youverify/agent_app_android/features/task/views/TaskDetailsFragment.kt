@@ -681,6 +681,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                     progressLoader.hide()
                    processImageUpload(state)
                 }
+                else -> {}
             }
         }
 
