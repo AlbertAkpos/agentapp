@@ -9,7 +9,8 @@ import com.youverify.agent_app_android.R
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
-abstract class SwipeGesture (context: Context): ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+abstract class SwipeGesture(context: Context) :
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     private val swipeBackgroundColor = ContextCompat.getColor(context, R.color.offlineTaskColor)
     private val swipeLabelColor = ContextCompat.getColor(context, R.color.white)
@@ -51,7 +52,7 @@ abstract class SwipeGesture (context: Context): ItemTouchHelper.SimpleCallback(0
             .decorate()
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
-    
+
 }
 
 

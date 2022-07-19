@@ -51,8 +51,10 @@ class TrainingFragment : Fragment() {
         val encodedToken = encodeString(AgentSharePreference(requireContext()).getString(SharedPrefKeys.REFRESH_TOKEN))
         val encodedAgentId = encodeString(AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_ID))
 
+        println("${BuildConfig.AGENT_TRAINING_PORTAL}?encodedData={\"token\":\"$encodedToken\", \"agentId\":\"$encodedAgentId\"}")
         webView.loadUrl("${BuildConfig.AGENT_TRAINING_PORTAL}?encodedData={\"token\":\"$encodedToken\", \"agentId\":\"$encodedAgentId\"}")
         webView.webViewClient = CustomWebViewClient(requireActivity())
+
 
         displayTrainingPortal()
     }

@@ -146,6 +146,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     binding.completedTask.text = state.data.completed.toString()
                     binding.queriedTasks.text = state.data.queried.toString()
                 }
+                else -> {}
             }
         }
     }

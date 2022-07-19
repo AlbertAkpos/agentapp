@@ -152,7 +152,9 @@
         <entry key="app/src/main/res/layout/fragment_t_c_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_task.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_task_details.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_terms_of_use.xml" value="0.2796875" />
         <entry key="app/src/main/res/layout/fragment_third_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_training.xml" value="0.2796875" />
         <entry key="app/src/main/res/layout/fragment_upload_passport.xml" value="0.2815989176432292" />
         <entry key="app/src/main/res/layout/fragment_verification_failed.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_verification_response.xml" value="0.2947916666666667" />
