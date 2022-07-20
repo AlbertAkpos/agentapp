@@ -79,6 +79,6 @@ interface AgentService {
     @PUT("agents/me/visibility")
     suspend fun updateAgentStatus(@Body request: Dto.UpdateAgentStatusRequest): Dto.UpdateAgentStatusResponse
 
-    @GET("https://address-task.dev.svc.youverify.co/v1/agents/{agentId}/tasks/analytics")
-    suspend fun fetchAgentAnalyticsOnTasks(@Path("agentId") agentId: String, @Query("startDate") startDate: String, @Query("endDate") endDate: String): Dto.AgentTasksAnalyticsResponse
+    @GET("https://address-task.dev.svc.youverify.co/v1/agents/me/tasks/analytics")
+    suspend fun fetchAgentAnalyticsOnTasks(@Query("startDate") startDate: String, @Query("endDate") endDate: String): Dto.AgentTasksAnalyticsResponse
 }
