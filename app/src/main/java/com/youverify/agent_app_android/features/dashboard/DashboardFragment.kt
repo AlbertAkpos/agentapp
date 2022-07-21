@@ -240,7 +240,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     binding.queriedTasks.text = "-- --"
                 }
                 is ResultState.Success -> {
-                    binding.thisWeekTextValue.text = state.data.completed.toString()
+                    binding.completedTasks.text = state.data.completed.toString()
                     binding.queriedTasks.text = state.data.queried.toString()
                 }
             }
