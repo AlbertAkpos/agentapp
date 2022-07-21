@@ -1,6 +1,8 @@
 package com.youverify.agent_app_android.features.dashboard
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.app.Application
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,9 +12,11 @@ import android.os.Looper
 import android.text.Html
 import android.view.*
 import android.widget.*
+import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
 import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.data.PieData
@@ -46,6 +50,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var isVerified: Boolean = false
     private var isTrained: Boolean = false
     private var prefAreasIsChosen: Boolean = false
+    private lateinit var dialog: AlertDialog
 
     private val viewModel by activityViewModels<DashboardViewModel>()
 
@@ -299,7 +304,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val check = state == AgentStatus.ONINE
         binding.agentVisibilitySwitch.isChecked = check
         binding.agentVisibilitySwitch.tag = state
-        val showText = if (check) "On duty" else "Off duty"
+        val showText = if (check) "Online" else "Offline"
         binding.agentVisibilitySwitch.text = showText
 
         binding.toolBar.setColor(check, R.color.colorPrimaryDark, R.color.off_duty)
@@ -313,6 +318,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         val curvedBackground =
             if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        val notifyIcon =
+            if (check) R.drawable.ic_bell_icon else R.drawable.ic_notify_off_duty
+        val dayBkg =
+            if (check) R.drawable.curved_button else R.drawable.curved_btn_inactive
+        binding.notificationIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), notifyIcon))
+        binding.daySelector.setBackgroundResource(dayBkg)
         binding.toolbarDropped.setBackgroundResource(curvedBackground)
     }
 
@@ -345,33 +356,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { }
         materialCalendarPicker.addOnCancelListener { }
-    }
-
-    private fun showBottomBar() {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.bottom_select_period_layout)
-
-        val calendar = dialog.findViewById<CalendarView>(R.id.calendar_view)
-
-        val applyButton = dialog.findViewById<Button>(R.id.button_apply)
-        val drawerHandle = dialog.findViewById<View>(R.id.drawer_handle)
-
-        applyButton.setOnClickListener {
-            dialog.dismiss()
-            Toast.makeText(requireContext(), "Clicked Calendar", Toast.LENGTH_SHORT).show()
-        }
-
-
-
-        dialog.show()
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.setGravity(Gravity.BOTTOM)
-        dialog.window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
     }
 
     private fun showFilterDialog() {
@@ -455,13 +439,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun showCompleteOnboardingDialog() {
-        val dialogBuilder =
+        dialog =
             AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog).create()
         val view = layoutInflater.inflate(R.layout.complete_onboarding_dialog, null)
         val trainingCheck = view.findViewById<CheckBox>(R.id.check_complete_training)
         val verifyIdCheck = view.findViewById<CheckBox>(R.id.check_verify_identity)
         val prefAreasCheck = view.findViewById<CheckBox>(R.id.check_select_areas)
-        dialogBuilder.setView(view)
+        dialog.setView(view)
 
         if (isTrained) {
             trainingCheck.isChecked = true
@@ -480,27 +464,25 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         trainingCheck.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_trainingFragment)
-            dialogBuilder.dismiss()
+            dialog.dismiss()
             homeActivity.removeNavBar()
         }
 
         verifyIdCheck.setOnClickListener {
-            dialogBuilder.dismiss()
+            dialog.dismiss()
             homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectIDFragment)
-
         }
 
         prefAreasCheck.setOnClickListener {
-            dialogBuilder.dismiss()
+            dialog.dismiss()
             homeActivity.removeNavBar()
             findNavController().navigate(R.id.action_dashboardFragment_to_selectAreasFragment)
-
         }
 
-        dialogBuilder.setCancelable(false)
-        dialogBuilder.show()
-        dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.show()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun showCompletedDialog(){
@@ -522,6 +504,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             showCompletedDialog()
         }else if (!verificationDone()){
             showCompleteOnboardingDialog()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (this::dialog.isInitialized && dialog.isShowing){
+            dialog.dismiss()
         }
     }
 }

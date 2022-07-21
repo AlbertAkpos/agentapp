@@ -16,9 +16,9 @@
     <string name="want_to_be_an_agent">Want to be an agent?</string>
     <string name="sign_up">Sign Up</string>
     <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
+    <string name="last_name">Surname</string>
     <string name="enter_first_name">Enter first name</string>
-    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_last_name">Enter surname</string>
     <string name="already_an_agent">Already an agent?</string>
     <string name="sign_in">Sign In</string>
     <string name="confirm_password">Confirm password</string>
@@ -147,7 +147,7 @@ We reserve the right to assume exclusive control of our defense in any matter su
     <string name="task">Task</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="accept">Accept</string>
-    <string name="on_duty">On duty</string>
+    <string name="on_duty">Online</string>
     <string name="basic">Basic</string>
     <string name="vibration">Vibration</string>
     <string name="google_map">Google map</string>
@@ -182,11 +182,11 @@ We reserve the right to assume exclusive control of our defense in any matter su
     <string name="completeprocess">We\'ve sent an email to verify your details. Please\nclick the link in your email to complete the\n sign-up process</string>
     <string name="complete_reset">We\'ve sent an email to reset your paassword.\nPlease click the link in your email to complete the\n process</string>
     <string name="complete_onboarding_process">Complete Onboarding Process</string>
-    <string name="perform_address_verifications">For your account to be activated so you can start earning money perform Address Verifications\.</string>
-    <string name="activation_text">Now that you’ve completed the Onboarding\nchecklist, your account will soon be \nactivated and a supervisor will reach out to \nyou.</string>
+    <string name="perform_address_verifications">For your account to be activated so you can start earning money, perform Address Verifications\.</string>
+    <string name="activation_text">Now that you’ve completed the Onboarding\nchecklist, your account will soon be \nactivated and a supervisor will reach out to you.</string>
     <string name="perform_address_verification">For your account to be activated so you can start earning\nmoney, perform Address Verifications</string>
     <string name="complete_training">Complete Training</string>
-    <string name="select_preffered_areas">Select Preffered Areas</string>
+    <string name="select_preffered_areas">Select Preferred Areas</string>
     <string name="verify_identity">Verify My Identity</string>
     <string name="select_identity_type">Select Identity Type</string>
     <string name="select">Select</string>
@@ -328,4 +328,7 @@ We reserve the right to assume exclusive control of our defense in any matter su
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="onboarding_checklist_completed">Onboarding Checklist Completed</string>
+    <string name="capture_my_location">Capture my location</string>
+    <string name="enter_additional_information">Enter additional information</string>
+    <string name="go_online">Go online to see available tasks for you to complete</string>
 </resources>

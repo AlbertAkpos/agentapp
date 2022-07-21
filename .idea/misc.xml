@@ -27,8 +27,10 @@
         <entry key="app/src/main/res/drawable/curved_bg_stats.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/curved_bg_task.xml" value="0.1405" />
         <entry key="app/src/main/res/drawable/curved_bg_task2.xml" value="0.1405" />
+        <entry key="app/src/main/res/drawable/curved_btn_inactive.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/curved_button.xml" value="0.2185" />
         <entry key="app/src/main/res/drawable/curved_button_dashboard.xml" value="0.2895" />
+        <entry key="app/src/main/res/drawable/curved_button_inactive.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/curved_button_outlined.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/curved_button_outlined_green.xml" value="0.1405" />
         <entry key="app/src/main/res/drawable/curved_button_outlined_red.xml" value="0.1405" />
