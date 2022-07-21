@@ -115,7 +115,7 @@ class TaskViewModel @Inject constructor(
         supervisScope.launch(coroutineExceptionHandler) {
             startTaskState.postValue(SingleEvent(ResultState.Loading("Starting task...")))
 
-            currentTask?.let { repository.addTask(currentTask!!, agentId) } //TODO Remove this
+//            currentTask?.let { repository.addTask(currentTask!!, agentId) } //TODO Remove this
 
             val startTaskResponse = async {
                 repository.startTask(taskId)

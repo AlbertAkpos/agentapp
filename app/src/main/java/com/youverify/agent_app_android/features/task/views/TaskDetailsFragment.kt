@@ -521,18 +521,23 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 Timber.d("Current location: $latLng $address")
                 val locationAddress = "Location captured"  //address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
 
-                binding.canAccessBuildingContainer.yesGeoTaginput.setText(locationAddress)
-                binding.noGeoTaginput.setText(locationAddress)
-                val color = ContextCompat.getColor(requireContext(), R.color.colorDark)
+                if (latLng != null) {
+                    binding.canAccessBuildingContainer.yesGeoTaginput.setText(locationAddress)
+                    binding.noGeoTaginput.setText(locationAddress)
+                    val color = ContextCompat.getColor(requireContext(), R.color.colorDark)
 
-                binding.canAccessBuildingContainer.yesGeoTaglayout.setBackgroundColor(color)
-                binding.noGeoTaglayout.setBackgroundColor(color)
+                    binding.canAccessBuildingContainer.yesGeoTaglayout.setBackgroundColor(color)
+                    binding.noGeoTaglayout.setBackgroundColor(color)
 
-                val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
-                binding.canAccessBuildingContainer.yesGeoTaginput.setTextColor(whiteColor)
-                binding.noGeoTaginput.setTextColor(whiteColor)
+                    val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+                    binding.canAccessBuildingContainer.yesGeoTaginput.setTextColor(whiteColor)
+                    binding.noGeoTaginput.setTextColor(whiteColor)
 
-                viewModel.taskAnswers = viewModel.taskAnswers.copy(latLong = latLng)
+                    viewModel.taskAnswers = viewModel.taskAnswers.copy(latLong = latLng)
+                } else {
+                    binding.canAccessBuildingContainer.yesGeoTaginput.setText("Capture failed")
+                    binding.noGeoTaginput.setText("Capture failed")
+                }
 
                 locationHelper.resetLocationCallback()
                 // Remove location callback on getting location
