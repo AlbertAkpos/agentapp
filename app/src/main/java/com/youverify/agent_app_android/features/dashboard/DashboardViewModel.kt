@@ -86,7 +86,10 @@ class DashboardViewModel @Inject constructor(
                 val previousCompleted = previous.data.completed
                 val currentCompleted = current.data.completed
                 if (previousCompleted != null && currentCompleted != null) {
-                    val percentageChange = ((previousCompleted - currentCompleted) / previousCompleted) * 100
+                    val percentageChange =
+                        kotlin.runCatching {
+                            ((previousCompleted - currentCompleted) / previousCompleted) * 100
+                        }.getOrDefault(0)
                     value = percentageChange
                 }
             }
