@@ -902,7 +902,7 @@
                     android:paddingEnd="@dimen/margin_16"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
-                    android:hint="@string/enter_landmark"
+                    android:hint="@string/enter_additional_information"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"
                     tools:ignore="LabelFor" />

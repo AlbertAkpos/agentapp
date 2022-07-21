@@ -1,13 +1,13 @@
 package com.youverify.agent_app_android.features.task.views
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.View
+import android.view.WindowManager
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,17 +18,17 @@ import com.ncorti.slidetoact.SlideToActView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.data.model.signup.State
-import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.databinding.BottomFilterLayoutBinding
+import com.youverify.agent_app_android.databinding.FragmentTaskBinding
 import com.youverify.agent_app_android.databinding.TaskAssignedDialogBinding
 import com.youverify.agent_app_android.features.dashboard.DashboardViewModel
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.AgentStatus
-import com.youverify.agent_app_android.util.AgentTaskStatus
 import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.SharedPrefKeys
 import com.youverify.agent_app_android.util.extension.*
 import com.youverify.agent_app_android.util.helper.isLollipopPlus
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,7 +78,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
             val currentStatus = binding.dutySwitch.tag as? String
             Timber.d("Tag ==> $currentStatus")
             currentStatus?.let {
-                val status = if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
+                val status =
+                    if (currentStatus == AgentStatus.ONINE) AgentStatus.OFFLINE else AgentStatus.ONINE
                 dashboardViewModel.updateAgentStatus(status)
             }
 
@@ -99,7 +100,14 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
-                    binding.noTasksMessage.visibleIf(state.data.isNullOrEmpty())
+                    if (state.data.isEmpty()) {
+                        binding.noTasksMessage.visibleIf(state.data.isEmpty())
+                        binding.gifImageView.visibleIf(state.data.isEmpty())
+                        binding.noTasksMessage.text = "Looks like there is no task for \n" +
+                                "you now.\n" +
+                                "\n" +
+                                "Enjoy the break ${AgentSharePreference(requireContext()).getString(SharedPrefKeys.FIRST_NAME)}"
+                    }
                     adapter.setItemsList(state.data)
                 }
             }
@@ -107,7 +115,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
 
         viewModel.filterParamsState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
-            when(state) {
+            when (state) {
                 is ResultState.Loading -> progressLoader.show("Fetching filter params...")
                 is ResultState.Error -> {
                     progressLoader.hide()
@@ -115,7 +123,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
-                    showBottomBar(state.data.first, state.data.second.data ?: emptyList()) { selectedState, status ->
+                    showBottomBar(
+                        state.data.first,
+                        state.data.second.data ?: emptyList()
+                    ) { selectedState, status ->
                         viewModel.fetchAgentTasks(selectedState, status)
                     }
                 }
@@ -133,7 +144,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         val check = state == AgentStatus.ONINE
         binding.dutySwitch.isChecked = check
         binding.dutySwitch.tag = state
-        val showText = if (check) "On duty" else "Off duty"
+
+        val showText: String
+        if (check) {
+            showText = "Online"
+            binding.noTasksMessage.visibility = View.GONE
+            binding.gifImageView.visibility = View.GONE
+        } else {
+            showText = "Offline"
+            binding.noTasksMessage.visibility = View.VISIBLE
+            binding.gifImageView.visibility = View.VISIBLE
+        }
         binding.dutySwitch.text = showText
 
         binding.toolBar.setColor(check, R.color.colorPrimaryDark, R.color.off_duty)
@@ -145,10 +166,19 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
             window?.statusBarColor = ContextCompat.getColor(requireContext(), color)
         }
 
-        val curvedBackground = if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        val curvedBackground =
+            if (check) R.drawable.curved_appbar else R.drawable.curved_appbar_inactive
+        val notifyIcon =
+            if (check) R.drawable.ic_bell_icon else R.drawable.ic_notify_off_duty
+        val filterBkg =
+            if (check) R.drawable.curved_button_outlined else R.drawable.curved_button_inactive
+        val dayBkg =
+            if (check) R.drawable.curved_button else R.drawable.curved_btn_inactive
         binding.toolbarDropped.setBackgroundResource(curvedBackground)
+        binding.notificationIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), notifyIcon))
+        binding.filterBtn.setBackgroundResource(filterBkg)
+        binding.daySelector.setBackgroundResource(dayBkg)
         binding.taskRecyclerView.visibleIf(check)
-        binding.noTasksMessage.visibleIf(!check)
     }
 
 
@@ -197,13 +227,29 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
         dialogBuilder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun showBottomBar(state: List<State>, statuses: List<String>, callback: (state: String?, status: String?) -> Unit) {
+    private fun showBottomBar(
+        state: List<State>,
+        statuses: List<String>,
+        callback: (state: String?, status: String?) -> Unit
+    ) {
         var dialog: MaterialDialog? = null
         val binding = BottomFilterLayoutBinding.inflate(layoutInflater)
 
-        binding.selectStateInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, state))
+        binding.selectStateInput.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                state
+            )
+        )
 
-        binding.selectStatusInput.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, statuses))
+        binding.selectStatusInput.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                statuses
+            )
+        )
 
         binding.buttonApply.setOnClickListener {
             val stateSeleted = binding.selectStateInput.text.toString()
