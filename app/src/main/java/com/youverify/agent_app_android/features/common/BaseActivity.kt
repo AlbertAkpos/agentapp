@@ -18,6 +18,6 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     abstract fun getStartDesination(): Int
-
     abstract val navigationId: Int
+
 }

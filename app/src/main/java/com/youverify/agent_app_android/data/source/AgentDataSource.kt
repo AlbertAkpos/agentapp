@@ -55,6 +55,6 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
         startDate: String,
         endDate: String
     ): Dto.AgentTasksAnalyticsResponse {
-        return service.fetchAgentAnalyticsOnTasks(agentId, startDate, endDate)
+        return service.fetchAgentAnalyticsOnTasks(startDate, endDate)
     }
 }

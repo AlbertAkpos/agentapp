@@ -151,4 +151,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:21.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
 
+    //Pie chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
 }
