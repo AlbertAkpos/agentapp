@@ -1,6 +1,8 @@
 package com.youverify.agent_app_android.features.signup
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -9,10 +11,12 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -76,27 +80,27 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             lastNameLayout.isErrorEnabled = false
         }
 
-        binding.phoneNumField.setOnClickListener{
+        binding.phoneNumField.setOnClickListener {
             phoneLayout.error = null
             phoneLayout.isErrorEnabled = false
         }
 
-        binding.emailField.setOnClickListener{
+        binding.emailField.setOnClickListener {
             emailLayout.error = null
             emailLayout.isErrorEnabled = false
         }
 
-        binding.passwordField.setOnClickListener{
+        binding.passwordField.setOnClickListener {
             passLayout.error = null
             passLayout.isErrorEnabled = false
         }
 
-        binding.confirmPassField.setOnClickListener{
+        binding.confirmPassField.setOnClickListener {
             confirmPassLayout.error = null
             confirmPassLayout.isErrorEnabled = false
         }
 
-        binding.stateOfResidenceInput.setOnClickListener{
+        binding.stateOfResidenceInput.setOnClickListener {
             stateOfResLayout.error = null
             stateOfResLayout.isErrorEnabled = false
         }
@@ -188,49 +192,23 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         confirmPassLayout.editText?.text?.clear()
     }
 
-    private fun validateFirstName(): Boolean {
-        val value = firstNameLayout.editText?.text.toString().trim()
-
+    private fun validateName(value: String, layout: TextInputLayout): Boolean {
         return when {
             value.isEmpty() -> {
-                firstNameLayout.error = "Field cannot be empty"
-                firstNameLayout.errorIconDrawable =
+                layout.error = "Field cannot be empty"
+                layout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             !value.matches("^[a-zA-Z]+(([',.\\-][a-zA-Z])?[a-zA-Z]*)*\$".toRegex()) -> {
-                firstNameLayout.error = "Name cannot contain number or special character"
-                firstNameLayout.errorIconDrawable =
+                layout.error = "Name cannot contain number or special character"
+                layout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
             else -> {
-                firstNameLayout.error = null
-                firstNameLayout.isErrorEnabled = false
-                true
-            }
-        }
-    }
-
-    private fun validateLastName(): Boolean {
-        val value = lastNameLayout.editText?.text.toString().trim()
-
-        return when {
-            value.isEmpty() -> {
-                lastNameLayout.error = "Field cannot be empty"
-                lastNameLayout.errorIconDrawable =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-                false
-            }
-            !value.matches("^[a-zA-Z]+(([',.\\-][a-zA-Z])?[a-zA-Z]*)*\$".toRegex()) -> {
-                lastNameLayout.error = "Name contains invalid characters or whitespaces"
-                lastNameLayout.errorIconDrawable =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-                false
-            }
-            else -> {
-                lastNameLayout.error = null
-                lastNameLayout.isErrorEnabled = false
+                layout.error = null
+                layout.isErrorEnabled = false
                 true
             }
         }
@@ -238,17 +216,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun validatePhone(): Boolean {
         val value = phoneLayout.editText?.text.toString().trim()
-        val checkSpaces = "\\A\\w{1,11}\\z"
 
         return when {
             value.isEmpty() -> {
                 phoneLayout.error = "Field cannot be empty"
-                phoneLayout.errorIconDrawable =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-                false
-            }
-            !value.matches(checkSpaces.toRegex()) -> {
-                phoneLayout.error = "No whitespaces are allowed!"
                 phoneLayout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
@@ -259,7 +230,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
                 false
             }
-            !value.matches("^([0]{1})[0-9]{10}\$".toRegex()) -> {
+            !value.matches("^([0])[0-9]{10}\$".toRegex()) -> {
                 phoneLayout.error = "Invalid phone number"
                 phoneLayout.errorIconDrawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
@@ -338,21 +309,25 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun inputsIsValid(): Boolean {
+        val firstName = firstNameLayout.editText?.text.toString().trim()
+        val lastName = lastNameLayout.editText?.text.toString().trim()
         val password = passLayout.editText?.text.toString().trim()
         val confirmPassword = confirmPassLayout.editText?.text.toString().trim()
 
-        validateFirstName()
-        validateLastName()
+        validateName(firstName, firstNameLayout)
+        validateName(lastName, lastNameLayout)
         validatePhone()
         validateEmail()
         validateStateOfResidence()
         validatePassword(password, passLayout)
         validatePassword(confirmPassword, confirmPassLayout)
 
-        return if (validateFirstName() && validateLastName()
+        return if (validateName(firstName, firstNameLayout)
+            && validateName(lastName, lastNameLayout)
             && validatePhone() && validateEmail() &&
             validateStateOfResidence() && validatePassword(password, passLayout)
-            && validatePassword(confirmPassword, confirmPassLayout)) {
+            && validatePassword(confirmPassword, confirmPassLayout)
+        ) {
             if (password == confirmPassword) {
                 confirmPassLayout.error = null
                 confirmPassLayout.isErrorEnabled = false
@@ -372,7 +347,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     //   call to api service to sign up the user
     private fun signUp() {
         if (inputsIsValid()) {
-            val fieldPartnerId = "628df5053fad01748fdee367"
+//            val fieldPartnerId = "628df5053fad01748fdee367"
+            val fieldPartnerId = "62b18a1b81442b7d587f2e0c"
             val signUpRequest = SignUpRequest(
                 firstName = firstNameLayout.editText?.text.toString().trim(),
                 lastName = lastNameLayout.editText?.text.toString().trim(),

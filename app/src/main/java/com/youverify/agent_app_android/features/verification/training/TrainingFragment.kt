@@ -1,15 +1,22 @@
 package com.youverify.agent_app_android.features.verification.training
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Base64.encodeToString
+import java.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.youverify.agent_app_android.BuildConfig
 import com.youverify.agent_app_android.databinding.FragmentTrainingBinding
 import com.youverify.agent_app_android.features.HomeActivity
+import com.youverify.agent_app_android.util.AgentSharePreference
+import com.youverify.agent_app_android.util.SharedPrefKeys
 
 class TrainingFragment : Fragment() {
 
@@ -27,34 +34,47 @@ class TrainingFragment : Fragment() {
         homeActivity = requireActivity() as HomeActivity
         webView = binding.webView
 
-        val webSettings = webView.settings
-        true.also { webSettings.javaScriptEnabled = it }
-
-        //webView performance improve
-        webView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-        webView.settings.domStorageEnabled = true
-        webView.settings.setAppCacheEnabled(true)
-        webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        webView.settings.builtInZoomControls = true
-        webView.settings.displayZoomControls = false
-
-        webSettings.domStorageEnabled = true
-        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-        webSettings.useWideViewPort = true
-        webSettings.savePassword = true
-        webSettings.saveFormData = true
-        webSettings.setEnableSmoothTransition(true)
-
-        webView.loadUrl("https://agent-training.dev.youverify.co/")
-        webView.webViewClient = WebViewClient()
-
-        displayTrainingPortal()
+        configureWebView()
 
         return binding.root
     }
 
+
+    private fun configureWebView(){
+        val webSettings = webView.settings
+        true.also {
+            webSettings.javaScriptEnabled = it
+            webSettings.javaScriptCanOpenWindowsAutomatically = it
+            webSettings.domStorageEnabled = it
+        }
+
+        val encodedToken = encodeString(AgentSharePreference(requireContext()).getString(SharedPrefKeys.REFRESH_TOKEN))
+        val encodedAgentId = encodeString(AgentSharePreference(requireContext()).getString(SharedPrefKeys.AGENT_ID))
+
+        println("${BuildConfig.AGENT_TRAINING_PORTAL}?encodedData={\"token\":\"$encodedToken\", \"agentId\":\"$encodedAgentId\"}")
+        webView.loadUrl("${BuildConfig.AGENT_TRAINING_PORTAL}?encodedData={\"token\":\"$encodedToken\", \"agentId\":\"$encodedAgentId\"}")
+        webView.webViewClient = CustomWebViewClient(requireActivity())
+
+
+        displayTrainingPortal()
+    }
+
+    class CustomWebViewClient(private val activity: Activity): WebViewClient(){
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return false
+        }
+    }
+
+
     private fun displayTrainingPortal(){
        if (webView.isFocused && webView.canGoBack()) webView.goBack()
+    }
+
+    private fun encodeString(value: String): String {
+        return Base64.getEncoder().encodeToString(value.toByteArray())
     }
 
     override fun onStop() {

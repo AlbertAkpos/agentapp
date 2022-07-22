@@ -130,7 +130,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_14"
-                android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="@dimen/margin_10"
                 android:fontFamily="@font/br_sonoma_regular"
                 android:textColor="@color/createNewPassTextColor"
@@ -138,7 +137,8 @@
                 android:textStyle="normal"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
                 app:layout_constraintTop_toBottomOf="@id/candidate_name"
-                tools:text="13, Bishop Street, Illupeju, Lagos" />
+                tools:text="13, Bishop Street, Illupeju, Lagos"
+                app:drawableStartCompat="@drawable/ic_location" />
 
 
             <TextView
@@ -284,7 +284,7 @@
                         android:background="@color/white"
                         android:clickable="false"
                         android:gravity="center"
-                        android:text="Yes" />
+                        android:text="@string/yes" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -315,7 +315,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="No" />
+                        android:text="@string/no" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -422,7 +422,8 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/dotted_background"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        android:contentDescription="@string/photos_gallery" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/noImageList"
@@ -473,7 +474,7 @@
                         android:focusable="false"
                         android:textAlignment="center"
                         android:fontFamily="@font/br_sonoma_regular"
-                        android:hint="Capture my location"
+                        android:hint="@string/capture_my_location"
                         android:inputType="none"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
@@ -498,10 +499,10 @@
                     android:layout_marginTop="@dimen/sm"
                     android:fontFamily="@font/br_sonoma_regular"
                     android:inputType="none"
-                    android:text="Signature"
+                    android:text="@string/signature"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_13"
-                    android:textStyle="bold"
+                    android:textStyle="normal"
                     tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
                 <RelativeLayout
@@ -520,7 +521,8 @@
                         android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:clickable="false"
-                        android:src="@drawable/ic_signature" />
+                        android:src="@drawable/ic_signature"
+                        android:contentDescription="@string/signature" />
                 </RelativeLayout>
 
 
@@ -564,7 +566,8 @@
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="@dimen/text_14"
-                        tools:ignore="LabelFor" />
+                        tools:ignore="LabelFor"
+                        android:autofillHints="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -603,13 +606,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/br_sonoma_regular"
-                        android:hint="Additional information"
+                        android:hint="@string/additional_information"
                         android:inputType="textCapSentences"
                         android:paddingStart="@dimen/margin_16"
                         android:paddingEnd="@dimen/margin_16"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="@dimen/text_14"
-                        tools:ignore="LabelFor" />
+                        tools:ignore="LabelFor"
+                        android:autofillHints="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -671,7 +675,7 @@
                         android:fontFamily="@font/br_sonoma_regular"
                         android:inputType="none"
                         android:padding="@dimen/padding_16"
-                        android:text="Can you access the building?"
+                        android:text="@string/can_you_access_the_building"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/text_13"
                         android:textStyle="bold"
@@ -714,7 +718,7 @@
                             android:background="@color/white"
                             android:clickable="false"
                             android:gravity="center"
-                            android:text="Yes" />
+                            android:text="@string/yes" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -745,7 +749,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="No" />
+                            android:text="@string/no" />
 
                     </com.google.android.material.card.MaterialCardView>
 

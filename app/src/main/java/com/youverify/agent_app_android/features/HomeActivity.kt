@@ -13,7 +13,6 @@ import com.google.android.material.navigation.NavigationBarView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenRequest
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
-import com.youverify.agent_app_android.features.login.LoginViewState
 import com.youverify.agent_app_android.features.verification.reset_token.TokenViewModel
 import com.youverify.agent_app_android.features.verification.reset_token.TokenViewState
 import com.youverify.agent_app_android.util.*
@@ -73,16 +72,18 @@ class HomeActivity : AppCompatActivity() {
                 when (it) {
                     is TokenViewState.Loading -> {
                         //Its best the user doesnt know
-                       // progressLoader.show(message = "Please wait...")
                     }
                     is TokenViewState.Success -> {
-                       // progressLoader.hide()
+                        AgentSharePreference(this@HomeActivity).setString(
+                            SharedPrefKeys.REFRESH_TOKEN,
+                            it.tokenResponse?.data?.refreshToken!!
+                        )
+                        AgentSharePreference(this@HomeActivity).setString(
+                            SharedPrefKeys.TOKEN,
+                            it.tokenResponse.data.accessToken
+                        )
                     }
-                    is TokenViewState.Failure -> {
-                        //progressLoader.hide()
-//                        Toast.makeText(this@HomeActivity, it.errorMessage, Toast.LENGTH_LONG)
-//                            .show()
-                    }
+                    is TokenViewState.Failure -> {}
                     else -> {}
                 }
             }

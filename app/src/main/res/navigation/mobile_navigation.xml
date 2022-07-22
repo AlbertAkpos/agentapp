@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_trainingFragment"
             app:destination="@id/trainingFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_termsOfUseFragment"
+            app:destination="@id/termsOfUseFragment" />
     </fragment>
 
     <fragment
@@ -175,6 +178,15 @@
         <action
             android:id="@+id/action_trainingFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/termsOfUseFragment"
+        android:name="com.youverify.agent_app_android.features.settings.TermsOfUseFragment"
+        android:label="fragment_privacy_and_terms"
+        tools:layout="@layout/fragment_privacy_and_terms" >
+        <argument
+            android:name="value"
+            app:argType="com.youverify.agent_app_android.data.model.settings.TermsOrPrivacy" />
     </fragment>
 
 

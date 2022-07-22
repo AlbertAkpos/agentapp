@@ -418,6 +418,10 @@
                 android:background="@color/viewBackgroundColor"
                 app:endIconTint="@null"
                 app:hintEnabled="false"
+                app:boxCornerRadiusBottomEnd="5dp"
+                app:boxCornerRadiusBottomStart="5dp"
+                app:boxCornerRadiusTopEnd="5dp"
+                app:boxCornerRadiusTopStart="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/get_tag_text"
                 app:layout_constraintTop_toBottomOf="@+id/get_tag_text"
@@ -435,7 +439,9 @@
                     android:paddingEnd="@dimen/margin_16"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="@dimen/text_14"
-                    tools:ignore="LabelFor" />
+                    android:focusable="false"
+                    android:clickable="true"
+                    tools:ignore="KeyboardInaccessibleWidget,LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -524,7 +530,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/br_sonoma_regular"
-                    android:hint="@string/enter_landmark"
+                    android:hint="@string/enter_additional_information"
                     android:inputType="none"
                     android:paddingStart="@dimen/margin_16"
                     android:paddingEnd="@dimen/margin_16"

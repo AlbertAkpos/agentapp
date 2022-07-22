@@ -30,6 +30,7 @@ import com.youverify.agent_app_android.data.model.verification.id.VerifyIDReques
 import com.youverify.agent_app_android.databinding.FragmentUploadImageBinding
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.ProgressLoader
+import com.youverify.agent_app_android.util.SharedPrefKeys
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -252,6 +253,7 @@ class UploadImageFragment : Fragment(R.layout.fragment_upload_image) {
     private fun passUploadData(uploadResponse: UploadImageResponse?) {
         val verificationDetails : VerifyIDRequest = args.verifyIdRequest
         verificationDetails.imageUrl = uploadResponse?.data?.get(0)?.location ?: ""
+        AgentSharePreference(requireContext()).setString(SharedPrefKeys.IMG_URL, uploadResponse?.data?.get(0)?.location!!)
 
         submitIdInfo(verificationDetails)
     }

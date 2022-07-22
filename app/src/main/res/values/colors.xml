@@ -81,6 +81,8 @@
     <color name="choice_bg">#EBEBEC</color>
     <color name="red_btn">#E02020</color>
     <color name="off_duty">#333333</color>
+    <color name="off_duty_opaque">#767478</color>
+    <color name="button_border_color">#979797</color>
     <color name="cyanide">#6C63FF</color>
 
 

@@ -1,12 +1,16 @@
 package com.youverify.agent_app_android.features.profile
 
 import android.annotation.SuppressLint
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.FragmentProfileBinding
 import com.youverify.agent_app_android.features.HomeActivity
@@ -17,6 +21,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var homeActivity : HomeActivity
+    private lateinit var profileImage : ImageView
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -25,6 +30,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ): View{
         binding = FragmentProfileBinding.inflate(layoutInflater)
         homeActivity = requireActivity() as HomeActivity
+        profileImage = binding.profileImage
 
         return binding.root
     }
@@ -51,5 +57,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.tvEmail.text = email
         binding.tvPhone.text = phone
         binding.tvAddress.text = address
+        loadProfileImage(AgentSharePreference(requireContext()).getString(SharedPrefKeys.IMG_URL))
+    }
+
+    private fun loadProfileImage(imageUrl: String){
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .apply(RequestOptions.circleCropTransform())
+            .into(profileImage)
     }
 }

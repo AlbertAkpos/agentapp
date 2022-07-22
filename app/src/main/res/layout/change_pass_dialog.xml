@@ -23,6 +23,19 @@
             android:paddingBottom="8dp">
 
 
+<!--            <com.airbnb.lottie.LottieAnimationView-->
+<!--                android:id="@+id/email_img"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:layout_marginTop="@dimen/margin_24"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:lottie_autoPlay="true"-->
+<!--                app:lottie_fileName="success-icon.json"-->
+<!--                app:lottie_loop="true" />-->
+
                 <ImageView
                     android:id="@+id/email_img"
                     android:layout_width="wrap_content"

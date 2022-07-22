@@ -67,8 +67,10 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
     }
 
     private fun configureUI() {
-        dateOfBirth.visibility = View.GONE
-        reference.visibility = View.GONE
+        with(binding){
+            dateOfBirthLayout.visibility = View.GONE
+            layoutEnterBvn.visibility = View.GONE
+        }
 
         idTypeEditText.setOnClickListener {
             idTypeEditText.showDropDown()
@@ -78,6 +80,12 @@ class SelectIDFragment : Fragment(R.layout.fragment_select_id) {
             override fun afterTextChanged(s: Editable?) {
                 dateOfBirth.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
                 reference.visibleIf(!idTypeLayout.editText?.text.isNullOrEmpty())
+
+                when(val chosenId = idTypeEditText.text.toString()){
+                    "DRIVERS_LICENSE" -> reference.editText?.hint = "Enter license number"
+                    "INTERNATIONAL_PASSPORT" -> reference.editText?.hint = "Enter passport number"
+                    else -> reference.editText?.hint = "Enter $chosenId"
+                }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
