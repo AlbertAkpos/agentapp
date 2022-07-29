@@ -38,7 +38,7 @@ public class PaintView extends View {
     private void init(){
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(6);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
         path = new Path();

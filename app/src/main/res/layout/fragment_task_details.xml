@@ -519,6 +519,7 @@
                         android:id="@+id/signatureTwo"
                         android:layout_width="100dp"
                         android:layout_height="60dp"
+                        android:scaleType="centerInside"
                         android:layout_centerInParent="true"
                         android:clickable="false"
                         android:src="@drawable/ic_signature"

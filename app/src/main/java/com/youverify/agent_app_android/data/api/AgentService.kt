@@ -50,7 +50,7 @@ interface AgentService {
     suspend fun getRejectionMessages(): TasksDto.RejectionMessagesResponse
 
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/submit")
-    suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse
+    suspend fun getSubmissionMessages(@Query("verificationType") verificationType: String): TasksDto.SubmissionMessagesResponse
 
     @PUT("https://address-task.dev.svc.youverify.co/v1/tasks/{taskId}/submit")
     suspend fun submitTask(

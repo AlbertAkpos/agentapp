@@ -22,8 +22,8 @@ class AgentDataSource @Inject constructor (private val service: AgentService, pr
         return service.getRejectionMessages()
     }
 
-    override suspend fun getSubmissionMessages(): TasksDto.SubmissionMessagesResponse {
-        return service.getSubmissionMessages()
+    override suspend fun getSubmissionMessages(verificationType: String): TasksDto.SubmissionMessagesResponse {
+        return service.getSubmissionMessages(verificationType)
     }
 
     override suspend fun submitTask(submitRequest: TasksDto.SubmitTaskRequest, taskId: String): TasksDto.GenericResponse {

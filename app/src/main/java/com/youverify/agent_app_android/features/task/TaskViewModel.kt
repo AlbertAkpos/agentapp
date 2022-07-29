@@ -104,7 +104,7 @@ class TaskViewModel @Inject constructor(
     /**
      * startTasks calls several endpoints
      */
-    fun startTask(taskId: String) {
+    fun startTask(taskId: String, verificationType: String) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
@@ -121,24 +121,19 @@ class TaskViewModel @Inject constructor(
                 repository.startTask(taskId)
             }
 
-            val rejectionMessagesResponse = async {
-                repository.getRejectionMessages()
-            }
+
 
             val submissionMessagesResponse = async {
-                repository.getSubmissionMessages()
+                repository.getSubmissionMessages(verificationType)
             }
-
-            // Handle rejectionMessages response
-            val rejectionData = rejectionMessagesResponse.await()
-            rejectionMessages.clear()
-            Log.d("TaskViewModel", "Rejection messages ==> ${rejectionData.data}")
-            rejectionMessages.addAll(rejectionData.data ?: emptyList())
 
             // Handle submission reponse
             submissionMessages.clear()
             val submissionData = submissionMessagesResponse.await()
-            submissionMessages.addAll(submissionData.data ?: emptyList())
+            submissionMessages.addAll(submissionData.canLocationAddress ?: emptyList())
+
+            cantLocateAddressReasons.clear()
+            cantLocateAddressReasons.addAll(submissionData.cannotLocateAddress)
 
             val startTask = startTaskResponse.await()
             // Handle start task response

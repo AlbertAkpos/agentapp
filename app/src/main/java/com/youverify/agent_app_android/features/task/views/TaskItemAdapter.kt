@@ -2,12 +2,10 @@ package com.youverify.agent_app_android.features.task.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.databinding.TaskItemBinding
-import com.youverify.agent_app_android.data.model.TaskItem
 import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.util.TaskStatus
 import java.util.*
@@ -43,7 +41,7 @@ class TaskItemAdapter(
 class TaskItemViewHolder(val binding : TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(taskItem: TasksDomain.AgentTask, clickListener: (TasksDomain.AgentTask) -> Unit){
-        binding.verificationTypeText.text = taskItem.verificationType.capitalize(Locale.ENGLISH)
+        binding.verificationTypeText.text = taskItem.displayVerificationType.capitalize(Locale.ENGLISH)
         binding.addressText.text = taskItem.address
         binding.timeText.text = taskItem.time
 

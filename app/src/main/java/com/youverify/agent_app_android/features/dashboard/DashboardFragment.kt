@@ -394,6 +394,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 binding.selectTodayBtn.setText(selectedOption)
                 binding.bottomTodayTxt.text = "This month"
                 binding.bottomYesterdayTxt.text = "Last month"
+                processPerformanceStats(PerformanceStats.month)
             }, 100)
         }
 

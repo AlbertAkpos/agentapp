@@ -13,8 +13,7 @@ import okhttp3.MultipartBody
 interface ITaskRepository {
     suspend fun fetchAgentTasks(state: String?, status: String?): TasksDomain.AgentTasksResponse
     suspend fun startTask(taskId: String) : TasksDomain.StartTaskResponse
-    suspend fun getRejectionMessages(): TasksDomain.MessagesResponse
-    suspend fun getSubmissionMessages(): TasksDomain.MessagesResponse
+    suspend fun getSubmissionMessages(verificationType: String): TasksDomain.MessagesResponse
     suspend fun submitTask(request: TasksDto.SubmitTaskRequest, taskId: String): TasksDomain.GenericResponse
     suspend fun updateTask(taskId: String, request: TasksDto.UpdateTaskRequest): TasksDomain.GenericResponse
     suspend fun uploadImages(files: List<MultipartBody.Part>): UploadDomain.UploadResponse

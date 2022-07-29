@@ -723,7 +723,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
                         negativeCallback = { /*navigateUp()*/ }) {
-                        viewModel.startTask(viewModel.currentTask?.id.toString())
+                        viewModel.startTask(viewModel.currentTask?.id.toString(), viewModel.currentTask?.displayVerificationType.toString())
                     }
                 }
 
@@ -820,14 +820,14 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     }
 
     private fun updateUI(taskItem: TasksDomain.AgentTask) = with(binding) {
-        verificationTypeText.text = taskItem.verificationType
+        verificationTypeText.text = taskItem.displayVerificationType
         candidateAddress.text = taskItem.address
         candidateImage.loadImage(taskItem.candidate?.photo)
         candidateName.text = taskItem.candidate?.name
 
         //Only task is unasinged
         if (taskItem.status == TaskStatus.unasigned) {
-            viewModel.startTask(taskItem.id)
+            viewModel.startTask(taskItem.id, taskItem.verificationType)
         }
 
     }

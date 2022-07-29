@@ -120,7 +120,14 @@ object TasksDto {
         @SerializedName("success") val success: Boolean?,
         @SerializedName("statusCode") val statusCode: Int?,
         @SerializedName("message") val message: String?,
-        @SerializedName("data") val data: List<String>?
+        @SerializedName("data") val data: List<HashMap<String, MessageData>>?
+    )
+
+    data class MessageData(
+        @SerializedName("yes")
+        val yes: List<String>?,
+        @SerializedName("no")
+        val no: List<String>?
     )
 
     data class SubmitTaskRequest(

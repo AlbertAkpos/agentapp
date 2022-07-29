@@ -37,12 +37,9 @@ class TasksRepository @Inject constructor(
         source.startTask(taskId).map()
     }
 
-    override suspend fun getRejectionMessages(): TasksDomain.MessagesResponse = withContext(dispatcher) {
-        source.getRejectionMessages().map()
-    }
 
-    override suspend fun getSubmissionMessages(): TasksDomain.MessagesResponse = withContext(dispatcher) {
-       source.getSubmissionMessages().map()
+    override suspend fun getSubmissionMessages(verificationType: String): TasksDomain.MessagesResponse = withContext(dispatcher) {
+       source.getSubmissionMessages(verificationType).map()
     }
 
     override suspend fun submitTask(request: TasksDto.SubmitTaskRequest, taskId: String): TasksDomain.GenericResponse = withContext(dispatcher) {

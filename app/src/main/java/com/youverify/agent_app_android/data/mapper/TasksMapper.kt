@@ -46,7 +46,8 @@ fun TasksDto.AgentTasksResponse.map(): TasksDomain.AgentTasksResponse {
                 lga = doc.address?.lga ?: "",
                 status = doc.status,
                 street = doc.address?.street ?: "",
-                verificationType = verificationType ?: "",
+                displayVerificationType = verificationType ?: "",
+                verificationType = doc.verificationType.toString(),
                 candidate = candidate,
                 id = doc.id ?: "",
                 lastModifiedAt = doc.lastModifiedAt ?: ""
@@ -69,17 +70,25 @@ fun TasksDto.StartTaskResponse.map(): TasksDomain.StartTaskResponse {
     )
 }
 
-fun TasksDto.RejectionMessagesResponse.map(): TasksDomain.MessagesResponse {
-    return TasksDomain.MessagesResponse(
-        success = this.success == true,
-        data = data
-    )
-}
+
 
 fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
+    val locateAddressMessageData = data?.find { it.containsKey("Can you locate the address?") }
+        ?.get("Can you locate the address?")
+    val canLocateAddress = locateAddressMessageData?.yes ?: emptyList()
+    val cannottLocateAddress = locateAddressMessageData?.no ?: emptyList()
+
+    val canAccessTheBuildingMessageData =  data?.find { it.containsKey("Can you access the building?") }
+        ?.get("Can you access the building?")
+
+    val canAccessBuilding = canAccessTheBuildingMessageData?.yes ?: emptyList()
+    val cannotAccessBuilding = canAccessTheBuildingMessageData?.no ?: emptyList()
     return TasksDomain.MessagesResponse(
         success = this.success == true,
-        data = data
+        canLocationAddress = canLocateAddress,
+        cannotLocateAddress = cannottLocateAddress,
+        canAccessBuilding = canAccessBuilding,
+        cannotAccessBuilding = cannotAccessBuilding
     )
 }
 
@@ -125,8 +134,6 @@ fun TasksDomain.SubmitTask.entity(): TaskEntity.SubmitTask {
         offlineSignature = offlineSignature
     )
 }
-
-
 
 
 fun TasksDto.UpdateTaskRequest.entity(): TaskEntity.UpdateTaskRequest {

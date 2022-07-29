@@ -16,7 +16,7 @@ object TasksDomain {
     data class AgentTask(
         val id: String,
         val flatNumber: String,
-        val verificationType: String,
+        val displayVerificationType: String,
         val status: String?,
         val lga: String,
         val country: String,
@@ -28,7 +28,8 @@ object TasksDomain {
         val businessName: String,
         val businessRegNumber: String,
         val candidate: Candidate?,
-        val lastModifiedAt: String
+        val lastModifiedAt: String,
+        val verificationType: String
     ) {
         val address: String get() = "$buildingNumber, $street, $city, $state, $country"
         val time get(): String {
@@ -70,7 +71,10 @@ object TasksDomain {
 
     data class MessagesResponse(
         val success: Boolean?,
-        val data: List<String>?
+        val canLocationAddress: List<String>?,
+        val cannotLocateAddress: List<String>,
+        val canAccessBuilding: List<String>,
+        val cannotAccessBuilding: List<String>
     )
 
     data class LatLong(

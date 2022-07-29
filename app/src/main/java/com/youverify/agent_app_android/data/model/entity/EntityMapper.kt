@@ -33,7 +33,7 @@ fun TasksDomain.AgentTask.entity(submitTask: TasksDomain.SubmitTask?, agentId: S
         status = status,
         state = state,
         taskId = id,
-        verificationType = verificationType
+        verificationType = displayVerificationType
     )
 
     return TaskEntity.TaskItem(
@@ -87,6 +87,7 @@ fun TaskEntity.TaskItem.domain(): TasksDomain.AgentTask {
         status = agentTask.status,
         state = agentTask.state,
         id = taskId,
+        displayVerificationType = agentTask.verificationType,
         verificationType = agentTask.verificationType
     )
 }

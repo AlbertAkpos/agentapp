@@ -8,7 +8,6 @@ import com.youverify.agent_app_android.data.model.tasks.TasksDomain
 import com.youverify.agent_app_android.features.common.BaseActivity
 import com.youverify.agent_app_android.features.task.TaskBundle
 import com.youverify.agent_app_android.features.task.TaskViewModel
-import com.youverify.agent_app_android.util.TaskKeys
 import com.youverify.agent_app_android.util.TaskKeys.BUILDING_NAME
 import com.youverify.agent_app_android.util.TaskKeys.BUILDING_NUMBER
 import com.youverify.agent_app_android.util.TaskKeys.BUSINESS_NAME
@@ -120,9 +119,10 @@ class TaskActivity : BaseActivity() {
             country = country,
             flatNumber = flatNumber,
             street = street,
-            verificationType = verificationType,
+            displayVerificationType = verificationType,
             lastModifiedAt = lastModified,
-            candidate = null
+            candidate = null,
+            verificationType = verificationType
         )
     }
 
