@@ -73,8 +73,8 @@ object TasksDomain {
         val success: Boolean?,
         val canLocationAddress: List<String>?,
         val cannotLocateAddress: List<String>,
-        val canAccessBuilding: List<String>,
-        val cannotAccessBuilding: List<String>
+        val confirmedByPositive: List<String>,
+        val confirmedByNegative: List<String>
     )
 
     data class LatLong(

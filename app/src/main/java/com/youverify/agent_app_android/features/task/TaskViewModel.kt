@@ -43,7 +43,11 @@ class TaskViewModel @Inject constructor(
 
     var taskAnswers = TasksDomain.TaskAnswers()
 
-    val candidateAddressConfirmedBy get() =  if (taskAnswers.needsConfirmation == true) Constants.whoConfirmedCandidateAddressNegative else Constants.whoConfirmedCandidateAddressList
+    val candidateAddressConfirmedBy get() =  if (taskAnswers.needsConfirmation == true) whoConfirmedAddressNegative else whoConfirmedAddressPositive
+
+    private val whoConfirmedAddressPositive = arrayListOf<String>()
+
+    private val whoConfirmedAddressNegative = arrayListOf<String>()
 
     val imagesPicked = MutableLiveData<ArrayList<File>>()
 
@@ -115,7 +119,6 @@ class TaskViewModel @Inject constructor(
         supervisScope.launch(coroutineExceptionHandler) {
             startTaskState.postValue(SingleEvent(ResultState.Loading("Starting task...")))
 
-//            currentTask?.let { repository.addTask(currentTask!!, agentId) } //TODO Remove this
 
             val startTaskResponse = async {
                 repository.startTask(taskId)
@@ -134,6 +137,12 @@ class TaskViewModel @Inject constructor(
 
             cantLocateAddressReasons.clear()
             cantLocateAddressReasons.addAll(submissionData.cannotLocateAddress)
+
+            whoConfirmedAddressNegative.clear()
+            whoConfirmedAddressNegative.addAll(submissionData.confirmedByNegative)
+
+            whoConfirmedAddressPositive.clear()
+            whoConfirmedAddressPositive.addAll(submissionData.confirmedByPositive)
 
             val startTask = startTaskResponse.await()
             // Handle start task response

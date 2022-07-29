@@ -120,7 +120,12 @@ object TasksDto {
         @SerializedName("success") val success: Boolean?,
         @SerializedName("statusCode") val statusCode: Int?,
         @SerializedName("message") val message: String?,
-        @SerializedName("data") val data: List<HashMap<String, MessageData>>?
+        @SerializedName("data") val data: List<MessagesType>?
+    )
+
+    data class MessagesType(
+        @SerializedName("Does the business operate there?", alternate = ["Can you access the building?", "Can you locate the address?", "Can you access the building?"])
+        val question: MessageData?
     )
 
     data class MessageData(

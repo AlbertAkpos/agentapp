@@ -73,22 +73,16 @@ fun TasksDto.StartTaskResponse.map(): TasksDomain.StartTaskResponse {
 
 
 fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
-    val locateAddressMessageData = data?.find { it.containsKey("Can you locate the address?") }
-        ?.get("Can you locate the address?")
-    val canLocateAddress = locateAddressMessageData?.yes ?: emptyList()
-    val cannottLocateAddress = locateAddressMessageData?.no ?: emptyList()
 
-    val canAccessTheBuildingMessageData =  data?.find { it.containsKey("Can you access the building?") }
-        ?.get("Can you access the building?")
 
-    val canAccessBuilding = canAccessTheBuildingMessageData?.yes ?: emptyList()
-    val cannotAccessBuilding = canAccessTheBuildingMessageData?.no ?: emptyList()
+    val confirmedByPositive = data?.firstOrNull()?.question?.yes ?: emptyList()
+    val confirmedByNegative = data?.firstOrNull()?.question?.no ?: emptyList()
     return TasksDomain.MessagesResponse(
         success = this.success == true,
-        canLocationAddress = canLocateAddress,
-        cannotLocateAddress = cannottLocateAddress,
-        canAccessBuilding = canAccessBuilding,
-        cannotAccessBuilding = cannotAccessBuilding
+        canLocationAddress = confirmedByPositive,
+        cannotLocateAddress = confirmedByNegative,
+        confirmedByPositive = confirmedByPositive,
+        confirmedByNegative = confirmedByNegative
     )
 }
 

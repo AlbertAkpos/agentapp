@@ -268,7 +268,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     }
 
     private fun onNotifyBusinessClicked() {
-            viewModel.submitTask(TasksDto.SubmitTaskRequest(message = "Address not accessible"), viewModel.currentTask?.id.toString())
+            viewModel.submitTask(TasksDto.SubmitTaskRequest(message = "Cannot access the building"), viewModel.currentTask?.id.toString())
     }
 
     private fun validateYesSubmission(callback: (taskItem: TasksDomain.SubmitTask) -> Unit) {
