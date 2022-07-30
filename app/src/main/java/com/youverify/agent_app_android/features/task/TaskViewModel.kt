@@ -1,6 +1,5 @@
 package com.youverify.agent_app_android.features.task
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.youverify.agent_app_android.core.functional.ResultState
 import com.youverify.agent_app_android.data.model.NotificationItem
@@ -139,10 +138,10 @@ class TaskViewModel @Inject constructor(
             cantLocateAddressReasons.addAll(submissionData.cannotLocateAddress)
 
             whoConfirmedAddressNegative.clear()
-            whoConfirmedAddressNegative.addAll(submissionData.confirmedByNegative)
+            whoConfirmedAddressNegative.addAll(submissionData.candidateDoesNotLiveThere)
 
             whoConfirmedAddressPositive.clear()
-            whoConfirmedAddressPositive.addAll(submissionData.confirmedByPositive)
+            whoConfirmedAddressPositive.addAll(submissionData.candidateLivesThere)
 
             val startTask = startTaskResponse.await()
             // Handle start task response

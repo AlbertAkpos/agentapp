@@ -50,7 +50,8 @@ object TaskEntity {
         @SerializedName("gateColour") val gateColor: String,
         @SerializedName("agentSignature") val agentSignature: String,
         @SerializedName("photos") val photos: List<UpdateTaskPhoto>,
-        @SerializedName("location") val location: Coordinates
+        @SerializedName("location") val location: Coordinates,
+        @SerializedName("addressConfirmed") val addressConfirmed: Boolean
     )
 
     data class UpdateTaskPhoto(
@@ -108,7 +109,8 @@ object TaskEntity {
         @SerializedName("message") val message: String,
         @SerializedName("subitTaskRequest") val subitTaskRequest: SubmitTaskRequest,
         @SerializedName("offlinePhotos") val offlinePhotos: List<String>? = null,
-        @SerializedName("offlineSignature") val offlineSignature: String? = null
+        @SerializedName("offlineSignature") val offlineSignature: String? = null,
+        @SerializedName("addressConfirmed") val addressConfirmed: Boolean
     )
 
     data class SubmitTaskRequest(

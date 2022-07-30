@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.youverify.agent_app_android.data.db.dao.TaskDao
 import com.youverify.agent_app_android.data.model.entity.TaskEntity
 
-@Database(entities = [TaskEntity.TaskItem::class], version = 1, exportSchema = false)
+@Database(entities = [TaskEntity.TaskItem::class], version = 2, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AgentDatabase: RoomDatabase() {
 

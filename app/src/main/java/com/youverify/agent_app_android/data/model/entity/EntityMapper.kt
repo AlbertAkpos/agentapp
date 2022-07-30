@@ -118,7 +118,8 @@ fun TaskEntity.UpdateTaskRequest.dto(): TasksDto.UpdateTaskRequest {
         gatePresent = gatePresent,
         gateColor = gateColor,
         location = location.dto(),
-        photos = photos.map { it.dto() }
+        photos = photos.map { it.dto() },
+        addressConfirmed =  addressConfirmed
     )
 }
 

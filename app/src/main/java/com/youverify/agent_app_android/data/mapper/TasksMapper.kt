@@ -74,16 +74,19 @@ fun TasksDto.StartTaskResponse.map(): TasksDomain.StartTaskResponse {
 
 fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
 
+    val canLocateTheAddress = data?.canLocateAddress?.yes ?: emptyList()
+    val cannotLocateTheAddress = data?.canLocateAddress?.no ?: emptyList()
+    val candidateLivesThere = data?.doesCandidateLiveThere?.yes ?: emptyList()
+    val candidateDoesNotLiveThere = data?.doesCandidateLiveThere?.no ?: emptyList()
 
-    val confirmedByPositive = data?.firstOrNull()?.question?.yes ?: emptyList()
-    val confirmedByNegative = data?.firstOrNull()?.question?.no ?: emptyList()
     return TasksDomain.MessagesResponse(
         success = this.success == true,
-        canLocationAddress = confirmedByPositive,
-        cannotLocateAddress = confirmedByNegative,
-        confirmedByPositive = confirmedByPositive,
-        confirmedByNegative = confirmedByNegative
+        canLocationAddress = canLocateTheAddress,
+        cannotLocateAddress = cannotLocateTheAddress,
+        candidateLivesThere = candidateLivesThere,
+        candidateDoesNotLiveThere = candidateDoesNotLiveThere
     )
+
 }
 
 fun TasksDto.GenericResponse.map(): TasksDomain.GenericResponse {
@@ -125,7 +128,8 @@ fun TasksDomain.SubmitTask.entity(): TaskEntity.SubmitTask {
         message = message,
         subitTaskRequest = subitTaskRequest.entity(),
         offlinePhotos = offlinePhotos,
-        offlineSignature = offlineSignature
+        offlineSignature = offlineSignature,
+        addressConfirmed = updateTaskRequest.addressConfirmed
     )
 }
 
@@ -139,7 +143,8 @@ fun TasksDto.UpdateTaskRequest.entity(): TaskEntity.UpdateTaskRequest {
         gateColor = gateColor,
         gatePresent = gatePresent,
         location = location.entity(),
-        photos = photos.map { it.entity() }
+        photos = photos.map { it.entity() },
+        addressConfirmed = addressConfirmed
     )
 }
 

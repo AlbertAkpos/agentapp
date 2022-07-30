@@ -120,15 +120,21 @@ object TasksDto {
         @SerializedName("success") val success: Boolean?,
         @SerializedName("statusCode") val statusCode: Int?,
         @SerializedName("message") val message: String?,
-        @SerializedName("data") val data: List<MessagesType>?
+        @SerializedName("data") val data: MessagesType?
     )
 
     data class MessagesType(
-        @SerializedName("Does the business operate there?", alternate = ["Can you access the building?", "Can you locate the address?", "Can you access the building?"])
-        val question: MessageData?
+       @SerializedName("first")
+       val canLocateAddress: MessageData?,
+       @SerializedName("second")
+       val canAccessBuilding: MessageData?,
+       @SerializedName("third")
+       val doesCandidateLiveThere: MessageData?
     )
 
     data class MessageData(
+        @SerializedName("title")
+        val title: String?,
         @SerializedName("yes")
         val yes: List<String>?,
         @SerializedName("no")
@@ -164,7 +170,8 @@ object TasksDto {
         @SerializedName("gateColour") val gateColor: String,
         @SerializedName("agentSignature") val agentSignature: String,
         @SerializedName("photos") val photos: List<UpdateTaskPhoto>,
-        @SerializedName("location") val location: Coordinates
+        @SerializedName("location") val location: Coordinates,
+        @SerializedName("addressConfirmed") val addressConfirmed: Boolean
     )
 
     data class TaskStatusesResponse(

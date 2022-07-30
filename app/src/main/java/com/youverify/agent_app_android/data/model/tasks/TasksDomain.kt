@@ -61,7 +61,8 @@ object TasksDomain {
         val buildingColor: String = "",
         val signatureLink: String = "",
         val needsConfirmation: Boolean? = null,
-        val latLong: LatLong? = null
+        val latLong: LatLong? = null,
+        val addressConfirmed: Boolean = false
     )
 
     data class StartTaskResponse(
@@ -73,8 +74,8 @@ object TasksDomain {
         val success: Boolean?,
         val canLocationAddress: List<String>?,
         val cannotLocateAddress: List<String>,
-        val confirmedByPositive: List<String>,
-        val confirmedByNegative: List<String>
+        val candidateLivesThere: List<String>,
+        val candidateDoesNotLiveThere: List<String>
     )
 
     data class LatLong(

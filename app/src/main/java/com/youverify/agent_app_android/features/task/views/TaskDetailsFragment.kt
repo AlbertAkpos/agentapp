@@ -355,7 +355,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             buildingType = typeOfBuilding,
             gateColor = gateColor ?: "Nil",
             photos = photos,
-            location = TasksDto.Coordinates(long = latLng.long, lat = latLng.lat)
+            location = TasksDto.Coordinates(long = latLng.long, lat = latLng.lat),
+            addressConfirmed = true
         )
 
 
@@ -438,7 +439,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             buildingType = "Nil",
             gateColor = "Nill",
             photos = photos,
-            location = TasksDto.Coordinates(long = latLng.long, lat = latLng.lat)
+            location = TasksDto.Coordinates(long = latLng.long, lat = latLng.lat),
+            addressConfirmed = false
         )
 
 
@@ -635,6 +637,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             val state = it.getContentIfNotHandled() ?: return@observe
             binding.yesCanLocateAddress.setColor(state, R.color.colorDark, R.color.white)
             binding.noCantLocateAddress.setColor(!state, R.color.colorDark, R.color.white)
+            viewModel.taskAnswers = viewModel.taskAnswers.copy(addressConfirmed = state)
             binding.proceedToCaptureDetailsBtn.visibleIf(state && binding.canLocateAddressContainer.visibility == View.GONE)
             if (!state) {
                 binding.canLocateAddressContainer.gone()
