@@ -360,7 +360,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         )
 
 
-        val submitRequest = TasksDto.SubmitTaskRequest(message)
+        val submitRequest = TasksDto.SubmitTaskRequest(null)
 
         val taskItem = TasksDomain.SubmitTask(
             taskId = viewModel.currentTask?.id.toString(),
@@ -731,6 +731,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 }
 
                 is ResultState.Success -> {
+                    binding.canAccessBuildingContainer.liveThereText.text = state.data.third
                     progressLoader.hide()
                 }
             }

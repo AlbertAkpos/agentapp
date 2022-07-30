@@ -72,6 +72,9 @@ object TasksDomain {
 
     data class MessagesResponse(
         val success: Boolean?,
+        val first: String?,
+        val second: String?,
+        val third: String?,
         val canLocationAddress: List<String>?,
         val cannotLocateAddress: List<String>,
         val candidateLivesThere: List<String>,

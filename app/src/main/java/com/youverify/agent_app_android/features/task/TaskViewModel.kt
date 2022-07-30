@@ -95,7 +95,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    val startTaskState = MutableLiveData<SingleEvent<ResultState<String>>>()
+    val startTaskState = MutableLiveData<SingleEvent<ResultState<TasksDomain.MessagesResponse>>>()
     val rejectionMessages = arrayListOf<String>()
     val submissionMessages = arrayListOf<String>()
 
@@ -146,7 +146,7 @@ class TaskViewModel @Inject constructor(
             val startTask = startTaskResponse.await()
             // Handle start task response
             if (startTask.success) {
-                startTaskState.postValue(SingleEvent(ResultState.Success(startTask.message)))
+                startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
                 //Put the task in local db
                 currentTask?.let { repository.addTask(currentTask!!, taskId) }

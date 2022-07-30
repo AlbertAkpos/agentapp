@@ -114,7 +114,7 @@ object TaskEntity {
     )
 
     data class SubmitTaskRequest(
-        @SerializedName("message") val message: String
+        @SerializedName("message") val message: String?
     )
 
 

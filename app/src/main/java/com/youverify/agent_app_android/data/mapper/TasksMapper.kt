@@ -84,7 +84,10 @@ fun TasksDto.SubmissionMessagesResponse.map(): TasksDomain.MessagesResponse {
         canLocationAddress = canLocateTheAddress,
         cannotLocateAddress = cannotLocateTheAddress,
         candidateLivesThere = candidateLivesThere,
-        candidateDoesNotLiveThere = candidateDoesNotLiveThere
+        candidateDoesNotLiveThere = candidateDoesNotLiveThere,
+        first = data?.canLocateAddress?.title,
+        second = data?.canAccessBuilding?.title,
+        third = data?.doesCandidateLiveThere?.title
     )
 
 }

@@ -143,7 +143,7 @@ object TasksDto {
 
     data class SubmitTaskRequest(
         @SerializedName("message")
-        val message: String
+        val message: String?
     )
 
     data class GenericResponse(
