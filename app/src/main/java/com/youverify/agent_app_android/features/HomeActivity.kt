@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.youverify.agent_app_android.R
 import com.youverify.agent_app_android.data.model.verification.refresh_token.TokenRequest
 import com.youverify.agent_app_android.databinding.ActivityMainBinding
@@ -41,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED        //set the bottom navigation to always be labelled
+        sendFcmToken()
     }
 
     fun showNavBar(){
@@ -86,6 +88,18 @@ class HomeActivity : AppCompatActivity() {
                     is TokenViewState.Failure -> {}
                     else -> {}
                 }
+            }
+        }
+    }
+
+    private fun sendFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                kotlin.runCatching {
+                    val token = task.result
+                    tokenViewModel.sendFirebaseToken(token)
+                }
+
             }
         }
     }

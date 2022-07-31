@@ -12,6 +12,7 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
     companion object {
         private const val AGENT_ID_KEY = "AGENT_ID_KEY"
         private const val TOKEN_KEY = "TOKEN"
+        private const val FCM_TOKEN_SENT = "FCM_TOKEN_SENT"
     }
 
     private var sharedPreferences: SharedPreferences =
@@ -67,4 +68,13 @@ class AgentSharePreference @Inject constructor(@ApplicationContext context: Cont
     fun clear(key: String) {
         sharedPreferences.edit().remove(key).commit()
     }
+
+    var fcmTokenSent: Boolean
+     get() = sharedPreferences.getBoolean(FCM_TOKEN_SENT, false) ?: false
+     set(value) {
+         sharedPreferences.edit {
+             putBoolean(FCM_TOKEN_SENT, value)
+             apply()
+         }
+     }
 }

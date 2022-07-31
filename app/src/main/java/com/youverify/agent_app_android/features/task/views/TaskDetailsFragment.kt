@@ -155,6 +155,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         canAccessBuildingContainer.yesGeoTaglayout.autoClearError()
         reasonLayout.autoClearError()
         canAccessBuildingContainer.whoConfirmedAddressLayout.autoClearError()
+        updateLivesHereText()
 
     }
 
@@ -744,8 +745,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             binding.canAccessBuildingContainer.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
             viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = !livesHere)
 
-            val livesHereText = if (livesHere) "Who confirmed that the candidate lives here?" else "Who confirmed that the candidate does'nt live here?"
-            binding.canAccessBuildingContainer.whoConfirmedAddress.text = livesHereText
+            updateLivesHereText(livesHere)
 
         }
 
@@ -834,6 +834,25 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             viewModel.startTask(taskItem.id, taskItem.verificationType)
         }
 
+    }
+
+    private fun updateLivesHereText(livesHere: Boolean = true) {
+        val whoIsVerified  = when(viewModel.currentTask?.verificationType) {
+            AgentTaskVerificationType.GUARANTOR -> "guarantor"
+            AgentTaskVerificationType.INDIVIDUAL -> "candidate"
+            AgentTaskVerificationType.BUSINESS -> "business"
+            else -> "candidate"
+        }
+
+        val actionWord  = when(viewModel.currentTask?.verificationType) {
+            AgentTaskVerificationType.GUARANTOR ->  if (livesHere) "live's" else "live"
+            AgentTaskVerificationType.INDIVIDUAL -> if (livesHere) "live's" else "live"
+            AgentTaskVerificationType.BUSINESS ->  if (livesHere) "operate's" else "operate"
+            else -> if (livesHere) "live's" else "live"
+        }
+
+        val livesHereText = if (livesHere) "Who confirmed that the $whoIsVerified $actionWord here?" else "Who confirmed that the $whoIsVerified does'nt $actionWord here?"
+        binding.canAccessBuildingContainer.whoConfirmedAddress.text = livesHereText
     }
 
     private fun updateImageList(imageList: ArrayList<File>) {

@@ -35,6 +35,7 @@ object AgentTaskStatus {
 object AgentTaskVerificationType {
     const val GUARANTOR = "GUARANTOR"
     const val INDIVIDUAL = "INDIVIDUAL"
+    const val BUSINESS = "BUSINESS"
 
 }
 
