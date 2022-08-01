@@ -12,10 +12,12 @@ import com.youverify.agent_app_android.domain.repository.ITaskRepository
 import com.youverify.agent_app_android.util.AgentSharePreference
 import com.youverify.agent_app_android.util.SingleEvent
 import com.youverify.agent_app_android.util.helper.ErrorHelper
+import com.youverify.agent_app_android.util.helper.formatDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -88,7 +90,7 @@ class DashboardViewModel @Inject constructor(
                 if (previousCompleted != null && currentCompleted != null) {
                     val percentageChange =
                         kotlin.runCatching {
-                            ((previousCompleted - currentCompleted) / previousCompleted) * 100
+                            ((currentCompleted - previousCompleted) / currentCompleted) * 100
                         }.getOrDefault(0)
                     value = percentageChange
                 }
@@ -118,12 +120,13 @@ class DashboardViewModel @Inject constructor(
 
         viewModelScope.launch(exceptionHandler) {
             performanceCurrent.postValue(ResultState.Loading())
+            val todaysDate = formatDate(Date())
             val response = taskRepository.fetchAgentAnalyticsOnTasks(
                 agentId = sharePreference.agentId, startDate = start, endDate = end)
 
             if (response.success && response.analyticsData != null) {
                 performanceCurrent.postValue(ResultState.Success(response.analyticsData))
-                if (todaysPerformance.value == null) {
+                if (todaysDate == start && todaysDate == end) {
                     todaysPerformance.postValue(ResultState.Success(response.analyticsData))
                 }
             } else {
