@@ -96,18 +96,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         Timber.d("First day: $yesterday")
 
-
-
-
-
-        if (savedInstanceState == null) {
-            val todaysDate = Date()
-            val dateFrom7DaysAgo = getDateFromDayAgo(daysAgo = 7)
-            fetchAnalytics(dateFrom7DaysAgo, todaysDate)
-            processPerformanceStats(PerformanceStats.day)
-        }
-
-        showPieChart(33)
     }
 
     private fun fetchAnalytics(startDate: Date, endDate: Date) {
@@ -138,7 +126,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         viewModel.fetchCurrentPerformance(startInApiFormat, endDateApiFormat)
     }
 
-
+    private fun refreshAnalytics() {
+        val todaysDate = Date()
+        val dateFrom7DaysAgo = getDateFromDayAgo(daysAgo = 7)
+        fetchAnalytics(dateFrom7DaysAgo, todaysDate)
+        processPerformanceStats(PerformanceStats.day)
+    }
 
     private fun setupUI() {
         with(binding) {
@@ -404,7 +397,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun processPerformanceStats(type: Int) {
-        if (!isOreoPlus()) return
+
         when (type) {
             PerformanceStats.day -> {
                 val yesterdayDate = dateProvider.getYesterdayDate()
@@ -506,6 +499,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }else if (!verificationDone()){
             showCompleteOnboardingDialog()
         }
+        refreshAnalytics()
     }
 
     override fun onPause() {
