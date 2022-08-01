@@ -64,7 +64,7 @@ interface AgentService {
         @Body updateTaskRequest: TasksDto.UpdateTaskRequest
     ): TasksDto.GenericResponse
 
-    @PUT("https://agent.dev.svc.youverify.co/agents/me/fcmtoken")
+    @PUT("https://agent.dev.svc.youverify.co/v1/agents/me/fcmtoken")
     suspend fun submitFcmToken(@Body request: Dto.FcmToken): Dto.GenericResponse
 
     @GET("https://address-task.dev.svc.youverify.co/v1/messages/status")
