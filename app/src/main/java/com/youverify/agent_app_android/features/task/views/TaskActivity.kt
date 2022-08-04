@@ -106,6 +106,27 @@ class TaskActivity : BaseActivity() {
         val verificationType = extra.getString(VERIFICATION_TYPE).toString()
         val lastModified = extra.getString(LAST_MODIFIED_AT).toString()
 
+        val candidateLastModifiedAt = extra.getString("candidateLastModifiedAt")
+        val businessId = extra.getString("businessId")
+        val candidateCreatedAt = extra.getString("candidateCreatedAt")
+        val candidateFirstName = extra.getString("candidateFirstName")
+        val candidateId = extra.getString("candidateId")
+        val candidateLastName = extra.getString("candidateLastName")
+        val candidateMobile = extra.getString("candidateMobile")
+        val candidatePhoto = extra.getString("candidatePhoto")
+
+
+        val candidate = TasksDomain.Candidate(
+            lastModifiedAt = candidateLastModifiedAt,
+            businessId = businessId,
+            createdAt = candidateCreatedAt,
+            firstName = candidateFirstName,
+            id = candidateId,
+            lastName = candidateLastName,
+            mobile = candidateMobile,
+            photo = candidatePhoto
+        )
+
         return  TasksDomain.AgentTask (
             buildingNumber = buildingNumber,
             businessName = businessName,
@@ -121,7 +142,7 @@ class TaskActivity : BaseActivity() {
             street = street,
             displayVerificationType = verificationType,
             lastModifiedAt = lastModified,
-            candidate = null,
+            candidate = candidate,
             verificationType = verificationType
         )
     }

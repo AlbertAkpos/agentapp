@@ -10,6 +10,7 @@ import com.youverify.agent_app_android.domain.repository.ITaskRepository
 import com.youverify.agent_app_android.domain.usecase.GetStatesUseCase
 import com.youverify.agent_app_android.util.Constants
 import com.youverify.agent_app_android.util.SingleEvent
+import com.youverify.agent_app_android.util.TaskStatus
 import com.youverify.agent_app_android.util.helper.ErrorHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -57,8 +58,10 @@ class TaskViewModel @Inject constructor(
     val canAccessBuildingState = MutableLiveData<SingleEvent<Boolean>>()
 
     val notifications = MediatorLiveData<ArrayList<NotificationItem>>().apply {
-        addSource(repository.fetchOfflineTasks(agentId)) { updateNotifications(it) }
+        addSource(repository.fetchOfflineNotifications(agentId)) { updateNotifications(it.filter { notification -> notification.submitTask != null }) }
     }
+
+    val offlineTasks = Transformations.map(repository.fetchOfflineTasks(agentId)) { it }
 
     private fun updateNotifications(offlineTasks: List<NotificationItem>) {
         val currentNotifications = notifications.value ?: arrayListOf()
@@ -149,7 +152,8 @@ class TaskViewModel @Inject constructor(
                 startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
                 taskAnswers = taskAnswers.copy(taskStarted = true)
                 //Put the task in local db
-                currentTask?.let { repository.addTask(currentTask!!, taskId) }
+                currentTask = currentTask?.copy(status = TaskStatus.started)
+                currentTask?.let { repository.addTask(currentTask!!, agentId) }
 
             } else {
                 startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))

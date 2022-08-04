@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,6 +72,7 @@ class TokenViewModel @Inject constructor(
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
         }
+        Timber.d("token sent: ${sharedPreference.fcmTokenSent}")
         if (!sharedPreference.fcmTokenSent) {
             viewModelScope.launch (exceptionHandler){
                 val response = loginRepository.submitFcmToken(Dto.FcmToken(token))

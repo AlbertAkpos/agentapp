@@ -18,6 +18,7 @@ import com.youverify.agent_app_android.features.verification.reset_token.TokenVi
 import com.youverify.agent_app_android.features.verification.reset_token.TokenViewState
 import com.youverify.agent_app_android.util.*
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -94,9 +95,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun sendFcmToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            Timber.d("FCM result ${task.isSuccessful}")
             if (task.isSuccessful) {
                 kotlin.runCatching {
                     val token = task.result
+                    Timber.d("Token : $token")
                     tokenViewModel.sendFirebaseToken(token)
                 }
 

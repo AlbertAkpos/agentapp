@@ -79,8 +79,13 @@ class TasksRepository @Inject constructor(
         localSource.deleteTask(taskId)
     }
 
-    override fun fetchOfflineTasks(agentId: String): LiveData<List<NotificationItem>> {
+    override fun fetchOfflineNotifications(agentId: String): LiveData<List<NotificationItem>> {
         return localSource.fetchOfflineTasks(agentId).map { it.map { item -> item.domain("dummy") } }
+    }
+
+    override fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>> {
+        Timber.d("fetchOfflineTasks()  $agentId")
+        return localSource.fetchOfflineTasks(agentId).map { item -> item.map { it.domain() } }
     }
 
     override fun fetchAgentId(): String {

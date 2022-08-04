@@ -100,15 +100,21 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
-                    if (state.data.isEmpty()) {
-                        binding.noTasksMessage.visibleIf(state.data.isEmpty())
-                        binding.gifImageView.visibleIf(state.data.isEmpty())
-                        binding.noTasksMessage.text = "Looks like there is no task for \n" +
-                                "you now.\n" +
-                                "\n" +
-                                "Enjoy the break ${AgentSharePreference(requireContext()).getString(SharedPrefKeys.FIRST_NAME)}"
+
+                    viewModel.offlineTasks.observe(viewLifecycleOwner) { offlineTasks ->
+                        val allTasks = (offlineTasks ?: emptyList()) + state.data
+                        adapter.setItemsList(allTasks)
+
+                        if (allTasks.isEmpty()) {
+                            binding.noTasksMessage.visibleIf(allTasks.isEmpty())
+                            binding.gifImageView.visibleIf(allTasks.isEmpty())
+                            binding.noTasksMessage.text = "Looks like there is no task for \n" +
+                                    "you now.\n" +
+                                    "\n" +
+                                    "Enjoy the break ${AgentSharePreference(requireContext()).getString(SharedPrefKeys.FIRST_NAME)}"
+                        }
                     }
-                    adapter.setItemsList(state.data)
+
                 }
             }
         }

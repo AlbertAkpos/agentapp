@@ -22,9 +22,10 @@ interface ITaskRepository {
     suspend fun updateTask(taskItem:  TasksDomain.SubmitTask, taskDomain: TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskItem:  TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskId: String)
-    fun fetchOfflineTasks(agentId: String): LiveData<List<NotificationItem>>
+    fun fetchOfflineNotifications(agentId: String): LiveData<List<NotificationItem>>
     fun fetchAgentId(): String
     suspend fun fetchAgentAnalyticsOnTasks(agentId: String, startDate: String, endDate: String): Domain.AgentTasksAnalyticsResponse
+    fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>>
 
 
 }

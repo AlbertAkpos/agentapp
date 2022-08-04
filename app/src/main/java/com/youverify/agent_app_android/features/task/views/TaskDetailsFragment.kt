@@ -845,10 +845,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         val actionWord  = when(viewModel.currentTask?.verificationType) {
-            AgentTaskVerificationType.GUARANTOR ->  if (livesHere) "live's" else "live"
-            AgentTaskVerificationType.INDIVIDUAL -> if (livesHere) "live's" else "live"
-            AgentTaskVerificationType.BUSINESS ->  if (livesHere) "operate's" else "operate"
-            else -> if (livesHere) "live's" else "live"
+            AgentTaskVerificationType.GUARANTOR ->  if (livesHere) "lives" else "live"
+            AgentTaskVerificationType.INDIVIDUAL -> if (livesHere) "lives" else "live"
+            AgentTaskVerificationType.BUSINESS ->  if (livesHere) "operates" else "operate"
+            else -> if (livesHere) "lives" else "live"
         }
 
         val livesHereText = if (livesHere) "Who confirmed that the $whoIsVerified $actionWord here?" else "Who confirmed that the $whoIsVerified does'nt $actionWord here?"

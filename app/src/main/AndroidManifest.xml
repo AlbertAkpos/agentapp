@@ -35,7 +35,7 @@
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
-                <action android:name="open.task.activity"/>
+                <action android:name="open_task_activity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
