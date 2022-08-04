@@ -110,7 +110,7 @@ class TaskViewModel @Inject constructor(
     /**
      * startTasks calls several endpoints
      */
-    fun startTask(taskId: String, verificationType: String) {
+    fun startTask(taskId: String, verificationType: String, status: String) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
@@ -120,12 +120,6 @@ class TaskViewModel @Inject constructor(
 
         supervisScope.launch(coroutineExceptionHandler) {
             startTaskState.postValue(SingleEvent(ResultState.Loading("Starting task...")))
-
-
-            val startTaskResponse = async {
-                repository.startTask(taskId)
-            }
-
 
 
             val submissionMessagesResponse = async {
@@ -146,18 +140,31 @@ class TaskViewModel @Inject constructor(
             whoConfirmedAddressPositive.clear()
             whoConfirmedAddressPositive.addAll(submissionData.candidateLivesThere)
 
-            val startTask = startTaskResponse.await()
-            // Handle start task response
-            if (startTask.success) {
-                startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
-                taskAnswers = taskAnswers.copy(taskStarted = true)
-                //Put the task in local db
-                currentTask = currentTask?.copy(status = TaskStatus.started)
-                currentTask?.let { repository.addTask(currentTask!!, agentId) }
+            if (status == TaskStatus.unasigned) {
+                val startTaskResponse = async {
+                    repository.startTask(taskId)
+                }
+                val startTask = startTaskResponse.await()
+                // Handle start task response
+                if (startTask.success) {
+                    startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
+                    taskAnswers = taskAnswers.copy(taskStarted = true)
+                    //Put the task in local db
+                    currentTask = currentTask?.copy(status = TaskStatus.started)
+                    currentTask?.let { repository.addTask(currentTask!!, agentId) }
+                } else {
+                    startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
+                }
 
-            } else {
-                startTaskState.postValue(SingleEvent(ResultState.Error(startTask.message)))
+                return@launch
+
             }
+
+
+            startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
+
+
+
 
 
 

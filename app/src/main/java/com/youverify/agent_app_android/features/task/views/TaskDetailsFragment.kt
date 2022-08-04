@@ -53,7 +53,6 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     private lateinit var binding: FragmentTaskDetailsBinding
 
 
-
     @Inject
     lateinit var locationHelper: LocationHelper
 
@@ -174,27 +173,34 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noBtn.setOnClickListener { viewModel.canYouLocateTheAddressState.postValue(SingleEvent(false)) }
 
         canAccessBuildingContainer.buildingTypeInput.setOnClickListener {
-            showMessagesBottomSheet( "Select building type", viewModel.typesOfBuildings) { selectedBuilding ->
+            showMessagesBottomSheet(
+                "Select building type",
+                viewModel.typesOfBuildings
+            ) { selectedBuilding ->
                 canAccessBuildingContainer.buildingTypeInput.setText(selectedBuilding)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingType = selectedBuilding)
             }
         }
 
-        canAccessBuildingContainer.buildingColorInput.setOnClickListener { showColorButtomSheet {
-            binding.canAccessBuildingContainer.buildingColorInput.setText(it.name)
-            viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingColor = it.name)
-        }}
+        canAccessBuildingContainer.buildingColorInput.setOnClickListener {
+            showColorButtomSheet {
+                binding.canAccessBuildingContainer.buildingColorInput.setText(it.name)
+                viewModel.taskAnswers = viewModel.taskAnswers.copy(buildingColor = it.name)
+            }
+        }
 
-        canAccessBuildingContainer.gateColorInput.setOnClickListener { showColorButtomSheet {
-            binding.canAccessBuildingContainer.gateColorInput.setText(it.name)
-        } }
+        canAccessBuildingContainer.gateColorInput.setOnClickListener {
+            showColorButtomSheet {
+                binding.canAccessBuildingContainer.gateColorInput.setText(it.name)
+            }
+        }
 
         noGeoTaginput.setOnClickListener { getCurrentLocation() }
 
         canAccessBuildingContainer.yesGeoTaginput.setOnClickListener { getCurrentLocation() }
 
         cantLocateAddressReasonInput.setOnClickListener {
-            showMessagesBottomSheet( "Select reason", viewModel.cantLocateAddressReasons) {
+            showMessagesBottomSheet("Select reason", viewModel.cantLocateAddressReasons) {
                 binding.cantLocateAddressReasonInput.setText(it)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(rejectionReason = it)
             }
@@ -214,13 +220,20 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         noSubmitButton.setOnClickListener { onNoSubmissionButtionClicked() }
 
         canAccessBuildingContainer.whoConfirmedAdressInput.setOnClickListener {
-            showMessagesBottomSheet("Who confirmed address",  viewModel.candidateAddressConfirmedBy) { selected ->
+            showMessagesBottomSheet(
+                "Who confirmed address",
+                viewModel.candidateAddressConfirmedBy
+            ) { selected ->
                 canAccessBuildingContainer.whoConfirmedAdressInput.setText(selected)
                 viewModel.taskAnswers = viewModel.taskAnswers.copy(confirmedBy = selected)
             }
         }
 
-        canAccessBuildingContainer.buildHasGate.setOnClickListener { viewModel.doesBuildingHaveGate.postValue(SingleEvent(true)) }
+        canAccessBuildingContainer.buildHasGate.setOnClickListener {
+            viewModel.doesBuildingHaveGate.postValue(
+                SingleEvent(true)
+            )
+        }
         canAccessBuildingContainer.buildDontHaveGate.setOnClickListener {
             viewModel.doesBuildingHaveGate.postValue(
                 SingleEvent(
@@ -252,11 +265,17 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         signBtnTwo.setOnClickListener { showSignatureDialog() }
 
-        yesCanAccessBuildingBtn.setOnClickListener { viewModel.canAccessBuildingState.postValue(SingleEvent(true)) }
+        yesCanAccessBuildingBtn.setOnClickListener {
+            viewModel.canAccessBuildingState.postValue(
+                SingleEvent(true)
+            )
+        }
 
-        noCantAccessBuildingBtn.setOnClickListener { viewModel.canAccessBuildingState.postValue(
-            SingleEvent(false)
-        ) }
+        noCantAccessBuildingBtn.setOnClickListener {
+            viewModel.canAccessBuildingState.postValue(
+                SingleEvent(false)
+            )
+        }
 
         cantAccessBuildingContainer.notifyBusinessBtn.setOnClickListener { onNotifyBusinessClicked() }
 
@@ -269,7 +288,10 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
     }
 
     private fun onNotifyBusinessClicked() {
-            viewModel.submitTask(TasksDto.SubmitTaskRequest(message = "Cannot access the building"), viewModel.currentTask?.id.toString())
+        viewModel.submitTask(
+            TasksDto.SubmitTaskRequest(message = "Cannot access the building"),
+            viewModel.currentTask?.id.toString()
+        )
     }
 
     private fun validateYesSubmission(callback: (taskItem: TasksDomain.SubmitTask) -> Unit) {
@@ -277,66 +299,96 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val buildingColor = binding.canAccessBuildingContainer.buildingColorInput.text?.toString()
         val hasGate = viewModel.taskAnswers.hasGate
         val agentSignature = viewModel.taskAnswers.signatureLink
-        val confirmedBy = binding.canAccessBuildingContainer.whoConfirmedAdressInput.text?.toString() ?: ""
+        val confirmedBy =
+            binding.canAccessBuildingContainer.whoConfirmedAdressInput.text?.toString() ?: ""
         val needsConfirmation = viewModel.taskAnswers.needsConfirmation
         val latLng = viewModel.taskAnswers.latLong
         var gateColor = "Nil"
         var message = "Candidate lives there"
 
         if (typeOfBuilding.isNullOrEmpty()) {
-            binding.canAccessBuildingContainer.buildTypeLayout.error = "Please select a building type"
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.buildTypeLayout.y.toInt() + 500)
+            binding.canAccessBuildingContainer.buildTypeLayout.error =
+                "Please select a building type"
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.buildTypeLayout.y.toInt() + 500
+            )
             return
         }
 
         if (buildingColor.isNullOrEmpty()) {
-            binding.canAccessBuildingContainer.buildingColorLayout.error = "Please pick a building color"
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.buildingColorLayout.y.toInt() + 500)
+            binding.canAccessBuildingContainer.buildingColorLayout.error =
+                "Please pick a building color"
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.buildingColorLayout.y.toInt() + 500
+            )
             return
         }
 
         if (hasGate) {
             gateColor = binding.canAccessBuildingContainer.gateColorInput.text?.toString() ?: ""
             if (gateColor.isNullOrEmpty()) {
-                binding.canAccessBuildingContainer.gateColorLayout.error = "Please pick a gate color"
-                binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.gateColorLayout.y.toInt() + 500)
+                binding.canAccessBuildingContainer.gateColorLayout.error =
+                    "Please pick a gate color"
+                binding.scrollView.scrollTo(
+                    0,
+                    binding.canAccessBuildingContainer.gateColorLayout.y.toInt() + 500
+                )
 
                 return
             }
         } else gateColor = "Nil"
 
         if (needsConfirmation == null) {
-            context?.showDialog( title = "Incomplete form", message = "Please see question \"Does the candidate live here?\"")
+            context?.showDialog(
+                title = "Incomplete form",
+                message = "Please see question \"Does the candidate live here?\""
+            )
             return
         }
 
         if (confirmedBy.isNullOrEmpty()) {
-            binding.canAccessBuildingContainer.whoConfirmedAddressLayout.error = "Please select who confirmed address"
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.whoConfirmedAddressLayout.y.toInt()+ 500)
+            binding.canAccessBuildingContainer.whoConfirmedAddressLayout.error =
+                "Please select who confirmed address"
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.whoConfirmedAddressLayout.y.toInt() + 500
+            )
             return
         }
 
 
         if (agentSignature.isEmpty() && viewModel.offlineSignature.isEmpty()) {
-            context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.signBtn.y.toInt() + 500)
+            context?.showDialog(title = "Incomplete form", message = "Please input your signature")
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.signBtn.y.toInt() + 500
+            )
             return
         }
 
-        if (viewModel.uploadedImages.isEmpty()  && viewModel.offlinePhotos.isEmpty()) {
+        if (viewModel.uploadedImages.isEmpty() && viewModel.offlinePhotos.isEmpty()) {
             context?.showDialog(title = "Incomplete form", message = "Please add images")
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.candidateImageUploadBtn.y.toInt() + 500)
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.candidateImageUploadBtn.y.toInt() + 500
+            )
             return
         }
 
         if (latLng == null) {
-            binding.canAccessBuildingContainer.yesGeoTaglayout.error = "Please geo tag your location to continue"
-            binding.scrollView.scrollTo(0, binding.canAccessBuildingContainer.yesGeoTaglayout.y.toInt() + 500)
+            binding.canAccessBuildingContainer.yesGeoTaglayout.error =
+                "Please geo tag your location to continue"
+            binding.scrollView.scrollTo(
+                0,
+                binding.canAccessBuildingContainer.yesGeoTaglayout.y.toInt() + 500
+            )
             return
         }
 
         if (needsConfirmation) {
-           message =  if (confirmedBy == Constants.NO_ONE) {
+            message = if (confirmedBy == Constants.NO_ONE) {
                 "Candidate does not live there"
             } else {
                 "Could not confirm that the candidate lives there"
@@ -422,7 +474,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
 
         if (agentSignature.isEmpty() && viewModel.offlineSignature.isEmpty()) {
-            context?.showDialog(title = "Incomplete form",  message = "Please input your signature")
+            context?.showDialog(title = "Incomplete form", message = "Please input your signature")
             return
         }
 
@@ -522,7 +574,8 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
             locationHelper.getCurrentLocation { latLng, address ->
 
                 Timber.d("Current location: $latLng $address")
-                val locationAddress = "Location captured"  //address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
+                val locationAddress =
+                    "Location captured"  //address ?: "Lat: ${latLng?.lat}  Long: ${latLng?.long}"
 
                 if (latLng != null) {
                     binding.canAccessBuildingContainer.yesGeoTaginput.setText(locationAddress)
@@ -596,7 +649,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 Timber.d("File gotten: ${file?.absolutePath}")
                 if (file != null) {
                     val requestBody = createMultipart(file)
-                    uploadViewModel.uploadImage(requestBody, file, UploadViewState.Companion.UploadType.signatureUpload)
+                    uploadViewModel.uploadImage(
+                        requestBody,
+                        file,
+                        UploadViewState.Companion.UploadType.signatureUpload
+                    )
                 }
             }
         }
@@ -671,8 +728,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         viewModel.doesBuildingHaveGate.observe(viewLifecycleOwner) {
             val hasGate = it.getContentIfNotHandled() ?: return@observe
             binding.canAccessBuildingContainer.gateColorLayout.visibleIf(hasGate)
-            binding.canAccessBuildingContainer.hasGate.setColor(hasGate, R.color.colorDark, R.color.white)
-            binding.canAccessBuildingContainer.noGate.setColor(!hasGate, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.hasGate.setColor(
+                hasGate,
+                R.color.colorDark,
+                R.color.white
+            )
+            binding.canAccessBuildingContainer.noGate.setColor(
+                !hasGate,
+                R.color.colorDark,
+                R.color.white
+            )
             viewModel.taskAnswers = viewModel.taskAnswers.copy(hasGate = hasGate)
         }
 
@@ -709,7 +774,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
                 is UploadViewState.Success -> {
                     progressLoader.hide()
-                   processImageUpload(state)
+                    processImageUpload(state)
                 }
                 else -> {}
             }
@@ -727,7 +792,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                         positiveTitle = "Retry",
                         negativeTitle = "Cancel",
                         negativeCallback = { navigateUp() }) {
-                        viewModel.startTask(viewModel.currentTask?.id.toString(), viewModel.currentTask?.displayVerificationType.toString())
+                        viewModel.startTask(
+                            viewModel.currentTask?.id.toString(),
+                            viewModel.currentTask?.displayVerificationType.toString(),
+                            viewModel.currentTask?.status.toString()
+                        )
                     }
                 }
 
@@ -741,8 +810,16 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         viewModel.doesCandidateLiveAtAddress.observe(viewLifecycleOwner) {
             val livesHere = it.getContentIfNotHandled() ?: return@observe
             Timber.d("Lives here $livesHere")
-            binding.canAccessBuildingContainer.candidateLiveHere.setColor(livesHere, R.color.colorDark, R.color.white)
-            binding.canAccessBuildingContainer.candidateDontLiveHere.setColor(!livesHere, R.color.colorDark, R.color.white)
+            binding.canAccessBuildingContainer.candidateLiveHere.setColor(
+                livesHere,
+                R.color.colorDark,
+                R.color.white
+            )
+            binding.canAccessBuildingContainer.candidateDontLiveHere.setColor(
+                !livesHere,
+                R.color.colorDark,
+                R.color.white
+            )
             viewModel.taskAnswers = viewModel.taskAnswers.copy(needsConfirmation = !livesHere)
 
             updateLivesHereText(livesHere)
@@ -751,7 +828,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         viewModel.updateAndSubmitTaskState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
-            when(state) {
+            when (state) {
                 is ResultState.Loading -> progressLoader.show("Submitting task...")
 
                 is ResultState.Error -> {
@@ -771,20 +848,28 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
 
         viewModel.canAccessBuildingState.observe(viewLifecycleOwner) {
             val canAccessBuilding = it.getContentIfNotHandled() ?: return@observe
-            binding.yesCanAccessBuildingText.setColor(canAccessBuilding, R.color.colorDark, R.color.white)
-            binding.noCantAccessBuidlingText.setColor(!canAccessBuilding, R.color.colorDark, R.color.white)
+            binding.yesCanAccessBuildingText.setColor(
+                canAccessBuilding,
+                R.color.colorDark,
+                R.color.white
+            )
+            binding.noCantAccessBuidlingText.setColor(
+                !canAccessBuilding,
+                R.color.colorDark,
+                R.color.white
+            )
             binding.canAccessBuildingContainer.root.visibleIf(canAccessBuilding)
             binding.cantAccessBuildingContainer.root.visibleIf(!canAccessBuilding)
 
             binding.scrollView.scrollTo(
-               0,
+                0,
                 binding.scrollView.bottom + 500
             )
         }
 
         viewModel.submitTaskState.observe(viewLifecycleOwner) {
             val state = it.getContentIfNotHandled() ?: return@observe
-            when(state) {
+            when (state) {
                 is ResultState.Loading -> progressLoader.show("Loading...")
                 is ResultState.Error -> {
                     progressLoader.hide()
@@ -829,29 +914,29 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         candidateImage.loadImage(taskItem.candidate?.photo)
         candidateName.text = taskItem.candidate?.name
 
-        //Only task is unasinged
-        if (taskItem.status == TaskStatus.unasigned) {
-            viewModel.startTask(taskItem.id, taskItem.verificationType)
-        }
+
+        viewModel.startTask(taskItem.id, taskItem.verificationType, taskItem.status.toString())
+
 
     }
 
     private fun updateLivesHereText(livesHere: Boolean = true) {
-        val whoIsVerified  = when(viewModel.currentTask?.verificationType) {
+        val whoIsVerified = when (viewModel.currentTask?.verificationType) {
             AgentTaskVerificationType.GUARANTOR -> "guarantor"
             AgentTaskVerificationType.INDIVIDUAL -> "candidate"
             AgentTaskVerificationType.BUSINESS -> "business"
             else -> "candidate"
         }
 
-        val actionWord  = when(viewModel.currentTask?.verificationType) {
-            AgentTaskVerificationType.GUARANTOR ->  if (livesHere) "lives" else "live"
+        val actionWord = when (viewModel.currentTask?.verificationType) {
+            AgentTaskVerificationType.GUARANTOR -> if (livesHere) "lives" else "live"
             AgentTaskVerificationType.INDIVIDUAL -> if (livesHere) "lives" else "live"
-            AgentTaskVerificationType.BUSINESS ->  if (livesHere) "operates" else "operate"
+            AgentTaskVerificationType.BUSINESS -> if (livesHere) "operates" else "operate"
             else -> if (livesHere) "lives" else "live"
         }
 
-        val livesHereText = if (livesHere) "Who confirmed that the $whoIsVerified $actionWord here?" else "Who confirmed that the $whoIsVerified does'nt $actionWord here?"
+        val livesHereText =
+            if (livesHere) "Who confirmed that the $whoIsVerified $actionWord here?" else "Who confirmed that the $whoIsVerified does'nt $actionWord here?"
         binding.canAccessBuildingContainer.whoConfirmedAddress.text = livesHereText
     }
 
@@ -859,7 +944,6 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         imagesAdapter.submitList(imageList)
         imagesAdapter.notifyDataSetChanged()
     }
-
 
 
     private fun submit() {
@@ -915,14 +999,15 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         val result = state.uploadResponse?.data?.firstOrNull()
         val file = state.file ?: return
         Timber.d("Upload ==> ${result?.location}")
-        when(state.uploadType) {
+        when (state.uploadType) {
             UploadViewState.Companion.UploadType.imageUpload -> {
                 viewModel.uploadedImages.add(result?.location.toString())
                 viewModel.updateImagesPicked(file)
             }
 
             UploadViewState.Companion.UploadType.signatureUpload -> {
-                viewModel.taskAnswers = viewModel.taskAnswers.copy(signatureLink = result?.location.toString())
+                viewModel.taskAnswers =
+                    viewModel.taskAnswers.copy(signatureLink = result?.location.toString())
                 binding.canAccessBuildingContainer.signature.loadImage(file.absolutePath)
                 binding.signatureTwo.loadImage(file.absolutePath)
             }
@@ -930,7 +1015,11 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
         }
     }
 
-    private fun showMessagesBottomSheet(title: String, reasons: List<String>, callback: (reason: String) -> Unit) {
+    private fun showMessagesBottomSheet(
+        title: String,
+        reasons: List<String>,
+        callback: (reason: String) -> Unit
+    ) {
         Timber.d("Messsage ==> $reasons")
         var dialog: MaterialDialog? = null
         val binding = SelectTypesLayoutBinding.inflate(layoutInflater)
