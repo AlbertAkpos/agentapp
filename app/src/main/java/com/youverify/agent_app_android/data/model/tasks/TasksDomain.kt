@@ -29,7 +29,8 @@ object TasksDomain {
         val businessRegNumber: String,
         val candidate: Candidate?,
         val lastModifiedAt: String,
-        val verificationType: String
+        val verificationType: String,
+        val taskUpdated: Boolean = false
     ) {
         val address: String get() = "$buildingNumber, $street, $city, $state, $country"
         val time get(): String {

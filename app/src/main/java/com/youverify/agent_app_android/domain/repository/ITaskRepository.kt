@@ -23,6 +23,7 @@ interface ITaskRepository {
     suspend fun deleteTask(taskItem:  TasksDomain.AgentTask, agentId: String)
     suspend fun deleteTask(taskId: String)
     fun fetchOfflineNotifications(agentId: String): LiveData<List<NotificationItem>>
+    suspend fun getOfflineNotifications(agentId: String): List<NotificationItem>
     fun fetchAgentId(): String
     suspend fun fetchAgentAnalyticsOnTasks(agentId: String, startDate: String, endDate: String): Domain.AgentTasksAnalyticsResponse
     fun fetchOfflineTasks(agentId: String): LiveData<List<TasksDomain.AgentTask>>

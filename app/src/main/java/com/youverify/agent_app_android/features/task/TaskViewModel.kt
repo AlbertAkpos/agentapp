@@ -26,10 +26,10 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel() {
     val taskItemState = MutableLiveData<SingleEvent<TasksDomain.AgentTask>>()
 
-    var currentTask: TasksDomain.AgentTask ? = null
+    var currentTask: TasksDomain.AgentTask? = null
         private set
 
-    private  val agentId by lazy { repository.fetchAgentId() }
+    private val agentId by lazy { repository.fetchAgentId() }
 
     val tasksState = MutableLiveData<SingleEvent<ResultState<ArrayList<TasksDomain.AgentTask>>>>()
 
@@ -43,7 +43,7 @@ class TaskViewModel @Inject constructor(
 
     var taskAnswers = TasksDomain.TaskAnswers()
 
-    val candidateAddressConfirmedBy get() =  if (taskAnswers.needsConfirmation == true) whoConfirmedAddressNegative else whoConfirmedAddressPositive
+    val candidateAddressConfirmedBy get() = if (taskAnswers.needsConfirmation == true) whoConfirmedAddressNegative else whoConfirmedAddressPositive
 
     private val whoConfirmedAddressPositive = arrayListOf<String>()
 
@@ -61,12 +61,20 @@ class TaskViewModel @Inject constructor(
         addSource(repository.fetchOfflineNotifications(agentId)) { updateNotifications(it.filter { notification -> notification.submitTask != null }) }
     }
 
-    val offlineTasks = Transformations.map(repository.fetchOfflineTasks(agentId)) { it }
+    val offlineTasks =
+        Transformations.map(repository.fetchOfflineTasks(agentId)) { it.filter { item -> !item.taskUpdated } }
 
-    private fun updateNotifications(offlineTasks: List<NotificationItem>) {
-        val currentNotifications = notifications.value ?: arrayListOf()
+     fun updateNotifications(offlineTasks: List<NotificationItem>) {
+        val currentNotifications = arrayListOf<NotificationItem>()
         currentNotifications.addAll(offlineTasks)
         notifications.postValue(currentNotifications)
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            val items = repository.getOfflineNotifications(agentId)
+            updateNotifications(items)
+        }
     }
 
 
@@ -93,7 +101,13 @@ class TaskViewModel @Inject constructor(
             if (response.success) {
                 tasksState.postValue(SingleEvent(ResultState.Success(response.taskItems)))
             } else {
-                tasksState.postValue(SingleEvent(ResultState.Error(response.message ?: "Some error occurred")))
+                tasksState.postValue(
+                    SingleEvent(
+                        ResultState.Error(
+                            response.message ?: "Some error occurred"
+                        )
+                    )
+                )
             }
         }
     }
@@ -164,12 +178,6 @@ class TaskViewModel @Inject constructor(
             startTaskState.postValue(SingleEvent(ResultState.Success(submissionData)))
 
 
-
-
-
-
-
-
         }
 
     }
@@ -189,40 +197,77 @@ class TaskViewModel @Inject constructor(
             taskRejectionState.postValue(SingleEvent(ResultState.Loading()))
             val response = repository.submitTask(request, taskId)
             if (response.success) {
-                taskRejectionState.postValue(SingleEvent(ResultState.Success(response.message ?: "Task submitted successfully")))
+                taskRejectionState.postValue(
+                    SingleEvent(
+                        ResultState.Success(
+                            response.message ?: "Task submitted successfully"
+                        )
+                    )
+                )
             } else {
-                taskRejectionState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
+                taskRejectionState.postValue(
+                    SingleEvent(
+                        ResultState.Error(
+                            response.message ?: "An error occurred"
+                        )
+                    )
+                )
             }
         }
     }
 
-    fun updateAndSubmitTask(taskItem: TasksDomain.SubmitTask, notificationItem: NotificationItem? = null) {
+    fun updateAndSubmitTask(
+        taskItem: TasksDomain.SubmitTask,
+        notificationItem: NotificationItem? = null
+    ) {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
             val message = ErrorHelper.handleException(throwable)
             updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(message)))
-            if (notificationItem != null) {
-                // Put the notificatio Item back if submission fails. This is just to update the UI
-                updateNotifications(listOf(notificationItem))
-            }
+//            if (notificationItem != null) {
+//                // Put the notificatio Item back if submission fails. This is just to update the UI
+//                updateNotifications(listOf(notificationItem))
+//            }
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
-                updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Loading()))
+            updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Loading()))
             // Update the task on local
             currentTask?.let { repository.addTask(currentTask!!, agentId) }
             currentTask?.let { repository.updateTask(taskItem, currentTask!!, agentId) }
             // Update on remote
-            val response = repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
+            val response =
+                repository.updateTask(taskId = taskItem.taskId, taskItem.updateTaskRequest)
+            if (response.success) {
+
+                val taskSubmissionResponse = repository.submitTask(
+                    request = taskItem.subitTaskRequest,
+                    taskId = taskItem.taskId
+                )
                 if (response.success) {
+                    updateAndSubmitTaskState.postValue(
+                        SingleEvent(
+                            ResultState.Success(
+                                taskSubmissionResponse.message ?: "Task submitted successfully"
+                            )
+                        )
+                    )
+                    repository.deleteTask(taskItem.taskId)
+                } else updateAndSubmitTaskState.postValue(
+                    SingleEvent(
+                        ResultState.Error(
+                            taskSubmissionResponse.message ?: "An error occurred. Please try again"
+                        )
+                    )
+                )
 
-                    val taskSubmissionResponse = repository.submitTask(request = taskItem.subitTaskRequest, taskId = taskItem.taskId)
-                    if (response.success) {
-                        updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Success(taskSubmissionResponse.message ?: "Task submitted successfully")))
-                        repository.deleteTask(taskItem.taskId)
-                    } else updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(taskSubmissionResponse.message ?: "An error occurred. Please try again")))
-
-                } else updateAndSubmitTaskState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred. Please try again")))
+            } else updateAndSubmitTaskState.postValue(
+                SingleEvent(
+                    ResultState.Error(
+                        response.message ?: "An error occurred. Please try again"
+                    )
+                )
+            )
 
         }
     }
@@ -250,13 +295,26 @@ class TaskViewModel @Inject constructor(
             submitTaskState.postValue(SingleEvent(ResultState.Loading()))
             val response = repository.submitTask(submitRequest, taskId)
             if (response.success) {
-                submitTaskState.postValue(SingleEvent(ResultState.Success(response.message ?: "Successfully notified the business")))
-            } else submitTaskState.postValue(SingleEvent(ResultState.Error(response.message ?: "An error occurred")))
+                submitTaskState.postValue(
+                    SingleEvent(
+                        ResultState.Success(
+                            response.message ?: "Successfully notified the business"
+                        )
+                    )
+                )
+            } else submitTaskState.postValue(
+                SingleEvent(
+                    ResultState.Error(
+                        response.message ?: "An error occurred"
+                    )
+                )
+            )
         }
 
     }
 
-    val filterParamsState = MutableLiveData<SingleEvent<ResultState<Pair<List<State>, TasksDomain.TasksStatusesResponse>>>>()
+    val filterParamsState =
+        MutableLiveData<SingleEvent<ResultState<Pair<List<State>, TasksDomain.TasksStatusesResponse>>>>()
 
 
     fun getFilterParams() {
@@ -277,8 +335,23 @@ class TaskViewModel @Inject constructor(
             val statuses = statusesDefferred.await()
 
             if (statuses.data != null) {
-                filterParamsState.postValue(SingleEvent(ResultState.Success(Pair(states, statuses))))
-            } else  filterParamsState.postValue(SingleEvent(ResultState.Error(statuses.message ?: "An error occurred. Please try again")))
+                filterParamsState.postValue(
+                    SingleEvent(
+                        ResultState.Success(
+                            Pair(
+                                states,
+                                statuses
+                            )
+                        )
+                    )
+                )
+            } else filterParamsState.postValue(
+                SingleEvent(
+                    ResultState.Error(
+                        statuses.message ?: "An error occurred. Please try again"
+                    )
+                )
+            )
 
         }
     }

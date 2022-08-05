@@ -89,10 +89,13 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                 is ResultState.Error -> {
                     progressLoader.hide()
                     context?.showDialog(message = state.error)
+                    viewModel.refresh()
+
                 }
                 is ResultState.Success -> {
                     progressLoader.hide()
                     showMessage(state.data)
+                    viewModel.refresh()
                 }
             }
         }

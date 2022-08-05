@@ -105,6 +105,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task) {
                         val allTasks = (offlineTasks ?: emptyList()) + state.data
                         adapter.setItemsList(allTasks)
 
+                        Timber.d("All task $allTasks")
+
                         if (allTasks.isEmpty()) {
                             binding.noTasksMessage.visibleIf(allTasks.isEmpty())
                             binding.gifImageView.visibleIf(allTasks.isEmpty())

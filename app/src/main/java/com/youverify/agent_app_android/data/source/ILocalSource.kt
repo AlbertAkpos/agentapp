@@ -9,4 +9,5 @@ interface ILocalSource {
     suspend fun deleteTask(vararg taskItem: TaskEntity.TaskItem)
     suspend fun deleteTask(taskId: String)
     fun fetchOfflineTasks(agentId: String): LiveData<List<TaskEntity.TaskItem>>
+    suspend fun getOfflineNotifications(agentId: String): List<TaskEntity.TaskItem>
 }

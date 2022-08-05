@@ -841,6 +841,7 @@ class TaskDetailsFragment : Fragment(R.layout.fragment_task_details) {
                 is ResultState.Success -> {
                     progressLoader.hide()
                     showMessage(state.data)
+
                 }
 
             }

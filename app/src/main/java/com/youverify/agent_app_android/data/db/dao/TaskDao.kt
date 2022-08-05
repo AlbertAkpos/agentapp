@@ -18,6 +18,9 @@ interface TaskDao {
     @Query("select * from task where agentId=:agentId")
     fun getOfflineTasks(agentId: String): LiveData<List<TaskEntity.TaskItem>>
 
+    @Query("select * from task where agentId=:agentId")
+    suspend fun fetchOfflineTasks(agentId: String): List<TaskEntity.TaskItem>
+
     @Query("delete from task where taskId =:taskId")
     suspend fun deleteTask(taskId: String)
 }
